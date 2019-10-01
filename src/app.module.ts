@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersController } from './users/users.controller';
-import { UsersModule } from './users/users.module';
-import {UsersService} from './users/users.service';
+import { UserController } from './user/user.controller';
+import { UserModule } from './user/user.module';
+import { UserService } from './user/user.service';
+import { JwtService } from './common/services/jwt/jwt.service';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UsersModule],
-  controllers: [AppController, UsersController],
-  providers: [AppService, UsersService],
+  imports: [UserModule],
+  controllers: [AppController, UserController],
+  providers: [AppService, UserService, JwtService],
 })
 export class AppModule {}
