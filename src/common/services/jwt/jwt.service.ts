@@ -1,33 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { decode, encode, TAlgorithm } from 'jwt-simple';
+import { sign, verify } from 'jsonwebtoken';
 import * as authConfig from '../../../../auth.config.json';
 import { jwtAlgorithm } from '../../../../enums/enums';
-import { ITokenOptions } from 'commonInterfaces/interfaces.js';
-import * as moment from 'moment';
+import {serverToken} from '../../../../commonInterfaces/interfaces';
 
 @Injectable()
 export class JwtService {
-    private token: string;
-    private payload: any;
-    private secret: string;
-    private options: ITokenOptions;
+    private payload: {};
+    private iat: number;
+    private exp: number;
+    constructor() {}
 
-    constructor(sub: any,  options: ITokenOptions, secret?: string) {
-        this.secret = secret || authConfig.appSecret;
-        this.options = options;
-
-        // Crear el playload para el token
-        this.payload = {
-            sub,
-            iat: moment().unix(), // Fecha creado
-            exp: moment().add(this.options.expire.unit, this.options.expire.meaning).unix(), // fecha de expiracion
-         };
-    }
-
-    public decode(token: string, noVerify = false, secret?: string, Algorithm?: TAlgorithm): Promise<any> {
+    public decode(token: string, secret?: string, algorithm?: string): Promise<any> {
         return new Promise<any>(async (resolve, reject) => {
             try {
-                const decoded = await decode( token, secret || authConfig.appSecret, noVerify, Algorithm  || jwtAlgorithm.HS256);
+                const decoded = await verify(
+                    token,
+                    secret || authConfig.authServerSecret,
+                    { algorithms: [algorithm || jwtAlgorithm.HS256]},
+                    ) as serverToken;
+                if (!secret) {
+                    this.payload = decoded.sub;
+                    this.iat = decoded.iat;
+                    this.exp = decoded.exp;
+                }
                 resolve(decoded);
             } catch (error) {
                 reject(error);
@@ -35,18 +31,24 @@ export class JwtService {
         });
     }
 
-    public encode(): Promise<string> {
+    public sign(): Promise<string> {
         return new Promise<string>(async (resolve, reject) => {
             try {
-                this.token = encode(this.payload, authConfig.appSecret, jwtAlgorithm.HS256);
-                resolve(this.token);
+                const token = sign({data: this.payload, iat: this.iat, exp: this.exp }, authConfig.appSecret, { algorithm: jwtAlgorithm.HS256});
+                resolve(token);
             } catch (error) {
                 reject(error);
             }
         });
     }
 
-    public getPlayload(): any {
+    public getServerPlayload(): any {
+        return this.payload;
+    }
+    public getServerIat(): any {
+        return this.payload;
+    }
+    public getServerExp(): any {
         return this.payload;
     }
 }
