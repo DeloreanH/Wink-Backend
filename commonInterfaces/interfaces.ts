@@ -1,15 +1,17 @@
-export interface serverToken {
+export interface Payload {
     exp: number;
     iat: number;
-    sub: {
-        appId: string,
-        avatarUrl: string,
-        birthday: string,
-        created: string,
-        email: string,
-        firstName: string,
-        gender: string,
-        lastName: string,
-        provider: string,
-    };
+    sub: Sub;
+}
+
+export interface Sub {
+    appId: string;
+    provider: string;
+    created: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    gender?: string;
+    avatarUrl?: string;
+    birthday?: string;
 }
