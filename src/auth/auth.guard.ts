@@ -1,7 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { sign, verify } from 'jsonwebtoken';
-import { Payload } from 'commonInterfaces/interfaces';
-import * as authConfig from '../../auth.config.json';
+import { verify } from 'jsonwebtoken';
+import { Payload } from '../interfaces/common.interface';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -38,7 +37,7 @@ export class AuthGuard implements CanActivate {
         throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
       }
       const token = auth.split(' ')[1];
-      const decoded = await verify(token, authConfig.appSecret ) as Payload;
+      const decoded = await verify(token, process.env.SECRET) as Payload;
       return decoded.sub;
     } catch (err) {
       const message = 'Token error: ' + (err.message || err.name);

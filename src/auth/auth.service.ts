@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { sign, verify } from 'jsonwebtoken';
-import * as authConfig from '../../auth.config.json';
-import { jwtAlgorithm } from '../../enums/enums';
-import { Payload, Sub } from '../../commonInterfaces/interfaces';
+import { jwtAlgorithm } from '../enums/enums';
+import { Payload, Sub } from '../interfaces/common.interface';
 
 @Injectable()
 export class AuthService {
@@ -29,7 +28,7 @@ export class AuthService {
             try {
                 const decoded = await verify(
                     token,
-                    fromServer ? authConfig.authServerSecret : authConfig.appSecret,
+                    fromServer ? process.env.SERVER_SECRET : process.env.SECRET,
                     { algorithms: [algorithm || jwtAlgorithm.HS256]},
                     ) as Payload;
                 if (fromServer) {
@@ -54,7 +53,7 @@ export class AuthService {
     public sign(): Promise<string> {
         return new Promise<string>(async (resolve, reject) => {
             try {
-                const token = sign( this.payload, authConfig.appSecret, { algorithm: jwtAlgorithm.HS256});
+                const token = sign( this.payload, process.env.SECRET, { algorithm: jwtAlgorithm.HS256});
                 resolve(token);
             } catch (error) {
                 reject(error);

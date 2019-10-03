@@ -1,7 +1,7 @@
-import {Body, Controller, HttpStatus, Post, Res} from '@nestjs/common';
-import {authServerDTO} from './dto/auth-serve.dto';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { authServerDTO } from '../dtos/auth-serve.dto';
 import { AuthService } from './auth.service';
-import { Payload } from '../../commonInterfaces/interfaces';
+import { Payload } from '../interfaces/common.interface';
 
 @Controller('auth')
 export class AuthController {
