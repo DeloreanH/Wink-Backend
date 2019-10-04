@@ -7,5 +7,5 @@ import { createParamDecorator } from '@nestjs/common';
  * @returns {authUser}
  */
 export const AuthUser = createParamDecorator((data, req) => {
-    return data ? req.authUser[data] : req.authUser;
+  return data ? req.authUser[data] : req.authUser;
   });

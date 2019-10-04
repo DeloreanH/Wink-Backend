@@ -5,10 +5,7 @@ export enum jwtAlgorithm {
     RS256 = 'RS256',
 }
 
-export enum Meaning {
-    SECONDS = 'seconds',
-    MINUTES = 'minutes',
-    HOURS   = 'hours',
-    DAYS    = 'days',
-    MONTHS  = 'months',
+export enum Gender {
+    MALE = 'male',
+    FEMALE = 'female',
 }

@@ -71,7 +71,7 @@ export class AuthService {
      */
     public setPayload(payload?: Payload): Promise<Payload> {
         return new Promise<any>((resolve, reject) => {
-            if (!payload) {
+              if (!payload) {
                 if ( !this.serverExp && !this.serverIat && !this.serverSub ) {
                     reject('no payload from server, decoded token first and set fromServer true');
                 } else {

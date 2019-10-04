@@ -7,23 +7,22 @@ import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
-import { AuthService } from './auth/auth.service';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './auth/common/http-exception.filter';
 
 @Module({
-  imports: [
-    MongooseModule.forRoot(process.env.MONGO_HOST),
-    UserModule,
-    AuthModule,
-  ],
-  controllers: [
-    AppController,
-    UserController,
-    AuthController,
-  ],
-  providers: [
-    AppService,
-    UserService,
-    AuthService,
-  ],
+    imports: [
+        MongooseModule.forRoot(process.env.MONGO_HOST),
+        UserModule,
+        AuthModule,
+    ],
+    controllers: [
+        AppController,
+        UserController,
+        AuthController,
+    ],
+    providers: [
+        AppService,
+    ],
 })
 export class AppModule {}

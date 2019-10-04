@@ -1,7 +1,7 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
-import { authServerDTO } from '../dtos/auth-serve.dto';
+import { Body, Controller, HttpStatus, Post, Res, UseFilters, HttpException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Payload } from '../interfaces/common.interface';
+import { authServerDTO } from './dtos/auth-serve.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -21,16 +21,14 @@ export class AuthController {
         try {
             await this.authServ.decode(data.access_token, true);
             const payload = await this.authServ.setPayload() as Payload;
+            const response ='hola';
             const token   = await this.authServ.sign();
             return res.status(HttpStatus.OK).json({
-                token,
-                exp: payload.exp,
+               mongo: response,
             });
 
         } catch ( error ) {
-            return res.status(HttpStatus.FORBIDDEN).json({
-                error,
-            });
+            throw new HttpException(error, HttpStatus.BAD_REQUEST);
         }
     }
 }
