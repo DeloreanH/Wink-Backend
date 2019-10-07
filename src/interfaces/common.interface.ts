@@ -1,7 +1,10 @@
+import { Gender } from '../enums/enums';
+import { Phone } from '../user/interfaces/user.interface';
+
 export interface Payload {
     exp: number;
     iat: number;
-    sub: Sub;
+    sub: Sub | any;
 }
 
 export interface Sub {
@@ -11,7 +14,8 @@ export interface Sub {
     email?: string;
     firstName?: string;
     lastName?: string;
-    gender?: string;
+    gender?: Gender;
     avatarUrl?: string;
     birthday?: string;
+    phone?: Phone;
 }

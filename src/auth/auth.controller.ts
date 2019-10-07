@@ -1,10 +1,13 @@
-import { Body, Controller, HttpStatus, Post, Res, UseFilters, HttpException } from '@nestjs/common';
+import { Controller, HttpStatus, Post, Res, HttpException, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Payload } from '../interfaces/common.interface';
-import { authServerDTO } from './dtos/auth-serve.dto';
+import { User } from 'src/user/interfaces/user.interface';
+import { AuthInterceptor } from './auth.interceptor';
+import { servDecoded} from './server-decoded.decorator';
+import { Sub } from 'src/interfaces/common.interface';
 
 @Controller('auth')
 export class AuthController {
+    private user: User;
 
     constructor( private authServ: AuthService) {}
 
@@ -17,15 +20,17 @@ export class AuthController {
      * @memberof AuthController
      */
     @Post('authenticate')
-    public async authDecodeEncode(@Res() res , @Body() data: authServerDTO) {
+    @UseInterceptors(AuthInterceptor)
+    public async authEncode(@Res() res, @servDecoded('sub') sub: Sub) {
         try {
-            await this.authServ.decode(data.access_token, true);
-            const payload = await this.authServ.setPayload() as Payload;
-            const response ='hola';
-            const token   = await this.authServ.sign();
+            const respuesta = this.authServ.auth(sub);
+
+            /*
             return res.status(HttpStatus.OK).json({
-               mongo: response,
+               payload,
+               token,
             });
+            */
 
         } catch ( error ) {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);

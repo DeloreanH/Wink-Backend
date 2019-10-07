@@ -1,17 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { sign, verify } from 'jsonwebtoken';
 import { jwtAlgorithm } from '../enums/enums';
 import { Payload, Sub } from '../interfaces/common.interface';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
-    private serverSub: Sub;
-    private serverIat: number;
-    private serverExp: number;
     private sub: Sub;
     private iat: number;
     private exp: number;
     private payload: Payload;
+
+    constructor( private userServ: UserService) {}
 
     /**
      * @description Decodica un token jwt
@@ -31,11 +31,6 @@ export class AuthService {
                     fromServer ? process.env.SERVER_SECRET : process.env.SECRET,
                     { algorithms: [algorithm || jwtAlgorithm.HS256]},
                     ) as Payload;
-                if (fromServer) {
-                    this.serverSub = decoded.sub;
-                    this.serverIat = decoded.iat;
-                    this.serverExp = decoded.exp;
-                }
                 resolve(decoded);
             } catch (error) {
                 reject(error);
@@ -69,65 +64,44 @@ export class AuthService {
      * @returns Promise<Payload>
      * @memberof AuthService
      */
-    public setPayload(payload?: Payload): Promise<Payload> {
-        return new Promise<any>((resolve, reject) => {
-              if (!payload) {
-                if ( !this.serverExp && !this.serverIat && !this.serverSub ) {
-                    reject('no payload from server, decoded token first and set fromServer true');
-                } else {
-                    this.payload = {
-                        sub: this.serverSub,
-                        iat: this.serverIat,
-                        exp: this.serverExp,
-                    };
-                    resolve(this.payload);
-                }
-            } else {
-                this.sub = payload.sub;
-                this.iat = payload.iat;
-                this.exp = payload.exp;
-                this.payload = {
-                    sub: payload.sub,
-                    iat: payload.iat,
-                    exp: payload.exp,
-                };
-                resolve(this.payload);
-            }
+    public setPayload(payload: Payload): Promise<Payload> {
+        return new Promise((resolve, reject) => {
+            this.sub = payload.sub;
+            this.iat = payload.iat;
+            this.exp = payload.exp;
+            this.payload = {
+                sub: payload.sub,
+                iat: payload.iat,
+                exp: payload.exp,
+            };
+            resolve(this.payload);
         });
     }
 
-    /**
-     * @description geter del sub del server, retornara nulo si no se decodifica con el parametro fromServer=true
-     * @author Harry Perez
-     * @date 2019-10-02
-     * @param payload payload a setear
-     * @returns Sub
-     * @memberof AuthService
-     */
-    public getServerSub(): Sub {
-        return this.serverSub;
-    }
-
-    /**
-     * @description geter del iat del server, retornara nulo si no se decodifica con el parametro fromServer=true
-     * @author Harry Perez
-     * @date 2019-10-02
-     * @returns number
-     * @memberof AuthService
-     */
-    public getServerIat(): number {
-        return this.serverIat;
-    }
-
-    /**
-     * @description geter del exp del server, retornara nulo si no se decodifica con el parametro fromServer=true
-     * @author Harry Perez
-     * @date 2019-10-02
-     * @returns number
-     * @memberof AuthService
-     */
-    public getServerExp(): number {
-        return this.serverExp;
+    public async auth(serverSub: Sub) {
+        const toFind = [];
+        if (serverSub.email) {
+            toFind.push({email: serverSub.email});
+        }
+        if (serverSub.phone) {
+            toFind.push({
+                phone: {
+                    phoneCode: serverSub.phone.phoneCode,
+                    phoneNumber: serverSub.phone.phoneNumber,
+                },
+            });
+        }
+        if (!serverSub.email && !serverSub.phone) {
+            throw new HttpException('no email or phone was provide', HttpStatus.BAD_REQUEST);
+        }
+        const user = await this.userServ.findUser(toFind);
+        console.log('usuario encontrado', user);
+        if (!user) {
+            //crear y encodear
+        } else {
+            // encodear
+        }
+        // retornar
     }
 
     /**

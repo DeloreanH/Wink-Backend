@@ -4,24 +4,25 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
-import { UserService } from './user/user.service';
-import { AuthController } from './auth/auth.controller';
-import { AuthModule } from './auth/auth.module';
 import { APP_FILTER } from '@nestjs/core';
-import { HttpExceptionFilter } from './auth/common/http-exception.filter';
+import { HttpExceptionFilter } from './common/http-exception.filter';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
-        MongooseModule.forRoot(process.env.MONGO_HOST),
+        MongooseModule.forRoot(process.env.MONGO_HOST, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }),
         UserModule,
         AuthModule,
     ],
     controllers: [
         AppController,
         UserController,
-        AuthController,
     ],
     providers: [
+        {
+            provide: APP_FILTER,
+            useClass: HttpExceptionFilter,
+        },
         AppService,
     ],
 })
