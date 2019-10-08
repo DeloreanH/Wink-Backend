@@ -1,9 +1,9 @@
 import { Controller, HttpStatus, Post, Res, HttpException, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { User } from 'src/user/interfaces/user.interface';
+import { User } from '../user/interfaces/user.interface';
 import { AuthInterceptor } from './auth.interceptor';
-import { servDecoded} from './server-decoded.decorator';
-import { Sub } from 'src/interfaces/common.interface';
+import { Payload, authResponse } from 'src/common/interfaces/common.interface';
+import { servDecoded } from './auth-decorators.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -12,7 +12,8 @@ export class AuthController {
     constructor( private authServ: AuthService) {}
 
     /**
-     * @description Decodica el token del AuthServer y encodifica uno nuevo para uso interno de la app
+     * @description se intercepta el token proveniente del servidor y se mapea en un decorator, este metodo
+     * se encarga de llamar al servicio que encripta un nuevo token de auth al usuario
      * @author Harry Perez
      * @date 2019-10-02
      * @param {Request} res request de la peticion
@@ -21,17 +22,14 @@ export class AuthController {
      */
     @Post('authenticate')
     @UseInterceptors(AuthInterceptor)
-    public async authEncode(@Res() res, @servDecoded('sub') sub: Sub) {
+    public async authEncode(@Res() res, @servDecoded() sPayload: Payload) {
         try {
-            const respuesta = this.authServ.auth(sub);
-
-            /*
+            const auth = await this.authServ.auth(sPayload) as authResponse;
             return res.status(HttpStatus.OK).json({
-               payload,
-               token,
+               token: auth.token,
+               exp: auth.exp,
+               emptyProfile: auth.emptyProfile,
             });
-            */
-
         } catch ( error ) {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);
         }

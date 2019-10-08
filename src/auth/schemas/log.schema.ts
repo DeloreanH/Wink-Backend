@@ -1,11 +1,14 @@
 import { Schema } from 'mongoose';
 
 export const logSchema = new Schema({
-    user: {
+    userId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
     provider: {
+        type: String,
+    },
+    token: {
         type: String,
     },
     created: {

@@ -1,26 +1,20 @@
 import { Document } from 'mongoose';
-import { Gender } from 'src/enums/enums';
 
 export interface User extends Document {
+    userId?: string;
     firstName?: string;
     lastName?: string;
     email?: string;
     phone?: Phone;
-    birthday?: string | string;
-    gender?: Gender;
+    birthday?: string;
+    gender?: string;
     avatarUrl?: string;
     status?: string;
     description?: string;
-    emptyUser?: boolean;
+    emptyProfile?: boolean;
     username?: string;
     created?: Date;
     updated?: Date;
-}
-
-export interface Log extends Document {
-    useId: string;
-    created: Date;
-    updated: Date;
 }
 export interface Phone {
     phoneCode?: number;

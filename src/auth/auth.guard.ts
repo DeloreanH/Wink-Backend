@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { verify } from 'jsonwebtoken';
-import { Payload } from '../interfaces/common.interface';
+import { Payload } from '../common/interfaces/common.interface';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -20,7 +20,6 @@ export class AuthGuard implements CanActivate {
         }
         request.authUser = await this.validateToken(request.headers.authorization);
         return true;
-
     }
 
     /**

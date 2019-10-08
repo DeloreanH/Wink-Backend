@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { Tools } from '../../common/tools';
+import { Tools } from '../../common/tools/tools';
 
 export const userSchema = new mongoose.Schema({
     firstName: {
@@ -36,7 +36,6 @@ export const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        enum: ['male', 'female'],
     },
     avatarUrl: {
             type: String ,
@@ -47,9 +46,9 @@ export const userSchema = new mongoose.Schema({
     description: {
         type: String ,
     },
-    emptyUser: {
+    emptyProfile: {
         type: Boolean,
-        default: false,
+        default: true,
     },
     username: {
         type: String,

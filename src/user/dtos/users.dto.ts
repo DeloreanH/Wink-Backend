@@ -1,13 +1,11 @@
 import { Phone } from '../interfaces/user.interface';
-import { Gender } from '../../enums/enums';
-
 export class UserDTO {
     firstName?: string;
     lastName?: string;
     email?: string;
     phone?: Phone;
-    birthday?: string | string;
-    gender?: Gender;
+    birthday?: string;
+    gender?: string;
     avatarUrl?: string;
     status?: string;
     description?: string;

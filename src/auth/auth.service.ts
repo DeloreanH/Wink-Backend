@@ -1,8 +1,12 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { sign, verify } from 'jsonwebtoken';
-import { jwtAlgorithm } from '../enums/enums';
-import { Payload, Sub } from '../interfaces/common.interface';
-import { UserService } from 'src/user/user.service';
+import { jwtAlgorithm } from '../common/enums/enums';
+import { Payload, Sub, authResponse } from '../common/interfaces/common.interface';
+import { UserService } from '../user/user.service';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Log } from './interfaces/auth.interface';
+import { LogDTO } from './dtos/log.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +15,10 @@ export class AuthService {
     private exp: number;
     private payload: Payload;
 
-    constructor( private userServ: UserService) {}
+    constructor(
+         private userServ: UserService,
+         @InjectModel('Log') private LogModel: Model<Log>,
+         ) {}
 
     /**
      * @description Decodica un token jwt
@@ -57,7 +64,7 @@ export class AuthService {
     }
 
     /**
-     * @description setea el payload para posteriormente firmarlo
+     * @description setea el payload para posteriormente firmarlo con el metodo sign()
      * @author Harry Perez
      * @date 2019-10-02
      * @param payload payload a setear
@@ -78,30 +85,71 @@ export class AuthService {
         });
     }
 
-    public async auth(serverSub: Sub) {
-        const toFind = [];
-        if (serverSub.email) {
-            toFind.push({email: serverSub.email});
-        }
-        if (serverSub.phone) {
-            toFind.push({
-                phone: {
-                    phoneCode: serverSub.phone.phoneCode,
-                    phoneNumber: serverSub.phone.phoneNumber,
-                },
-            });
-        }
-        if (!serverSub.email && !serverSub.phone) {
-            throw new HttpException('no email or phone was provide', HttpStatus.BAD_REQUEST);
-        }
-        const user = await this.userServ.findUser(toFind);
-        console.log('usuario encontrado', user);
-        if (!user) {
-            //crear y encodear
-        } else {
-            // encodear
-        }
-        // retornar
+    /**
+     * @description busca al usuario para posteriormente generar un token, de no existir el usuario
+     * este se creara y luego generara el token
+     * @author Harry Perez
+     * @date 2019-10-08
+     * @param spayload payload del token proveniente del servidor
+     * @returns Promise<authResponse>
+     * @memberof AuthService
+     */
+    public async auth(sPayload: Payload): Promise<authResponse> {
+        return new Promise( async (resolve, reject) => {
+            // parametros para buscar al usuario
+            const toFind = [];
+            if (sPayload.sub.email) {
+                toFind.push({email: sPayload.sub.email});
+            }
+            if (sPayload.sub.username) {
+                toFind.push({email: sPayload.sub.username});
+            }
+            if (sPayload.sub.phone) {
+                toFind.push({
+                    phone: {
+                        phoneCode: sPayload.sub.phone.phoneCode,
+                        phoneNumber: sPayload.sub.phone.phoneNumber,
+                    },
+                });
+            }
+            // all no pasar estos tres para metros no se puede ubicar al usuario
+            if (!sPayload.sub.email && !sPayload.sub.phone && !sPayload.sub.username) {
+                reject('no email, phone or username was provide');
+            }
+            // busqueda del usuario a la base de datos
+            const user = await this.userServ.findUser(toFind);
+            try {
+                let token;
+                // de no existir el usuario, se crea
+                if (!user) {
+                    const newUser = await this.userServ.createUSer(sPayload.sub);
+                    this.setPayload({sub: newUser, iat: sPayload.iat, exp: sPayload.exp});
+                    token = await this.sign();
+                 } else {
+                    this.setPayload({sub: user, iat: sPayload.iat, exp: sPayload.exp});
+                    token = await this.sign();
+                 }
+                 // log de sesion
+                await this.logger({userId: this.sub.userId, provider: sPayload.sub.provider, token});
+                 // luego de setear el payload y haber realizado el sign(), se resuelve la promesa
+                resolve({exp: this.exp, token, emptyProfile: this.sub.emptyProfile});
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    /**
+     * @description crea un nuevo log cada vez que el usuario se logea en el sistema
+     * @author Harry Perez
+     * @date 2019-10-08
+     * @param log
+     * @returns Promise<Log>
+     * @memberof AuthService
+     */
+    private async logger(log: LogDTO): Promise<Log> {
+        const createdLog = new this.LogModel(log);
+        return await createdLog.save();
     }
 
     /**

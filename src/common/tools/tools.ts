@@ -19,4 +19,22 @@ export class Tools {
     public static removeSpaces(value: string): string {
         return value.replace(/\s/g, ''); // Elimina todos los espacios del texto
     }
+
+    /**
+     * @description elimina las propiedades null o undefined de un objeto
+     * @author Harry Perez
+     * @date 2019-10-08
+     * @static
+     * @param {object} obj objeto
+     * @returns {object} Rotorna un objeto
+     * @memberof Tools
+     */
+    public static removeNullProperties(obj: object) {
+        for (const prop in obj) {
+            if (obj[prop] === null || obj[prop] === undefined) {
+                delete obj[prop];
+            }
+        }
+        return obj;
+    }
 }
