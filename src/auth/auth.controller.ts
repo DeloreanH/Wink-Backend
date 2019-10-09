@@ -1,9 +1,9 @@
-import { Controller, HttpStatus, Post, Res, HttpException, UseInterceptors } from '@nestjs/common';
+import { Controller, HttpStatus, Post, Res, HttpException, UseInterceptors, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from '../user/interfaces/user.interface';
-import { AuthInterceptor } from './auth.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { Payload, authResponse } from 'src/common/interfaces/common.interface';
-import { servDecoded } from './auth-decorators.decorator';
+import { servDecoded } from './decorators/auth-decorators.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -33,5 +33,10 @@ export class AuthController {
         } catch ( error ) {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Get('test')
+    hola(){
+        return 'si funciona';
     }
 }

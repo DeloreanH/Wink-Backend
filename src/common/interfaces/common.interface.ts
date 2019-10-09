@@ -3,7 +3,7 @@ import {User } from '../../user/interfaces/user.interface';
 export interface Payload {
     exp: number;
     iat: number;
-    sub: Sub | any;
+    sub: Sub;
 }
 
 export interface Sub extends User {

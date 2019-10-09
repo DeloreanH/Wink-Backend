@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Log } from './interfaces/auth.interface';
 import { LogDTO } from './dtos/log.dto';
+import { UserDTO } from 'src/user/dtos/users.dto';
 
 @Injectable()
 export class AuthService {
@@ -97,7 +98,7 @@ export class AuthService {
     public async auth(sPayload: Payload): Promise<authResponse> {
         return new Promise( async (resolve, reject) => {
             // parametros para buscar al usuario
-            const toFind = [];
+            const toFind: UserDTO[] = [];
             if (sPayload.sub.email) {
                 toFind.push({email: sPayload.sub.email});
             }
@@ -117,7 +118,7 @@ export class AuthService {
                 reject('no email, phone or username was provide');
             }
             // busqueda del usuario a la base de datos
-            const user = await this.userServ.findUser(toFind);
+            const user = await this.userServ.findByProperties(toFind);
             try {
                 let token;
                 // de no existir el usuario, se crea
@@ -130,7 +131,7 @@ export class AuthService {
                     token = await this.sign();
                  }
                  // log de sesion
-                await this.logger({userId: this.sub.userId, provider: sPayload.sub.provider, token});
+                await this.logger({userId: this.sub._id, provider: sPayload.sub.provider, token});
                  // luego de setear el payload y haber realizado el sign(), se resuelve la promesa
                 resolve({exp: this.exp, token, emptyProfile: this.sub.emptyProfile});
             } catch (error) {

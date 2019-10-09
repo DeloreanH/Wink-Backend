@@ -7,7 +7,8 @@ import { UserModule } from './user/user.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { AuthModule } from './auth/auth.module';
-import { AuthMiddleware } from './auth/auth.middleware';
+import { AuthMiddleware } from './auth/middlewares/auth.middleware';
+import { EmptyProfileMiddleware } from './common/middlewares/empty-profile.middleware';
 
 @Module({
     imports: [
@@ -30,8 +31,7 @@ import { AuthMiddleware } from './auth/auth.middleware';
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
-          .apply(AuthMiddleware)
-          .exclude({path: 'auth/authenticate', method: RequestMethod.ALL})
-          .forRoutes({ path: 'user', method: RequestMethod.ALL });
+          .apply(AuthMiddleware, EmptyProfileMiddleware)
+          .forRoutes({ path: '*', method: RequestMethod.ALL });
       }
 }

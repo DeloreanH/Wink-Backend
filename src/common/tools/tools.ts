@@ -37,4 +37,20 @@ export class Tools {
         }
         return obj;
     }
+
+    public static excludePath(url: string, controllersName: string[]) {
+        const splited = url.split('/');
+        if ( splited[1] === 'api') {
+          const hasMatch = controllersName.find( value => {
+           return value === splited[2];
+          });
+          if (hasMatch) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
 }
