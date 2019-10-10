@@ -1,3 +1,4 @@
+
 /**
  * @description Herramientas para variables
  * @author George Dakhil
@@ -54,3 +55,14 @@ export class Tools {
         }
       }
 }
+
+// no funciona
+export const unless = (path, middleware) => {
+    return (req, res, next) => {
+      if (path === req.path) {
+          return next();
+      } else {
+        return middleware;
+      }
+  };
+};

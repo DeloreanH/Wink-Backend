@@ -1,8 +1,8 @@
 import { Controller, HttpStatus, Post, Res, HttpException, UseInterceptors, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { User } from '../user/interfaces/user.interface';
+import { User } from '../shared/interfaces/user.interface';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { Payload, authResponse } from 'src/common/interfaces/common.interface';
+import { Payload, authResponse } from './interfaces/auth.interface';
 import { servDecoded } from './decorators/auth-decorators.decorator';
 
 @Controller('auth')

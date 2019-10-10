@@ -1,6 +1,5 @@
 import { Injectable, NestMiddleware, HttpException, HttpStatus } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
-import { Tools } from '../tools/tools';
+import { UserService } from '../../shared/services/user.service';
 
 @Injectable()
 export class EmptyProfileMiddleware implements NestMiddleware {
@@ -8,12 +7,8 @@ export class EmptyProfileMiddleware implements NestMiddleware {
   constructor(private readonly userServ: UserService) {}
 
   async use(req: any, res: any, next: () => void) {
-    if (Tools.excludePath((req.baseUrl), ['auth', 'user'])) {
-      next();
-    } else {
       await this.validateEmptyProfile(req.authUser._id);
       next();
-    }
   }
 
   /**

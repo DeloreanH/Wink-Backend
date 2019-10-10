@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { Tools } from '../../common/tools/tools';
+import { Tools } from '../tools/tools';
 
 export const userSchema = new mongoose.Schema({
     firstName: {
