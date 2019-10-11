@@ -2,9 +2,9 @@ import { Module, MiddlewareConsumer, RequestMethod, NestModule } from '@nestjs/c
 import {AuthController} from './auth.controller';
 import { AuthService } from './auth.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { logSchema } from './schemas/log.schema';
-import { AuthMiddleware } from './middlewares/auth.middleware';
-import { SharedModule } from 'src/shared/shared.module';
+import { logSchema } from '../shared/schemas/log.schema';
+import { AuthMiddleware } from '../shared/middlewares/auth.middleware';
+import { SharedModule } from '../shared/shared.module';
 @Module({
     imports: [
       MongooseModule.forFeature([{ name: 'Log', schema: logSchema }]),

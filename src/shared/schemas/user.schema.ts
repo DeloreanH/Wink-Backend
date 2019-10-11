@@ -1,7 +1,7 @@
-import * as mongoose from 'mongoose';
+import { Schema } from 'mongoose';
 import { Tools } from '../tools/tools';
 
-export const userSchema = new mongoose.Schema({
+export const userSchema = new Schema({
     firstName: {
         type: String,
         default: '',

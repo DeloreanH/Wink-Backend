@@ -8,9 +8,5 @@ export const CategorySchema = new Schema({
     created: {
         type: Date,
         default: Date.now,
-    },
-    updated: {
-        type: Date,
-        default: Date.now,
-    },
+    }
 });

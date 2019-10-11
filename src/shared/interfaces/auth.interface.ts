@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import {User } from '../../shared/interfaces/user.interface';
+import {User } from './user.interface';
 
 export interface Log extends Document {
     userId: string;

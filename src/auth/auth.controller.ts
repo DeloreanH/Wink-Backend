@@ -2,8 +2,8 @@ import { Controller, HttpStatus, Post, Res, HttpException, UseInterceptors, Get 
 import { AuthService } from './auth.service';
 import { User } from '../shared/interfaces/user.interface';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { Payload, authResponse } from './interfaces/auth.interface';
-import { servDecoded } from './decorators/auth-decorators.decorator';
+import { Payload, authResponse } from '../shared/interfaces/auth.interface';
+import { servDecoded } from '../shared/decorators/auth-decorators.decorator';
 
 @Controller('auth')
 export class AuthController {

@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 
 export const logSchema = new Schema({
-    userId: {
+    user_id: {
         type: Schema.Types.ObjectId,
         ref: 'User',
     },

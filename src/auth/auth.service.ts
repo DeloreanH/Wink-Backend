@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { sign, verify } from 'jsonwebtoken';
 import { jwtAlgorithm } from '../shared/enums/enums';
-import { Payload, Sub, authResponse } from './interfaces/auth.interface';
+import { Payload, Sub, authResponse } from '../shared/interfaces/auth.interface';
 import { UserService } from '../shared/services/user.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Log } from './interfaces/auth.interface';
-import { LogDTO } from './dtos/log.dto';
-import { UserDTO } from 'src/shared/dtos/users.dto';
+import { Log } from '../shared/interfaces/auth.interface';
+import { LogDTO } from '../shared/dtos/log.dto';
+import { UserDTO } from '../shared/dtos/users.dto';
 
 @Injectable()
 export class AuthService {
