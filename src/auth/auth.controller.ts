@@ -1,13 +1,11 @@
 import { Controller, HttpStatus, Post, Res, HttpException, UseInterceptors, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { User } from '../shared/interfaces/user.interface';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { Payload, authResponse } from '../shared/interfaces/auth.interface';
 import { servDecoded } from '../shared/decorators/auth-decorators.decorator';
+import { authResponse, Payload } from 'src/shared/interfaces/interfaces';
 
 @Controller('auth')
 export class AuthController {
-    private user: User;
 
     constructor( private authServ: AuthService) {}
 

@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { logSchema } from '../shared/schemas/log.schema';
 import { AuthMiddleware } from '../shared/middlewares/auth.middleware';
 import { SharedModule } from '../shared/shared.module';
+import { excludeMwRoutes } from 'src/shared/enums/enums';
 @Module({
     imports: [
       MongooseModule.forFeature([{ name: 'Log', schema: logSchema }]),
@@ -25,7 +26,7 @@ export class AuthModule implements NestModule {
     consumer
     .apply(AuthMiddleware)
     .exclude(
-      { path: '/auth/authenticate', method: RequestMethod.POST },
+      { path: excludeMwRoutes.AUTH_AUTHENTICATE, method: RequestMethod.POST },
     )
     .forRoutes(AuthController);
   }

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from '../interfaces/user.interface';
 import { UserDTO } from '../dtos/users.dto';
+import { User } from '../interfaces/interfaces';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel('User') private userModel: Model<User>){}
+    constructor(@InjectModel('User') private userModel: Model<User>) {}
 
     public async findByProperties(param: UserDTO[]): Promise<User> {
         return await this.userModel.findOne({ $or: param });

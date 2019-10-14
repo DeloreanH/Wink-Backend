@@ -7,12 +7,6 @@ export const sectionSchema = new Schema({
     key: {
         type: Number,
     },
-    position: {
-        type: Number,
-    },
-    custom: {
-        type: String,
-    },
     created: {
         type: Date,
         default: Date.now,
@@ -20,11 +14,11 @@ export const sectionSchema = new Schema({
 });
 
 export const itemSchema = new Schema({
-    userId: {
+    user_id: {
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
-    itemTypeId: {
+    itemType_id: {
         type: Schema.Types.ObjectId,
         ref: 'itemType',
     },
@@ -33,6 +27,9 @@ export const itemSchema = new Schema({
     },
     position: {
         type: Number,
+    },
+    basic: {
+        type: Boolean,
     },
     custom: {
         type: String,
@@ -45,4 +42,3 @@ export const itemSchema = new Schema({
         default: Date.now,
     },
 });
-

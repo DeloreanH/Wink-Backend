@@ -1,6 +1,10 @@
 import { Schema } from 'mongoose';
 
 export const CategorySchema = new Schema({
+    _id: {
+        type: String,
+        unique: true,
+    },
     name: {
         type: String,
         default: '',
@@ -8,5 +12,5 @@ export const CategorySchema = new Schema({
     created: {
         type: Date,
         default: Date.now,
-    }
-});
+    },
+}, { _id: false });

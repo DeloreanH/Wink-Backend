@@ -9,3 +9,13 @@ export enum Gender {
     MALE = 'male',
     FEMALE = 'female',
 }
+
+export enum excludeMwRoutes {
+    // auth routes
+    AUTH_AUTHENTICATE = '/auth/authenticate',
+
+    // user-config routes
+    UCONFIG_CONFIG       = '/user-config/config',
+    UCONFIG_CATEGORIES   = '/user-config/categories',
+    UCONFIG_ITEMTYPES    = '/user-config/itemtypes',
+}
