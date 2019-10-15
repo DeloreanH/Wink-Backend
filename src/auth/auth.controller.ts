@@ -26,15 +26,10 @@ export class AuthController {
             return res.status(HttpStatus.OK).json({
                token: auth.token,
                exp: auth.exp,
-               emptyProfile: auth.emptyProfile,
+               user: auth.user,
             });
         } catch ( error ) {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @Get('test')
-    hola(){
-        return 'si funciona';
     }
 }

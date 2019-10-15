@@ -135,7 +135,7 @@ export class AuthService {
                  // log de sesion
                 await this.logger({userId: this.sub._id, provider: sPayload.sub.provider, token});
                  // luego de setear el payload y haber realizado el sign(), se resuelve la promesa
-                resolve({exp: this.exp, token, emptyProfile: this.sub.emptyProfile});
+                resolve({exp: this.exp, token, user: this.sub, emptyProfile: this.sub.emptyProfile});
             } catch (error) {
                 reject(error);
             }

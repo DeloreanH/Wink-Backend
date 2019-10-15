@@ -75,5 +75,6 @@ export interface ISub extends IUser {
 export interface IAuthResponse {
     token: string;
     exp: number;
-    emptyProfile: boolean;
+    user?: IUser;
+    emptyProfile?: boolean;
 }
