@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { Tools } from '../tools/tools';
 
 export const option = new Schema({
     name: {
@@ -7,13 +8,11 @@ export const option = new Schema({
 });
 
 export const itemTypeSchema = new Schema({
-    _id: {
+    name: {
         type: String,
         unique: true,
-    },
-    category_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'Category',
+        set: Tools.removeSpaces,
+        lowercase: true,
     },
     description: {
         type: String,
@@ -25,9 +24,10 @@ export const itemTypeSchema = new Schema({
         type: String,
     },
     options: [option],
+    category: String,
     repeat: Boolean,
     created: {
         type: Date,
         default: Date.now,
     },
-},  { _id: false });
+});

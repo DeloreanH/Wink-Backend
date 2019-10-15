@@ -15,7 +15,8 @@ export enum excludeMwRoutes {
     AUTH_AUTHENTICATE = '/auth/authenticate',
 
     // user-config routes
-    UCONFIG_CONFIG       = '/user-config/config',
-    UCONFIG_CATEGORIES   = '/user-config/categories',
-    UCONFIG_ITEMTYPES    = '/user-config/itemtypes',
+    UCONFIG_CONFIG              = '/user-config/config',
+    UCONFIG_CATEGORIES          = '/user-config/categories',
+    UCONFIG_CATEGORIES_ITEMS    = '/user-config/categories-items',
+    UCONFIG_ITEMTYPES           = '/user-config/itemtypes',
 }

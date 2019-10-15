@@ -7,10 +7,6 @@ export const sectionSchema = new Schema({
     key: {
         type: Number,
     },
-    created: {
-        type: Date,
-        default: Date.now,
-    },
 });
 
 export const itemSchema = new Schema({
@@ -18,12 +14,10 @@ export const itemSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
-    itemType_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'itemType',
-    },
+    itemtype: String,
     value: {
         type: String,
+        default: '',
     },
     position: {
         type: Number,
@@ -41,4 +35,14 @@ export const itemSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-});
+},  { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false  });
+
+itemSchema.virtual('withtypes', {
+    ref: 'ItemType', // The model to use
+    localField: 'itemtype', // is equal to `localField`
+    foreignField: 'name', // is equal to `foreignField`
+    // If `justOne` is true, 'members' will be a single doc as opposed to
+    // an array. `justOne` is false by default.
+    justOne: false,
+    options: { sort: { name: -1 }, limit: 5 }, // Query options, see http://bit.ly/mongoose-query-options
+  });

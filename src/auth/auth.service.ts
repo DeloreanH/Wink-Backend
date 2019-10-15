@@ -6,18 +6,20 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { LogDTO } from '../shared/dtos/log.dto';
 import { UserDTO } from '../shared/dtos/users.dto';
-import { Sub, Payload, Log, authResponse } from 'src/shared/interfaces/interfaces';
+import { ISub, IPayload, ILog, IAuthResponse } from 'src/shared/interfaces/interfaces';
+import { UserConfigService } from 'src/user-config/user-config.service';
 
 @Injectable()
 export class AuthService {
-    private sub: Sub;
+    private sub: ISub;
     private iat: number;
     private exp: number;
-    private payload: Payload;
+    private payload: IPayload;
 
     constructor(
          private userServ: UserService,
-         @InjectModel('Log') private LogModel: Model<Log>,
+         private userConfigServ: UserConfigService,
+         @InjectModel('Log') private LogModel: Model<ILog>,
          ) {}
 
     /**
@@ -30,14 +32,14 @@ export class AuthService {
      * @returns Promise<Payload>
      * @memberof AuthService
      */
-    public decode(token: string, fromServer = false, algorithm?: string): Promise<Payload> {
+    public decode(token: string, fromServer = false, algorithm?: string): Promise<IPayload> {
         return new Promise<any>(async (resolve, reject) => {
             try {
                 const decoded = await verify(
                     token,
                     fromServer ? process.env.SERVER_SECRET : process.env.SECRET,
                     { algorithms: [algorithm || jwtAlgorithm.HS256]},
-                    ) as Payload;
+                    ) as IPayload;
                 resolve(decoded);
             } catch (error) {
                 reject(error);
@@ -71,7 +73,7 @@ export class AuthService {
      * @returns Promise<Payload>
      * @memberof AuthService
      */
-    public setPayload(payload: Payload): Promise<Payload> {
+    public setPayload(payload: IPayload): Promise<IPayload> {
         return new Promise((resolve, reject) => {
             this.sub = payload.sub;
             this.iat = payload.iat;
@@ -94,7 +96,7 @@ export class AuthService {
      * @returns Promise<authResponse>
      * @memberof AuthService
      */
-    public async auth(sPayload: Payload): Promise<authResponse> {
+    public async auth(sPayload: IPayload): Promise<IAuthResponse> {
         return new Promise( async (resolve, reject) => {
             // parametros para buscar al usuario
             const toFind: UserDTO[] = [];
@@ -123,6 +125,7 @@ export class AuthService {
                 // de no existir el usuario, se crea
                 if (!user) {
                     const newUser = await this.userServ.createUSer(sPayload.sub);
+                    this.userConfigServ.setBasicItemsToUser(newUser._id);
                     this.setPayload({sub: newUser, iat: sPayload.iat, exp: sPayload.exp});
                     token = await this.sign();
                  } else {
@@ -147,7 +150,7 @@ export class AuthService {
      * @returns Promise<Log>
      * @memberof AuthService
      */
-    private async logger(log: LogDTO): Promise<Log> {
+    private async logger(log: LogDTO): Promise<ILog> {
         const createdLog = new this.LogModel(log);
         return await createdLog.save();
     }
@@ -159,7 +162,7 @@ export class AuthService {
      * @returns number
      * @memberof AuthService
      */
-    public getSub(): Sub {
+    public getSub(): ISub {
         return this.sub;
     }
 

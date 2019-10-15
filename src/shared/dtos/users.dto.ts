@@ -1,9 +1,10 @@
-import { Phone } from '../interfaces/user.interface';
+import { IPhone } from '../interfaces/interfaces';
+
 export class UserDTO {
     firstName?: string;
     lastName?: string;
     email?: string;
-    phone?: Phone;
+    phone?: IPhone;
     birthday?: string;
     gender?: string;
     avatarUrl?: string;

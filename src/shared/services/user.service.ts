@@ -2,21 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDTO } from '../dtos/users.dto';
-import { User } from '../interfaces/interfaces';
+import { IUser } from '../interfaces/interfaces';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel('User') private userModel: Model<User>) {}
+    constructor(@InjectModel('User') private userModel: Model<IUser>) {}
 
-    public async findByProperties(param: UserDTO[]): Promise<User> {
+    public async findByProperties(param: UserDTO[]): Promise<IUser> {
         return await this.userModel.findOne({ $or: param });
     }
 
-    public async findById(id: string): Promise<User> {
+    public async findById(id: string): Promise<IUser> {
         return await this.userModel.findOne({_id: id});
     }
 
-    public async createUSer(user: UserDTO ): Promise<User> {
+    public async createUSer(user: UserDTO ): Promise<IUser> {
         const createdUser = new this.userModel(user);
         return await createdUser.save();
     }

@@ -9,6 +9,7 @@ import { UserService } from './services/user.service';
       ],
       exports: [
         UserService,
+        MongooseModule,
       ],
       controllers: [
       ],

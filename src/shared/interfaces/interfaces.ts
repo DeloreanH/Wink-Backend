@@ -1,12 +1,13 @@
 import { Document } from 'mongoose';
 
-export interface Category extends Document {
+export interface ICategory extends Document {
     _id: string;
     name: number;
+    itemType?: IItemType;
     created: Date;
 }
 
-export interface itemType extends Document {
+export interface IItemType extends Document {
     _id: string;
     description: string;
     index: number;
@@ -16,12 +17,29 @@ export interface itemType extends Document {
     created: Date;
 }
 
-export interface User extends Document {
-    _id?: string;
+export interface IItem extends Document {
+    _id: string;
+    user_id: string;
+    itemtype: string;
+    value?: string;
+    position: number;
+    basic: boolean;
+    custom: string;
+    section: ISection;
+    created: Date;
+}
+export interface ISection extends Document {
+    _id: string;
+    name: string;
+    key: number;
+}
+
+export interface IUser extends Document {
+    _id: string;
     firstName?: string;
     lastName?: string;
     email?: string;
-    phone?: Phone;
+    phone?: IPhone;
     birthday?: string;
     gender?: string;
     avatarUrl?: string;
@@ -32,31 +50,30 @@ export interface User extends Document {
     created?: Date;
     updated?: Date;
 }
-export interface Phone {
+export interface IPhone {
     phoneCode?: number;
     phoneNumber?: number;
 }
 
-export interface Log extends Document {
+export interface ILog extends Document {
+    _id: string;
     userId: string;
     created: Date;
     updated: Date;
 }
 
-export interface Payload {
+export interface IPayload {
     exp: number;
     iat: number;
-    sub: Sub;
+    sub: ISub;
 }
 
-export interface Sub extends User {
+export interface ISub extends IUser {
     provider?: string;
 }
 
-export interface authResponse {
+export interface IAuthResponse {
     token: string;
     exp: number;
     emptyProfile: boolean;
 }
-
-
