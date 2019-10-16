@@ -19,4 +19,5 @@ export enum excludeMwRoutes {
     UCONFIG_CATEGORIES          = '/user-config/categories',
     UCONFIG_CATEGORIES_ITEMS    = '/user-config/categories-items',
     UCONFIG_ITEMTYPES           = '/user-config/itemtypes',
+    UCONFIG_USERITEMS           = '/user-config/items/user/:id',
 }

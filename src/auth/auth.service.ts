@@ -6,8 +6,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { LogDTO } from '../shared/dtos/log.dto';
 import { UserDTO } from '../shared/dtos/users.dto';
-import { ISub, IPayload, ILog, IAuthResponse } from 'src/shared/interfaces/interfaces';
-import { UserConfigService } from 'src/user-config/user-config.service';
+import { ISub, IPayload, ILog, IAuthResponse } from '../shared/interfaces/interfaces';
+import { UserConfigService } from '../user-config/user-config.service';
 
 @Injectable()
 export class AuthService {

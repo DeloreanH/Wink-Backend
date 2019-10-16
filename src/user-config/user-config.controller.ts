@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { UserConfigService } from './user-config.service';
-import { ICategory, IItemType } from 'src/shared/interfaces/interfaces';
+import { ICategory, IItemType, IItem } from '../shared/interfaces/interfaces';
 
 @Controller('user-config')
 export class UserConfigController {
@@ -19,4 +19,9 @@ export class UserConfigController {
     getItemTypes(): Promise<IItemType[]> {
         return this.uconfigServ.getItemTypes();
     }
+    @Get('items/user/:id')
+    findOne(@Param('id') id): Promise<IItem[]>  {
+        return this.uconfigServ.getItemsByUserId(id);
+    }
+
 }

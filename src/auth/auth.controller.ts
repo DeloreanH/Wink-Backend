@@ -2,7 +2,7 @@ import { Controller, HttpStatus, Post, Res, HttpException, UseInterceptors, Get 
 import { AuthService } from './auth.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { servDecoded } from '../shared/decorators/auth-decorators.decorator';
-import { IAuthResponse, IPayload } from 'src/shared/interfaces/interfaces';
+import { IAuthResponse, IPayload } from '../shared/interfaces/interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -20,7 +20,7 @@ export class AuthController {
      */
     @Post('authenticate')
     @UseInterceptors(AuthInterceptor)
-    public async authEncode(@Res() res, @servDecoded() sPayload: IPayload) {
+    async authEncode(@Res() res, @servDecoded() sPayload: IPayload) {
         try {
             const auth = await this.authServ.auth(sPayload) as IAuthResponse;
             return res.status(HttpStatus.OK).json({

@@ -1,5 +1,5 @@
 import { Injectable, NestMiddleware, HttpException, HttpStatus } from '@nestjs/common';
-import { UserService } from 'src/shared/services/user.service';
+import { UserService } from '../services/user.service';
 import { verify } from 'jsonwebtoken';
 import { IUser, IPayload } from '../interfaces/interfaces';
 
@@ -26,7 +26,7 @@ export class AuthMiddleware implements NestMiddleware {
         if (!auth) {
           throw new HttpException('token not found', HttpStatus.UNAUTHORIZED);
         }
-        if (auth.split(' ')[0] !== 'Bearer') {
+        if (auth.split(' ')[0].toLowerCase()  !== 'bearer') {
             throw new HttpException('token must be prefixed with Bearer, malformated', HttpStatus.UNAUTHORIZED);
         }
         const token   = auth.split(' ')[1];

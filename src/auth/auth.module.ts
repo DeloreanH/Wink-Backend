@@ -5,8 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { logSchema } from '../shared/schemas/log.schema';
 import { AuthMiddleware } from '../shared/middlewares/auth.middleware';
 import { SharedModule } from '../shared/shared.module';
-import { excludeMwRoutes } from 'src/shared/enums/enums';
-import { UserConfigModule } from 'src/user-config/user-config.module';
+import { excludeMwRoutes } from '../shared/enums/enums';
+import { UserConfigModule } from '../user-config/user-config.module';
 @Module({
     imports: [
       MongooseModule.forFeature([{ name: 'Log', schema: logSchema }]),
