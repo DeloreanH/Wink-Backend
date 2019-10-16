@@ -45,7 +45,7 @@ const itemTypesArray = [
     {
         name: 'celular',
         description: 'Celular',
-        icono: 'fas mobile-alt',
+        icon: 'fas mobile-alt',
         index: '6',
         category: 'contacto',
         repeat: true,
@@ -53,7 +53,7 @@ const itemTypesArray = [
     {
         name: 'correo',
         description: 'Correo',
-        icono: 'fas envelope',
+        icon: 'fas envelope',
         index: '1',
         category: 'contacto',
         repeat: true,
@@ -61,7 +61,7 @@ const itemTypesArray = [
     {
         name: 'sitioweb',
         description: 'Sitio Web',
-        icono: 'fas at',
+        icon: 'fas at',
         index: '3',
         category: 'contacto',
         repeat: true,
@@ -69,7 +69,7 @@ const itemTypesArray = [
     {
         name: 'telefono',
         description: 'Telefono',
-        icono: 'fas phone',
+        icon: 'fas phone',
         index: '6',
         category: 'contacto',
         repeat: true,
@@ -77,7 +77,7 @@ const itemTypesArray = [
     {
         name: 'niveldeinstruccion',
         description: 'Nivel de instrucción',
-        icono: 'fas bookmark',
+        icon: 'fas bookmark',
         index: '4',
         category: 'educacion',
         repeat: true,
@@ -91,7 +91,7 @@ const itemTypesArray = [
     {
         name: 'profesion',
         description: 'Profesión',
-        icono: 'fas graduation-cap',
+        icon: 'fas graduation-cap',
         index: '0',
         category: 'educacion',
         repeat: true,
@@ -99,7 +99,7 @@ const itemTypesArray = [
     {
         name: 'universidad',
         description: 'Universidad',
-        icono: 'fas university',
+        icon: 'fas university',
         index: '0',
         category: 'educacion',
         repeat: true,
@@ -107,7 +107,7 @@ const itemTypesArray = [
     {
         name: 'linkedin',
         description: 'LinkedIn',
-        icono: 'fab linkedin',
+        icon: 'fab linkedin',
         index: '0',
         category: 'laboral',
         repeat: true,
@@ -115,7 +115,7 @@ const itemTypesArray = [
     {
         name: 'ocupacion',
         description: 'Ocupación',
-        icono: 'fas briefcase',
+        icon: 'fas briefcase',
         index: '0',
         category: 'laboral',
         repeat: false,
@@ -123,7 +123,7 @@ const itemTypesArray = [
     {
         name: 'trabajo',
         description: 'Trabajo',
-        icono: 'fas city',
+        icon: 'fas city',
         index: '2',
         category: 'laboral',
         repeat: true,
@@ -131,7 +131,7 @@ const itemTypesArray = [
     {
         name: 'apodo',
         description: 'Apodo',
-        icono: 'fas user',
+        icon: 'fas user',
         index: '0',
         category: 'personal',
         repeat: false,
@@ -139,7 +139,7 @@ const itemTypesArray = [
     {
         name: 'direccion',
         description: 'Dirección',
-        icono: 'fas map-marker-alt',
+        icon: 'fas map-marker-alt',
         index: '0',
         category: 'personal',
         repeat: false,
@@ -147,7 +147,7 @@ const itemTypesArray = [
     {
         name: 'estadocivil',
         description: 'Estado civil',
-        icono: 'fas heart',
+        icon: 'fas heart',
         index: '4',
         repeat: false,
         category: 'personal',
@@ -165,7 +165,7 @@ const itemTypesArray = [
     {
         name: 'fechadenacimiento',
         description: 'Fecha de nacimiento',
-        icono: 'fas calendar-alt',
+        icon: 'fas calendar-alt',
         index: '5',
         category: 'personal',
         repeat: false,
@@ -173,7 +173,7 @@ const itemTypesArray = [
     {
         name: 'hobbies',
         description: 'Hobbies',
-        icono: 'fas star',
+        icon: 'fas star',
         index: '8',
         category: 'personal',
         repeat: false,
@@ -181,7 +181,7 @@ const itemTypesArray = [
     {
         name: 'intereses',
         description: 'Intereses',
-        icono: 'fas thumbs-up',
+        icon: 'fas thumbs-up',
         index: '8',
         category: 'personal',
         repeat: true,
@@ -189,7 +189,7 @@ const itemTypesArray = [
     {
         name: 'facebook',
         description: 'Facebook',
-        icono: 'fab facebook-square',
+        icon: 'fab facebook-square',
         index: '0',
         category: 'redessociales',
         repeat: true,
@@ -197,7 +197,7 @@ const itemTypesArray = [
     {
         name: 'instagram',
         description: 'Instagram',
-        icono: 'fab instagram',
+        icon: 'fab instagram',
         index: '0',
         category: 'redessociales',
         repeat: true,
@@ -205,7 +205,7 @@ const itemTypesArray = [
     {
         name: 'medium',
         description: 'Medium',
-        icono: 'fab medium',
+        icon: 'fab medium',
         index: '0',
         category: 'redessociales',
         repeat: true,
@@ -213,7 +213,7 @@ const itemTypesArray = [
     {
         name: 'pinterest',
         description: 'Pinterest',
-        icono: 'fab pinterest',
+        icon: 'fab pinterest',
         index: '0',
         category: 'redessociales',
         repeat: true,
@@ -221,7 +221,7 @@ const itemTypesArray = [
     {
         name: 'reddit',
         description: 'Reddit',
-        icono: 'fab reddit',
+        icon: 'fab reddit',
         index: '0',
         category: 'redessociales',
         repeat: true,
@@ -229,7 +229,7 @@ const itemTypesArray = [
     {
         name: 'snapchat',
         description: 'Snapchat',
-        icono: 'fab snapchat',
+        icon: 'fab snapchat',
         index: '0',
         category: 'redessociales',
         repeat: true,
@@ -237,7 +237,7 @@ const itemTypesArray = [
     {
         name: 'tumblr',
         description: 'Tumblr',
-        icono: 'fab tumblr',
+        icon: 'fab tumblr',
         index: '0',
         category: 'redessociales',
         repeat: true,
@@ -245,14 +245,14 @@ const itemTypesArray = [
     {
         name: 'twitter',
         description: 'Twitter',
-        icono: 'fab twitter',
+        icon: 'fab twitter',
         index: '0',
         category: 'redessociales',
         repeat: true,
     }, {
         name: 'youtube',
         description: 'YouTube',
-        icono: 'fab youtube',
+        icon: 'fab youtube',
         index: '0',
         category: 'redessociales',
         repeat: true,
@@ -260,7 +260,7 @@ const itemTypesArray = [
     {
         name: 'line',
         description: 'Line',
-        icono: 'fab line',
+        icon: 'fab line',
         index: '0',
         category: 'mensajeria',
         repeat: true,
@@ -268,7 +268,7 @@ const itemTypesArray = [
     {
         name: 'skype',
         description: 'Skype',
-        icono: 'fab skype',
+        icon: 'fab skype',
         index: '0',
         category: 'mensajeria',
         repeat: true,
@@ -276,7 +276,7 @@ const itemTypesArray = [
     {
         name: 'telegram',
         description: 'Telegram',
-        icono: 'fab telegram',
+        icon: 'fab telegram',
         index: '6',
         category: 'mensajeria',
         repeat: true,
@@ -284,7 +284,7 @@ const itemTypesArray = [
     {
         name: 'wechat',
         description: 'Wechat',
-        icono: 'fab weixin',
+        icon: 'fab weixin',
         index: '0',
         category: 'mensajeria',
         repeat: true,
@@ -292,7 +292,7 @@ const itemTypesArray = [
     {
         name: 'whatsapp',
         description: 'WhatsApp',
-        icono: 'fab whatsapp',
+        icon: 'fab whatsapp',
         index: '6',
         category: 'mensajeria',
         repeat: true,
@@ -300,7 +300,7 @@ const itemTypesArray = [
     {
         name: 'personalizado',
         description: 'Personalizado',
-        icono: 'fas asterisk',
+        icon: 'fas asterisk',
         index: '7',
         category: 'otros',
         repeat: true,
