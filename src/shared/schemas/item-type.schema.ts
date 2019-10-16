@@ -22,6 +22,7 @@ export const itemTypeSchema = new Schema({
     },
     icon: {
         type: String,
+        default: 'far smile-wink',
     },
     options: [option],
     category: String,

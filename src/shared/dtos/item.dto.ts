@@ -1,11 +1,11 @@
 export class itemDTO {
-    user_id: string;
-    itemtype: string;
-    value?: string;
-    position: number;
-    basic: boolean;
-    custom: string;
-    section: {
+    readonly user_id: string;
+    readonly itemtype: string;
+    readonly value?: string;
+    readonly position: number;
+    readonly basic: boolean;
+    readonly custom: string;
+    readonly section: {
         name: string;
         key: number;
     };

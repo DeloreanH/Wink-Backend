@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model} from 'mongoose';
 import { ICategory, IItemType, IItem } from '../shared/interfaces/interfaces';
 import { itemDTO } from '../shared/dtos/item.dto';
+import { ObjectId } from 'bson';
 
 @Injectable()
 export class UserConfigService {
@@ -160,5 +161,11 @@ export class UserConfigService {
     }
     public async getItemsByUserId(id: string): Promise<IItem[]> {
         return await this.itemModel.find({user_id: id});
+    }
+    public async deleteManyItemsToUser(id: string) {
+        return await this.itemModel.deleteMany({user_id: id});
+    }
+    public async createManyItemsToUser(items: itemDTO[]) {
+        return await this.itemModel.insertMany(items);
     }
 }

@@ -12,7 +12,7 @@ export interface IItemType extends Document {
     description: string;
     index: number;
     repeat: boolean;
-    category_id: string;
+    category: string;
     options: Array<{ _id: string, name: string}>;
     created: Date;
 }
@@ -57,7 +57,7 @@ export interface IPhone {
 
 export interface ILog extends Document {
     _id: string;
-    userId: string;
+    user_id: string;
     created: Date;
     updated: Date;
 }

@@ -1,6 +1,8 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, HttpException } from '@nestjs/common';
 import { UserConfigService } from './user-config.service';
 import { ICategory, IItemType, IItem } from '../shared/interfaces/interfaces';
+import { AuthUser } from '../shared/decorators/auth-decorators.decorator';
+import { itemDTO } from 'src/shared/dtos/item.dto';
 
 @Controller('user-config')
 export class UserConfigController {
@@ -20,8 +22,14 @@ export class UserConfigController {
         return this.uconfigServ.getItemTypes();
     }
     @Get('items/user/:id')
-    findOne(@Param('id') id): Promise<IItem[]>  {
+    getUserItems(@Param('id') id): Promise<IItem[]>  {
         return this.uconfigServ.getItemsByUserId(id);
+    }
+
+    @Post('items/user/create')
+    async createItemsForUser(@AuthUser('_id') id, @Body() items: itemDTO[] ): Promise<IItem[]>  {
+        await this.uconfigServ.deleteManyItemsToUser(id);
+        return await this.uconfigServ.createManyItemsToUser(items);
     }
 
 }
