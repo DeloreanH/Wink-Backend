@@ -1,12 +1,14 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus } from '@nestjs/common';
 import { UserConfigService } from './user-config.service';
 import { ICategory, IItemType, IItem } from '../shared/interfaces/interfaces';
 import { AuthUser } from '../shared/decorators/auth-decorators.decorator';
 import { itemDTO } from 'src/shared/dtos/item.dto';
+import { UserDTO } from 'src/shared/dtos/users.dto';
+import { UserService } from 'src/shared/services/user.service';
 
 @Controller('user-config')
 export class UserConfigController {
-    constructor(private uconfigServ: UserConfigService) {}
+    constructor(private uconfigServ: UserConfigService, private userServ: UserService) {}
 
     @Get('categories')
     getCategories(): Promise<ICategory[]> {
@@ -31,5 +33,16 @@ export class UserConfigController {
         await this.uconfigServ.deleteManyItemsToUser(id);
         return await this.uconfigServ.createManyItemsToUser(items);
     }
-
+    @Put('user/update/basic-data/:id')
+    async update(@Param('id') id: string, @Body() user: UserDTO) {
+        console.log('este es el id', id);
+        console.log('esta es la data', user);
+        /*
+       try {
+        return await this.userServ.updateUserData(id, user);
+       } catch (error) {
+        throw new HttpException(error, HttpStatus.BAD_REQUEST);
+       }
+       */
+    }
 }

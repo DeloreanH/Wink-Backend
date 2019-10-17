@@ -20,4 +20,13 @@ export class UserService {
         const createdUser = new this.userModel(user);
         return await createdUser.save();
     }
+    public async updateUserData(id: string , user: UserDTO ): Promise<IUser> {
+        return new Promise( async (resolve, reject) => {
+            const updated = await this.userModel.findByIdAndUpdate(id, user);
+            if (!updated) {
+               reject('user not found');
+            }
+            resolve(updated);
+        });
+    }
 }

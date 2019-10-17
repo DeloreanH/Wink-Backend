@@ -34,6 +34,7 @@ export class UserConfigModule {
       { path: excludeMwRoutes.UCONFIG_CATEGORIES_ITEMS, method: RequestMethod.ALL },
       { path: excludeMwRoutes.UCONFIG_USERITEMS, method: RequestMethod.ALL },
       { path: excludeMwRoutes.UCONFIG_ADD_MANY_ITEMS_TO_USER, method: RequestMethod.ALL },
+      { path: excludeMwRoutes.UCONFIG_UPDATE_USER_BASIC_DATA, method: RequestMethod.ALL },
     )
     .forRoutes(UserConfigController);
   }

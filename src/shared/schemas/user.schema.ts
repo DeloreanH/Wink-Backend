@@ -21,16 +21,15 @@ export const userSchema = new Schema({
         type: {
             phoneNumber: {
                 type: Number,
-                default: null,
                 sparse: true,
             },
             phoneCode: {
                 type: Number,
-                default: null,
                 sparse: true,
             },
     },
     unique: true,
+    default: null,
     sparse: true,
     },
     birthday: {
@@ -60,6 +59,11 @@ export const userSchema = new Schema({
         set: Tools.removeSpaces,
         lowercase: true,
         sparse: true,
+    },
+    visibility: {
+        enum : ['personal', 'profesional', 'todos', 'general'],
+        type: String,
+        default: 'todos',
     },
     created: {
         type: Date,
