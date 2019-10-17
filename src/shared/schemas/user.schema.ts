@@ -21,10 +21,12 @@ export const userSchema = new Schema({
         type: {
             phoneNumber: {
                 type: Number,
+                default: null,
                 sparse: true,
             },
             phoneCode: {
                 type: Number,
+                default: null,
                 sparse: true,
             },
     },
@@ -36,6 +38,7 @@ export const userSchema = new Schema({
     },
     gender: {
         type: String,
+        default: null,
     },
     avatarUrl: {
             type: String ,
