@@ -55,11 +55,14 @@ export interface IPhone {
     phoneNumber?: number;
 }
 
-export interface ILog extends Document {
+export interface ISesion extends Document {
     _id: string;
     user_id: string;
+    serverToken: string;
+    token: string;
+    blacklist: boolean;
+    expireAt: Date;
     created: Date;
-    updated: Date;
 }
 
 export interface IPayload {

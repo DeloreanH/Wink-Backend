@@ -2,11 +2,12 @@ import { Injectable, NestMiddleware, HttpException, HttpStatus } from '@nestjs/c
 import { UserService } from '../services/user.service';
 import { verify } from 'jsonwebtoken';
 import { IUser, IPayload } from '../interfaces/interfaces';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
 
-  constructor(private readonly userServ: UserService) {}
+  constructor(private readonly userServ: UserService, private readonly authServ: AuthService) {}
 
   async use(req: any, res: any, next: () => void) {
       req.authUser = await this.validateToken(req.headers.authorization);
@@ -31,6 +32,7 @@ export class AuthMiddleware implements NestMiddleware {
         }
         const token   = auth.split(' ')[1];
         const decoded = await verify(token, process.env.SECRET) as IPayload;
+        await this.authServ.checkBlackList(token);
         const user    = await this.userServ.findById(decoded.sub._id);
         if (!user) {
           throw new HttpException('user not found', HttpStatus.UNAUTHORIZED);

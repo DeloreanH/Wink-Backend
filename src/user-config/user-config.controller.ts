@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, HttpException } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body } from '@nestjs/common';
 import { UserConfigService } from './user-config.service';
 import { ICategory, IItemType, IItem } from '../shared/interfaces/interfaces';
 import { AuthUser } from '../shared/decorators/auth-decorators.decorator';

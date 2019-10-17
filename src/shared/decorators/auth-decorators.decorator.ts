@@ -12,12 +12,12 @@ export const AuthUser = createParamDecorator((param, req) => {
   });
 
 /**
- * @description toma la propiedad servDecoded del objeto req (expressjs) y se hace la transformacion
+ * @description toma la propiedad servToken del objeto req (expressjs) y se hace la transformacion
  *  a un decorator @servDecoded('param')
  * @author Harry Perez
  * @date 2019-10-02
  * @returns {authUser}
  */
-export const servDecoded = createParamDecorator((param, req) => {
-  return param ? req.servDecoded[param] : req.servDecoded;
+export const servToken = createParamDecorator((param, req) => {
+  return param ? req.servToken[param] : req.servToken;
   });

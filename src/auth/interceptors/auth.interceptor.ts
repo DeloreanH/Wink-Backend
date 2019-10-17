@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor, HttpException, HttpStatus } from '@nestjs/common';
-import { AuthService } from '../auth.service';
 import { IPayload } from '../../shared/interfaces/interfaces';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements NestInterceptor {
@@ -22,7 +22,11 @@ export class AuthInterceptor implements NestInterceptor {
        throw new HttpException('no token was provide', HttpStatus.BAD_REQUEST);
     } else {
       try {
-        request.servDecoded = await this.authServ.decode(token, true) as IPayload;
+        const servDecoded = await this.authServ.decode(token, true) as IPayload;
+        request.servToken = {
+          sPayload: servDecoded,
+          sToken: token,
+        };
       } catch (error) {
         throw new HttpException(error, HttpStatus.BAD_REQUEST);
       }

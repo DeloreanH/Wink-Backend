@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { sign, verify } from 'jsonwebtoken';
-import { jwtAlgorithm } from '../shared/enums/enums';
-import { UserService } from '../shared/services/user.service';
+import { jwtAlgorithm } from '../enums/enums';
+import { UserService } from './user.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { LogDTO } from '../shared/dtos/log.dto';
-import { UserDTO } from '../shared/dtos/users.dto';
-import { ISub, IPayload, ILog, IAuthResponse } from '../shared/interfaces/interfaces';
-import { UserConfigService } from '../user-config/user-config.service';
+import { sesionDTO } from '../dtos/sesion.dto';
+import { UserDTO } from '../dtos/users.dto';
+import { ISub, IPayload, ISesion, IAuthResponse, IItem } from '../interfaces/interfaces';
+import * as moment from 'moment';
+import { itemDTO } from '../../shared/dtos/item.dto';
 
 @Injectable()
 export class AuthService {
@@ -18,8 +19,8 @@ export class AuthService {
 
     constructor(
          private userServ: UserService,
-         private userConfigServ: UserConfigService,
-         @InjectModel('Log') private LogModel: Model<ILog>,
+         @InjectModel('Sesion') private sesionModel: Model<ISesion>,
+         @InjectModel('Item') private itemModel: Model<IItem>,
          ) {}
 
     /**
@@ -96,7 +97,7 @@ export class AuthService {
      * @returns Promise<authResponse>
      * @memberof AuthService
      */
-    public async auth(sPayload: IPayload): Promise<IAuthResponse> {
+    public async auth( sToken: string, sPayload: IPayload): Promise<IAuthResponse> {
         return new Promise( async (resolve, reject) => {
             // parametros para buscar al usuario
             const toFind: UserDTO[] = [];
@@ -125,21 +126,181 @@ export class AuthService {
                 // de no existir el usuario, se crea
                 if (!user) {
                     const newUser = await this.userServ.createUSer(sPayload.sub);
-                    this.userConfigServ.setBasicItemsToUser(newUser._id);
                     this.setPayload({sub: newUser, iat: sPayload.iat, exp: sPayload.exp});
                     token = await this.sign();
+                    this.setBasicItemsToUser(newUser._id);
                  } else {
                     this.setPayload({sub: user, iat: sPayload.iat, exp: sPayload.exp});
                     token = await this.sign();
                  }
-                 // log de sesion
-                await this.logger({userId: this.sub._id, provider: sPayload.sub.provider, token});
+                await this.sesionLogger({user_id: this.sub._id, token, serverToken: sToken, expireAt: moment.unix(sPayload.exp) });
                  // luego de setear el payload y haber realizado el sign(), se resuelve la promesa
                 resolve({exp: this.exp, token, user: this.sub, emptyProfile: this.sub.emptyProfile});
             } catch (error) {
                 reject(error);
             }
         });
+    }
+
+    public async checkBlackList( token: string ): Promise<string> {
+        return new Promise( async (resolve, reject) => {
+            const sesionLog = await this.sesionModel.findOne({ token }) as ISesion;
+            if (sesionLog) {
+                if (sesionLog.blacklist) {
+                    reject('token is blacklisted');
+                } else {
+                    resolve('token is okey');
+                }
+            } else {
+                reject('token not found');
+            }
+        });
+    }
+    public async logout( token: string ): Promise<ISesion> {
+        return new Promise( async (resolve, reject) => {
+            const blacklisted = await this.sesionModel.findOneAndUpdate({ token }, { blacklist: true });
+            if (!blacklisted) {
+               reject('token not found');
+            }
+            resolve(blacklisted);
+        });
+    }
+    public async setBasicItemsToUser( userId: string ): Promise<any[]> {
+        const basicItems: itemDTO[] = [
+            {
+                user_id: userId,
+                itemtype: 'fechadenacimiento',
+                position: 1,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'Publico',
+                    key: 0,
+                },
+            },
+            {
+                user_id: userId,
+                itemtype: 'intereses',
+                position: 2,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'Publico',
+                    key: 0,
+                },
+            },
+            {
+                user_id: userId,
+                itemtype: 'whatsapp',
+                position: 1,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'General',
+                    key: 1,
+                },
+            },
+            {
+                user_id: userId,
+                itemtype: 'facebook',
+                position: 2,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'General',
+                    key: 1,
+                },
+            },
+            {
+                user_id: userId,
+                itemtype: 'correo',
+                position: 3,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'General',
+                    key: 1,
+                },
+            },
+            {
+                user_id: userId,
+                itemtype: 'instagram',
+                position: 4,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'General',
+                    key: 1,
+                },
+            },
+            {
+                user_id: userId,
+                itemtype: 'hobbies',
+                position: 1,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'Personal',
+                    key: 2,
+                },
+            },
+            {
+                user_id: userId,
+                itemtype: 'celular',
+                position: 2,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'Personal',
+                    key: 2,
+                },
+            },
+            {
+                user_id: userId,
+                itemtype: 'direccion',
+                position: 3,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'Personal',
+                    key: 2,
+                },
+            },
+            {
+                user_id: userId,
+                itemtype: 'sitioweb',
+                position: 4,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'Personal',
+                    key: 2,
+                },
+            },
+            {
+                user_id: userId,
+                itemtype: 'niveldeinstruccion',
+                position: 1,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'Profesional',
+                    key: 3,
+                },
+            },
+            {
+                user_id: userId,
+                itemtype: 'ocupacion',
+                position: 2,
+                basic: true,
+                custom: null,
+                section: {
+                    name: 'Profesional',
+                    key: 3,
+                },
+            },
+    ];
+        return await  this.itemModel.insertMany(basicItems);
     }
 
     /**
@@ -150,8 +311,8 @@ export class AuthService {
      * @returns Promise<Log>
      * @memberof AuthService
      */
-    private async logger(log: LogDTO): Promise<ILog> {
-        const createdLog = new this.LogModel(log);
+    private async sesionLogger(sesion: sesionDTO): Promise<ISesion> {
+        const createdLog = new this.sesionModel(sesion);
         return await createdLog.save();
     }
 

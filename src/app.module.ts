@@ -10,7 +10,14 @@ import { UserConfigModule } from './user-config/user-config.module';
 
 @Module({
     imports: [
-        MongooseModule.forRoot(process.env.MONGO_HOST, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }),
+        MongooseModule.forRoot(
+            process.env.MONGO_HOST,
+            {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                useCreateIndex: true,
+                useFindAndModify: false,
+            }),
         AuthModule,
         SharedModule,
         UserConfigModule,
