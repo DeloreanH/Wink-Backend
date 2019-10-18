@@ -1,10 +1,12 @@
-import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { UserConfigService } from './user-config.service';
 import { ICategory, IItemType, IItem } from '../shared/interfaces/interfaces';
 import { AuthUser } from '../shared/decorators/auth-decorators.decorator';
 import { itemDTO } from 'src/shared/dtos/item.dto';
 import { UserDTO } from 'src/shared/dtos/users.dto';
 import { UserService } from 'src/shared/services/user.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { setMulterImageOptions } from 'src/shared/multer.config';
 
 @Controller('user-config')
 export class UserConfigController {
@@ -44,5 +46,11 @@ export class UserConfigController {
         throw new HttpException(error, HttpStatus.BAD_REQUEST);
        }
        */
+    }
+
+    @Post('user/avatar')
+    @UseInterceptors(FileInterceptor('avatar', setMulterImageOptions(5242880, './uploads/avatar')))
+    async avatarUpload(@UploadedFile() file ): Promise<any>  {
+        console.log('este es el archivo', file);
     }
 }
