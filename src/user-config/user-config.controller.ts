@@ -1,12 +1,13 @@
-import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus, UseInterceptors, UploadedFile, Res, Req } from '@nestjs/common';
 import { UserConfigService } from './user-config.service';
-import { ICategory, IItemType, IItem } from '../shared/interfaces/interfaces';
+import { ICategory, IItemType, IItem, IUser } from '../shared/interfaces/interfaces';
 import { AuthUser } from '../shared/decorators/auth-decorators.decorator';
 import { itemDTO } from 'src/shared/dtos/item.dto';
 import { UserDTO } from 'src/shared/dtos/users.dto';
 import { UserService } from 'src/shared/services/user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { setMulterImageOptions } from 'src/shared/multer.config';
+import { unlinkSync } from 'fs';
 
 @Controller('user-config')
 export class UserConfigController {
@@ -48,9 +49,36 @@ export class UserConfigController {
        */
     }
 
-    @Post('user/avatar')
-    @UseInterceptors(FileInterceptor('avatar', setMulterImageOptions(5242880, './uploads/avatar')))
-    async avatarUpload(@UploadedFile() file ): Promise<any>  {
-        console.log('este es el archivo', file);
+    @Post('user/upload/avatar')
+    @UseInterceptors(FileInterceptor('avatar', setMulterImageOptions(5242880, './uploads/avatar', 'jpg|jpeg|png|gif')))
+    async avatarUpload(@UploadedFile() file , @AuthUser() authUser: IUser, @Req() req ): Promise<any>  {
+        try {
+            const user = await this.userServ.findById(authUser._id);
+            if (!user) {
+                unlinkSync(file.path);
+                throw new HttpException('no user was found, new file was deleted', HttpStatus.NOT_FOUND);
+            } else {
+                if (user.avatarUrl !== '') {
+                    unlinkSync('./uploads/avatar/' + user.avatarUrl);
+                }
+                return await user.update({avatarUrl: file.filename});
+            }
+        } catch (error) {
+            unlinkSync(file.path);
+            throw new HttpException(error, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Get('user/avatar/:imagepath')
+    seeUploadedFile(@Param('imagepath') image, @Res() res) {
+        return res.sendFile(image, { root: './uploads/avatar/' },
+             (error) => {
+                if (error) {
+                    res.status(error.status).json({
+                        status: 'resource not found',
+                     });
+                }
+            },
+        );
     }
 }

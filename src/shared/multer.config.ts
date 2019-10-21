@@ -5,12 +5,14 @@ import { v4 as uuid } from 'uuid';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 
-let path: string;
-let limit: number;
+let path: string; // path to storage
+let limit: number; // file size in bytes
+let filter: any; // array of support formats jpeg|png  etc..
 
-export const setMulterImageOptions = ( fileSize: number, uploadPath: string) => {
-    path = uploadPath;
-    limit = fileSize;
+export const setMulterImageOptions = ( fileSize: number, uploadPath: string, uploadFilter: string) => {
+    path   = uploadPath;
+    limit  = fileSize;
+    filter = new RegExp(`\/(${uploadFilter})$`);
     return multerImageOptions;
 };
 
@@ -22,7 +24,7 @@ const multerImageOptions: MulterOptions = {
     },
     // Check the mimetypes to allow for upload
     fileFilter: (req: any, file: any, cb: any) => {
-        if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+        if (file.mimetype.match(filter)) {
             // Allow storage of file
             cb(null, true);
         } else {

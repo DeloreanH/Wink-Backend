@@ -184,7 +184,7 @@ const itemTypesArray = [
         icon: 'fas thumbs-up',
         index: '8',
         category: 'personal',
-        repeat: true,
+        repeat: false,
     },
     {
         name: 'facebook',

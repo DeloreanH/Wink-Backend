@@ -22,5 +22,6 @@ export enum excludeMwRoutes {
     UCONFIG_USERITEMS              = '/user-config/items/user/:id',
     UCONFIG_ADD_MANY_ITEMS_TO_USER = '/user-config/items/user/create',
     UCONFIG_UPDATE_USER_BASIC_DATA = '/user-config/user/update/basic-data/:id',
-    UCONFIG_UPLOAD_USER_AVATAR = '/user-config/user/avatar',
+    UCONFIG_UPLOAD_USER_AVATAR     = '/user-config/user/upload/avatar',
+    UCONFIG_USER_AVATAR            = '/user-config/user/avatar/:imagepath',
 }

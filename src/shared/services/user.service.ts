@@ -18,6 +18,10 @@ export class UserService {
         return await this.userModel.findOne({_id: id});
     }
 
+    public async findByIdAndUpdate(id: string, data: UserDTO): Promise<IUser> {
+        return await this.userModel.findOneAndUpdate({_id: id}, data );
+    }
+
     public async createUSer(user: UserDTO ): Promise<IUser> {
         const createdUser = new this.userModel(user);
         return await createdUser.save();
