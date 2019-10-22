@@ -2,11 +2,11 @@ import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus, Use
 import { UserConfigService } from './user-config.service';
 import { ICategory, IItemType, IItem, IUser } from '../shared/interfaces/interfaces';
 import { AuthUser } from '../shared/decorators/auth-decorators.decorator';
-import { itemDTO } from 'src/shared/dtos/item.dto';
-import { UserDTO } from 'src/shared/dtos/users.dto';
-import { UserService } from 'src/shared/services/user.service';
+import { itemDTO } from '../shared/dtos/item.dto';
+import { UserDTO } from '../shared/dtos/users.dto';
+import { UserService } from '../shared/services/user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { setMulterImageOptions } from 'src/shared/multer.config';
+import { setMulterImageOptions } from '../shared/multer.config';
 import { unlinkSync } from 'fs';
 
 @Controller('user-config')
@@ -50,18 +50,20 @@ export class UserConfigController {
     }
 
     @Post('user/upload/avatar')
-    @UseInterceptors(FileInterceptor('avatar', setMulterImageOptions(5242880, './uploads/avatar', 'jpg|jpeg|png|gif')))
-    async avatarUpload(@UploadedFile() file , @AuthUser() authUser: IUser, @Req() req ): Promise<any>  {
+    @UseInterceptors(FileInterceptor('avatar', setMulterImageOptions(10485760, process.env.AVATAR_UPLOAD_PATH, 'jpg|jpeg|png|gif')))
+    async avatarUpload(@UploadedFile() file , @AuthUser() authUser: IUser): Promise<any>  {
         try {
             const user = await this.userServ.findById(authUser._id);
             if (!user) {
                 unlinkSync(file.path);
                 throw new HttpException('no user was found, new file was deleted', HttpStatus.NOT_FOUND);
             } else {
+                const link = process.env.APP_URL + ':' + process.env.PORT + '/' + process.env.AVATAR_UPLOAD_PATH + '/' + file.filename;
                 if (user.avatarUrl !== '') {
-                    unlinkSync('./uploads/avatar/' + user.avatarUrl);
+                    const oldFileName = user.avatarUrl.split('/').pop();
+                    unlinkSync(process.env.AVATAR_UPLOAD_PATH + '/' + oldFileName);
                 }
-                return await user.update({avatarUrl: file.filename});
+                return await user.update({avatarUrl: link});
             }
         } catch (error) {
             unlinkSync(file.path);

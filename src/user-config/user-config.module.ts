@@ -2,7 +2,7 @@ import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { UserConfigService } from './user-config.service';
 import { UserConfigController } from './user-config.controller';
 import { AuthMiddleware } from '../shared/middlewares/auth.middleware';
-import { EmptyProfileMiddleware } from 'src/shared/middlewares/empty-profile.middleware';
+import { EmptyProfileMiddleware } from '../shared/middlewares/empty-profile.middleware';
 import { excludeMwRoutes } from '../shared/enums/enums';
 import { SharedModule } from '../shared/shared.module';
 

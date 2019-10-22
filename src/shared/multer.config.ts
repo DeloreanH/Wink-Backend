@@ -10,7 +10,7 @@ let limit: number; // file size in bytes
 let filter: any; // array of support formats jpeg|png  etc..
 
 export const setMulterImageOptions = ( fileSize: number, uploadPath: string, uploadFilter: string) => {
-    path   = uploadPath;
+    path   =  uploadPath;
     limit  = fileSize;
     filter = new RegExp(`\/(${uploadFilter})$`);
     return multerImageOptions;
