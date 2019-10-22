@@ -5,6 +5,9 @@
 #eviroment
 .env
 
+#public assets
+/public
+
 # Logs
 logs
 *.log

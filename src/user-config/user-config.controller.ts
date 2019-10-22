@@ -36,17 +36,18 @@ export class UserConfigController {
         await this.uconfigServ.deleteManyItemsToUser(id);
         return await this.uconfigServ.createManyItemsToUser(items);
     }
-    @Put('user/update/basic-data/:id')
-    async update(@Param('id') id: string, @Body() user: UserDTO) {
-        console.log('este es el id', id);
-        console.log('esta es la data', user);
-        /*
-       try {
-        return await this.userServ.updateUserData(id, user);
+    @Put('user/update/basic-data')
+    async update(@AuthUser() authUser: IUser, @Body() userValues: UserDTO, @Res() res) {
+        try {
+            const toUpdate = Object.assign(userValues, {emptyProfile: false});
+            const user = await this.userServ.findByIdAndUpdate(authUser._id, toUpdate);
+            return res.status(HttpStatus.OK).json({
+                status: 'user updated successfully',
+                user,
+             });
        } catch (error) {
-        throw new HttpException(error, HttpStatus.BAD_REQUEST);
+            throw new HttpException(error, HttpStatus.BAD_REQUEST);
        }
-       */
     }
 
     @Post('user/upload/avatar')

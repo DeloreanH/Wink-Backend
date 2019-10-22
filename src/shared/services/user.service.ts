@@ -19,13 +19,15 @@ export class UserService {
     }
 
     public async findByIdAndUpdate(id: string, data: UserDTO): Promise<IUser> {
-        return await this.userModel.findOneAndUpdate({_id: id}, data );
+        return await this.userModel.findOneAndUpdate({_id: id}, data, {new: true} );
     }
 
     public async createUSer(user: UserDTO ): Promise<IUser> {
         const createdUser = new this.userModel(user);
         return await createdUser.save();
-    }/*
+    }
+
+    /*
     public async updateAvatar(id: string , user: UserDTO ): Promise<IUser> {
         return new Promise( async (resolve, reject) => {
             const session = await this.userModel.db.startSession();
