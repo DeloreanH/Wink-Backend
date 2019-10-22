@@ -9,15 +9,15 @@ let path: string; // path to storage
 let limit: number; // file size in bytes
 let filter: any; // array of support formats jpeg|png  etc..
 
-export const setMulterImageOptions = ( fileSize: number, uploadPath: string, uploadFilter: string) => {
+export const setMulterOptions = ( fileSize: number, uploadPath: string, uploadFilter: string) => {
     path   =  uploadPath;
     limit  = fileSize;
     filter = new RegExp(`\/(${uploadFilter})$`);
-    return multerImageOptions;
+    return multerOptions;
 };
 
 // Multer upload options
-const multerImageOptions: MulterOptions = {
+const multerOptions: MulterOptions = {
     // Enable file size limits
     limits: {
         fileSize: limit,
