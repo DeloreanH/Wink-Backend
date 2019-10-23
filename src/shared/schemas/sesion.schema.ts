@@ -23,7 +23,7 @@ export const sesionSchema = new Schema({
     },
     expireAt: {
         type: Date,
-         default: undefined,
+        default: undefined,
          },
 });
 

@@ -26,6 +26,9 @@ export class UserService {
         const createdUser = new this.userModel(user);
         return await createdUser.save();
     }
+    public async findNearbyUsers(user: UserDTO ): Promise<IUser[]> {
+        return await this.userModel.find( { location: { $near : user.location.coordinates , $maxDistance : 1 / 111.12 } });
+    }
 
     /*
     public async updateAvatar(id: string , user: UserDTO ): Promise<IUser> {

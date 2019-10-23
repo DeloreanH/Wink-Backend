@@ -47,6 +47,11 @@ export interface IUser extends Document {
     description?: string;
     emptyProfile?: boolean;
     username?: string;
+    autosave?: boolean;
+    location?: {
+       type: string,
+       coordinates: [],
+    };
     created?: Date;
     updated?: Date;
 }

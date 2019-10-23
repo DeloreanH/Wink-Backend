@@ -30,6 +30,10 @@ export class UserConfigController {
     getUserItems(@Param('id') id): Promise<IItem[]>  {
         return this.uconfigServ.getItemsByUserId(id);
     }
+    @Get('nearby-users')
+    nearbyUsers(@AuthUser() user: IUser): Promise<IUser[]>  {
+        return this.userServ.findNearbyUsers(user);
+    }
 
     @Post('items/user/create')
     async createItemsForUser(@AuthUser('_id') id, @Body() items: itemDTO[] ): Promise<IItem[]>  {
@@ -57,7 +61,8 @@ export class UserConfigController {
             const user = await this.userServ.findById(authUser._id);
             if (!user) {
                 unlinkSync(file.path);
-                throw 'no user was found, new file was deleted';
+                const error = 'no user was found, new file was deleted';
+                throw error;
             } else {
                 if (user.avatarUrl !== '') {
                     const oldFilePath = process.env.AVATAR_UPLOAD_PATH + '/' + user.avatarUrl.split('/').pop();

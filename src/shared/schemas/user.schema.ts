@@ -61,9 +61,22 @@ export const userSchema = new Schema({
         sparse: true,
     },
     visibility: {
-        enum : ['personal', 'profesional', 'todos', 'general'],
         type: String,
+        enum : ['personal', 'profesional', 'todos', 'general'],
         default: 'todos',
+    },
+    autosave: {
+        type: Boolean,
+        default: true,
+    },
+    location: {
+        type: {
+             type: String,
+             enum: ['Point'],
+             },
+        coordinates: {
+            type: [Number],
+        },
     },
     created: {
         type: Date,
@@ -74,3 +87,5 @@ export const userSchema = new Schema({
         default: Date.now,
     },
 });
+
+userSchema.index({location: '2dsphere'});

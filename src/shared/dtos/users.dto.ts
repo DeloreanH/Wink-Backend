@@ -12,6 +12,12 @@ export class UserDTO {
    readonly description?: string;
    readonly emptyUser?: boolean;
    readonly username?: string;
+   readonly autosave?: boolean;
+   readonly location?: {
+      type: string,
+      coordinates: [],
+   };
    readonly created?: Date;
    readonly updated?: Date;
+
 }

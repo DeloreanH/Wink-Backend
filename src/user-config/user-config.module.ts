@@ -37,6 +37,7 @@ export class UserConfigModule {
       { path: excludeMwRoutes.UCONFIG_UPDATE_USER_BASIC_DATA, method: RequestMethod.ALL },
       { path: excludeMwRoutes.UCONFIG_UPLOAD_USER_AVATAR, method: RequestMethod.ALL },
       { path: excludeMwRoutes.UCONFIG_USER_AVATAR, method: RequestMethod.ALL },
+      { path: excludeMwRoutes.UCONFIG_NEARBY_USERS, method: RequestMethod.ALL },
     )
     .forRoutes(UserConfigController);
   }

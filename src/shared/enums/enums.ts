@@ -24,4 +24,6 @@ export enum excludeMwRoutes {
     UCONFIG_UPDATE_USER_BASIC_DATA = '/user-config/user/update/basic-data',
     UCONFIG_UPLOAD_USER_AVATAR     = '/user-config/user/upload/avatar',
     UCONFIG_USER_AVATAR            = '/user-config/user/avatar/:imagepath',
+
+    UCONFIG_NEARBY_USERS           = '/user-config/nearby-users',
 }
