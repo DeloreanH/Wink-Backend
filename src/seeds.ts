@@ -358,7 +358,7 @@ const usersArray = [
         emptyProfile: false,
         visibility: 'todos',
         avatarUrl: 'https://i.pinimg.com/originals/8f/22/d3/8f22d32f54c8d0dd4087b1007af00353.jpg',
-        email: 'eirc@cartman.com',
+        email: 'eric@cartman.com',
         birthday: null,
         username: 'eric1414',
         location: {
@@ -393,7 +393,7 @@ async  function down() {
 }
 
 async function downUsers() {
-    const response = await User.deleteMany({ email: ['john@doe.com', 'maria@lopez.com', 'eirc@cartman.com'] });
+    const response = await User.deleteMany({ email: ['john@doe.com', 'maria@lopez.com', 'eric@cartman.com'] });
     console.log('CLEANING DUMMY USERS: ', response);
 
 }

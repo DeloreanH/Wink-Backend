@@ -70,22 +70,9 @@ export const userSchema = new Schema({
         default: true,
     },
     location: {
-        type: {
-             type: String,
-             enum: ['Point'],
-             },
-        coordinates: {
-            type: [Number],
-        },
+        type: { type: String },
+        coordinates: [],
     },
-    created: {
-        type: Date,
-        default: Date.now,
-    },
-    updated: {
-        type: Date,
-        default: Date.now,
-    },
-});
+}, {timestamps: true});
 
-userSchema.index({location: '2dsphere'});
+userSchema.index({ location: "2dsphere" });

@@ -52,8 +52,8 @@ export interface IUser extends Document {
        type: string,
        coordinates: [],
     };
-    created?: Date;
-    updated?: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 export interface IPhone {
     phoneCode?: number;

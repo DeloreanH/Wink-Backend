@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDTO } from '../dtos/users.dto';
 import { IUser } from '../interfaces/interfaces';
+import { ObjectId } from 'bson';
 
 @Injectable()
 export class UserService {
@@ -27,7 +28,24 @@ export class UserService {
         return await createdUser.save();
     }
     public async findNearbyUsers(user: UserDTO ): Promise<IUser[]> {
-        return await this.userModel.find( { location: { $near : user.location.coordinates , $maxDistance : 1 / 111.12 } });
+        return await this.userModel.aggregate([
+            {
+                $geoNear: {
+                near: {
+                    type: 'Point',
+                    coordinates: user.location.coordinates,
+                },
+                maxDistance: 3000,
+                distanceField: 'distance',
+                },
+            },
+            {
+                $match: { _id: { $ne: new ObjectId(user._id) } },
+            },
+            {
+                $sort : { distance: 1 },
+            },
+        ]);
     }
 
     /*
