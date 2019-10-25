@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import * as mongoose from 'mongoose';
-import { itemTypeSchema } from './shared/schemas/item-type.schema';
-import { CategorySchema } from './shared/schemas/category.schema';
-import { userSchema } from './shared/schemas/user.schema';
+import { itemTypeSchema } from './database/schemas/item-type.schema';
+import { CategorySchema } from './database/schemas/category.schema';
+import { userSchema } from './database/schemas/user.schema';
 
 // establecer nombre de la base de datos, el config del host se encuentra en el env
 mongoose.connect(process.env.MONGO_HOST, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });

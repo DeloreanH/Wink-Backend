@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor, HttpException, HttpStatus } from '@nestjs/common';
-import { IPayload } from '../../shared/interfaces/interfaces';
+import { IPayload } from '../../common/interfaces/interfaces';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Injectable()

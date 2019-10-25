@@ -1,8 +1,8 @@
 import { Module, MiddlewareConsumer, RequestMethod, NestModule } from '@nestjs/common';
 import {AuthController} from './auth.controller';
-import { AuthMiddleware } from '../shared/middlewares/auth.middleware';
+import { AuthMiddleware } from './middlewares/auth.middleware';
 import { SharedModule } from '../shared/shared.module';
-import { excludeMwRoutes } from '../shared/enums/enums';
+import { excludeMwRoutes } from '../common/enums/enums';
 @Module({
     imports: [
       SharedModule,

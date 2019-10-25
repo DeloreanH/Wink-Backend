@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { Tools } from '../tools/tools';
+import { Tools } from '../../common/tools/tools';
 
 export const userSchema = new Schema({
     firstName: {
@@ -75,4 +75,4 @@ export const userSchema = new Schema({
     },
 }, {timestamps: true});
 
-userSchema.index({ location: "2dsphere" });
+userSchema.index({ location: '2dsphere' });

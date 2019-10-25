@@ -1,4 +1,4 @@
-import { IPhone } from '../interfaces/interfaces';
+import { IPhone } from '../../common/interfaces/interfaces';
 
 export class UserDTO {
    readonly _id?: string;
@@ -12,11 +12,12 @@ export class UserDTO {
    readonly status?: string;
    readonly description?: string;
    readonly emptyUser?: boolean;
+   readonly visibility?: string;
    readonly username?: string;
    readonly autosave?: boolean;
    readonly location?: {
       type: string,
-      coordinates: [],
+      coordinates: [number, number],
    };
    readonly createdAt?: Date;
    readonly updatedAt?: Date;

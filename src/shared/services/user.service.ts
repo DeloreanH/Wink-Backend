@@ -2,7 +2,7 @@ import { Injectable, HttpService } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDTO } from '../dtos/users.dto';
-import { IUser } from '../interfaces/interfaces';
+import { IUser } from '../../common/interfaces/interfaces';
 import { ObjectId } from 'bson';
 
 @Injectable()
@@ -27,23 +27,25 @@ export class UserService {
         const createdUser = new this.userModel(user);
         return await createdUser.save();
     }
-    public async findNearbyUsers(user: UserDTO ): Promise<IUser[]> {
+    public async findNearbyUsers(userId: string , coordinates: [number, number], sort?: number ): Promise<IUser[]> {
+        const sorting = sort ? sort : -1;
+        await this.findByIdAndUpdate(userId, {location: { type: 'Point', coordinates}});
         return await this.userModel.aggregate([
             {
                 $geoNear: {
                 near: {
                     type: 'Point',
-                    coordinates: user.location.coordinates,
+                    coordinates,
                 },
                 maxDistance: 3000,
                 distanceField: 'distance',
                 },
             },
             {
-                $match: { _id: { $ne: new ObjectId(user._id) } },
+                $match: { _id: { $ne: new ObjectId(userId) } },
             },
             {
-                $sort : { distance: 1 },
+                $sort : { distance: sorting },
             },
         ]);
     }

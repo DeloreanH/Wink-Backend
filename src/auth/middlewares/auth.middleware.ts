@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware, HttpException, HttpStatus } from '@nestjs/common';
-import { UserService } from '../services/user.service';
+import { UserService } from '../../shared/services/user.service';
 import { verify } from 'jsonwebtoken';
-import { IUser, IPayload } from '../interfaces/interfaces';
+import { IUser, IPayload } from '../../common/interfaces/interfaces';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Injectable()

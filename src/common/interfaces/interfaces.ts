@@ -47,10 +47,11 @@ export interface IUser extends Document {
     description?: string;
     emptyProfile?: boolean;
     username?: string;
+    visibility?: string;
     autosave?: boolean;
     location?: {
        type: string,
-       coordinates: [],
+       coordinates: [number, number],
     };
     createdAt?: Date;
     updatedAt?: Date;

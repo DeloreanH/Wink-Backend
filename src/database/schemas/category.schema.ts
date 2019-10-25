@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { Tools } from '../tools/tools';
+import { Tools } from '../../common/tools/tools';
 
 export const CategorySchema = new Schema({
     name: {

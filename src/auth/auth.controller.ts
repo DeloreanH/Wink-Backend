@@ -1,7 +1,7 @@
 import { Controller, HttpStatus, Post, Res, HttpException, UseInterceptors, Req} from '@nestjs/common';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { servToken } from '../shared/decorators/auth-decorators.decorator';
-import { IAuthResponse, IPayload } from '../shared/interfaces/interfaces';
+import { servToken } from '../common/decorators/auth-decorators.decorator';
+import { IAuthResponse, IPayload } from '../common/interfaces/interfaces';
 import { AuthService } from '../shared/services/auth.service';
 
 @Controller('auth')

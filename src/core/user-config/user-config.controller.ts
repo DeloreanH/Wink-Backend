@@ -1,12 +1,12 @@
-import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus, UseInterceptors, UploadedFile, Res, Req } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus, UseInterceptors, UploadedFile, Res} from '@nestjs/common';
 import { UserConfigService } from './user-config.service';
-import { ICategory, IItemType, IItem, IUser } from '../shared/interfaces/interfaces';
-import { AuthUser } from '../shared/decorators/auth-decorators.decorator';
-import { itemDTO } from '../shared/dtos/item.dto';
-import { UserDTO } from '../shared/dtos/users.dto';
-import { UserService } from '../shared/services/user.service';
+import { ICategory, IItemType, IItem, IUser } from '../../common/interfaces/interfaces';
+import { AuthUser } from '../../common/decorators/auth-decorators.decorator';
+import { itemDTO } from '../../shared/dtos/item.dto';
+import { UserDTO } from '../../shared/dtos/users.dto';
+import { UserService } from '../../shared/services/user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { setMulterOptions } from '../shared/multer.config';
+import { setMulterOptions } from '../../common/tools/multer.config';
 import { unlinkSync, existsSync } from 'fs';
 
 @Controller('user-config')
@@ -29,10 +29,6 @@ export class UserConfigController {
     @Get('items/user/:id')
     getUserItems(@Param('id') id): Promise<IItem[]>  {
         return this.uconfigServ.getItemsByUserId(id);
-    }
-    @Get('nearby-users')
-    nearbyUsers(@AuthUser() user: IUser): Promise<IUser[]>  {
-        return this.userServ.findNearbyUsers(user);
     }
 
     @Post('items/user/create')
