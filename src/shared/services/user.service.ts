@@ -28,7 +28,7 @@ export class UserService {
         return await createdUser.save();
     }
     public async findNearbyUsers(userId: string , coordinates: [number, number], sort?: number ): Promise<IUser[]> {
-        const sorting = sort ? sort : -1;
+        const sorting = sort ? sort : 1;
         await this.findByIdAndUpdate(userId, {location: { type: 'Point', coordinates}});
         return await this.userModel.aggregate([
             {
