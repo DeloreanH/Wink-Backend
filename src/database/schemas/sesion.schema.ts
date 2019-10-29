@@ -1,9 +1,10 @@
 import { Schema } from 'mongoose';
+import { modelName } from '../models-name';
 
 export const sesionSchema = new Schema({
     user_id: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: modelName.USER,
     },
     serverToken: {
         type: String,

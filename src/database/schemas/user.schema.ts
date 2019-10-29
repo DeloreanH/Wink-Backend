@@ -40,10 +40,10 @@ export const userSchema = new Schema({
         default: null,
     },
     avatarUrl: {
-            type: String ,
+            type: String,
     },
     status: {
-        type: String ,
+        type: String,
     },
     description: {
         type: String ,

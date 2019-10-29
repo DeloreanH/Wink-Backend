@@ -1,5 +1,4 @@
 import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus, UseInterceptors, UploadedFile, Res} from '@nestjs/common';
-import { UserConfigService } from './user-config.service';
 import { ICategory, IItemType, IItem, IUser } from '../../common/interfaces/interfaces';
 import { AuthUser } from '../../common/decorators/auth-decorators.decorator';
 import { itemDTO } from '../../shared/dtos/item.dto';
@@ -8,33 +7,34 @@ import { UserService } from '../../shared/services/user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { setMulterOptions } from '../../common/tools/multer.config';
 import { unlinkSync, existsSync } from 'fs';
+import { ItemService } from 'src/shared/services/item.service';
 
 @Controller('user-config')
 export class UserConfigController {
-    constructor(private uconfigServ: UserConfigService, private userServ: UserService) {}
+    constructor(private itemServ: ItemService, private userServ: UserService) {}
 
     @Get('categories')
     getCategories(): Promise<ICategory[]> {
-        return this.uconfigServ.getCategories();
+        return this.itemServ.getCategories();
     }
 
     @Get('categories-items')
     getCategoriesWithItems(): Promise<ICategory[]> {
-        return this.uconfigServ.getCategoriesWithItems();
+        return this.itemServ.getCategoriesWithItems();
     }
     @Get('itemtypes')
     getItemTypes(): Promise<IItemType[]> {
-        return this.uconfigServ.getItemTypes();
+        return this.itemServ.getItemTypes();
     }
     @Get('items/user/:id')
     getUserItems(@Param('id') id): Promise<IItem[]>  {
-        return this.uconfigServ.getItemsByUserId(id);
+        return this.itemServ.getItemsByUserId(id);
     }
 
     @Post('items/user/create')
     async createItemsForUser(@AuthUser('_id') id, @Body() items: itemDTO[] ): Promise<IItem[]>  {
-        await this.uconfigServ.deleteManyItemsToUser(id);
-        return await this.uconfigServ.createManyItemsToUser(items);
+        await this.itemServ.deleteManyItemsToUser(id);
+        return await this.itemServ.createManyItemsToUser(items);
     }
     @Put('user/update/basic-data')
     async update(@AuthUser() authUser: IUser, @Body() userValues: UserDTO, @Res() res) {

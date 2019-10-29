@@ -34,6 +34,15 @@ export interface ISection extends Document {
     key: number;
 }
 
+export interface IWink extends Document {
+    _id: string;
+    sender_id: string;
+    senderVisibility: string;
+    receiver_id: string;
+    receiverVisibility: string;
+    approved: boolean;
+}
+
 export interface IUser extends Document {
     _id: string;
     firstName?: string;

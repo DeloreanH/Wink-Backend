@@ -1,10 +1,12 @@
 import { Module, Global } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { modelName } from './models-name';
 import { userSchema } from './schemas/user.schema';
 import { sesionSchema } from './schemas/sesion.schema';
 import { CategorySchema } from './schemas/category.schema';
 import { itemTypeSchema } from './schemas/item-type.schema';
 import { itemSchema } from './schemas/item.schema';
+import { winkSchema } from './schemas/wink.schema';
 
 @Global()
 @Module({
@@ -19,19 +21,16 @@ import { itemSchema } from './schemas/item.schema';
             },
         ),
         MongooseModule.forFeature([
-            { name: 'User', schema: userSchema },
-            { name: 'Sesion', schema: sesionSchema },
-            { name: 'Category', schema: CategorySchema },
-            { name: 'ItemType', schema: itemTypeSchema },
-            { name: 'Item', schema: itemSchema },
+            { name: modelName.USER, schema: userSchema },
+            { name: modelName.SESION, schema: sesionSchema },
+            { name: modelName.CATEGORY, schema: CategorySchema },
+            { name: modelName.ITEM, schema: itemSchema },
+            { name: modelName.ITEM_TYPE, schema: itemTypeSchema },
+            { name: modelName.WINK, schema: winkSchema },
         ]),
         ],
         exports: [
         MongooseModule,
-        ],
-        controllers: [
-        ],
-        providers: [
         ],
 })
 export class DatabaseModule {}

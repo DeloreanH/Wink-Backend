@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { modelName } from '../models-name';
 
 export const sectionSchema = new Schema({
     name: {
@@ -12,7 +13,7 @@ export const sectionSchema = new Schema({
 export const itemSchema = new Schema({
     user_id: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: modelName.USER,
     },
     itemtype: String,
     value: {

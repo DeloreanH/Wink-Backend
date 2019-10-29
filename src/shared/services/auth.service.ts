@@ -9,6 +9,7 @@ import { UserDTO } from '../dtos/users.dto';
 import { ISub, IPayload, ISesion, IAuthResponse, IItem } from '../../common/interfaces/interfaces';
 import * as moment from 'moment';
 import { itemDTO } from '../dtos/item.dto';
+import { modelName } from 'src/database/models-name';
 
 @Injectable()
 export class AuthService {
@@ -19,8 +20,8 @@ export class AuthService {
 
     constructor(
          private userServ: UserService,
-         @InjectModel('Sesion') private sesionModel: Model<ISesion>,
-         @InjectModel('Item') private itemModel: Model<IItem>,
+         @InjectModel(modelName.SESION) private sesionModel: Model<ISesion>,
+         @InjectModel(modelName.ITEM) private itemModel: Model<IItem>,
          ) {}
 
     /**
