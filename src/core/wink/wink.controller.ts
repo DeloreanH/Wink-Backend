@@ -25,7 +25,7 @@ export class WinkController {
         ];
         const wink      = await this.winkService.findByProperties(searchParams) as IWink;
         const otherUser = await this.userServ.findByIdOrFail(data.userToCheckId) as IUser;
-        const item      = await this.itemServ.getItemsByUserId(otherUser._id) as IItem[];
+        const item      = await this.itemServ.getPublicItems(otherUser._id) as IItem[];
         if (!wink) {
             return res.status(HttpStatus.OK).json({
                 wink: null,

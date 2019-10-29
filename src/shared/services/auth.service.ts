@@ -8,8 +8,8 @@ import { sesionDTO } from '../dtos/sesion.dto';
 import { UserDTO } from '../dtos/users.dto';
 import { ISub, IPayload, ISesion, IAuthResponse, IItem } from '../../common/interfaces/interfaces';
 import * as moment from 'moment';
-import { itemDTO } from '../dtos/item.dto';
-import { modelName } from 'src/database/models-name';
+import { modelName } from '../../database/models-name';
+import * as items from '../../database/pre-build-data/itemsDefault.json';
 
 @Injectable()
 export class AuthService {
@@ -167,140 +167,9 @@ export class AuthService {
         });
     }
     public async setBasicItemsToUser( userId: string ): Promise<any[]> {
-        const basicItems: itemDTO[] = [
-            {
-                user_id: userId,
-                itemtype: 'fechadenacimiento',
-                position: 1,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'Publico',
-                    key: 0,
-                },
-            },
-            {
-                user_id: userId,
-                itemtype: 'intereses',
-                position: 2,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'Publico',
-                    key: 0,
-                },
-            },
-            {
-                user_id: userId,
-                itemtype: 'whatsapp',
-                position: 1,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'General',
-                    key: 1,
-                },
-            },
-            {
-                user_id: userId,
-                itemtype: 'facebook',
-                position: 2,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'General',
-                    key: 1,
-                },
-            },
-            {
-                user_id: userId,
-                itemtype: 'correo',
-                position: 3,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'General',
-                    key: 1,
-                },
-            },
-            {
-                user_id: userId,
-                itemtype: 'instagram',
-                position: 4,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'General',
-                    key: 1,
-                },
-            },
-            {
-                user_id: userId,
-                itemtype: 'hobbies',
-                position: 1,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'Personal',
-                    key: 2,
-                },
-            },
-            {
-                user_id: userId,
-                itemtype: 'celular',
-                position: 2,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'Personal',
-                    key: 2,
-                },
-            },
-            {
-                user_id: userId,
-                itemtype: 'direccion',
-                position: 3,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'Personal',
-                    key: 2,
-                },
-            },
-            {
-                user_id: userId,
-                itemtype: 'sitioweb',
-                position: 4,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'Personal',
-                    key: 2,
-                },
-            },
-            {
-                user_id: userId,
-                itemtype: 'niveldeinstruccion',
-                position: 1,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'Profesional',
-                    key: 3,
-                },
-            },
-            {
-                user_id: userId,
-                itemtype: 'ocupacion',
-                position: 2,
-                basic: true,
-                custom: null,
-                section: {
-                    name: 'Profesional',
-                    key: 3,
-                },
-            },
-    ];
+        const basicItems = items.map( item => {
+            return Object.assign(item, {user_id: userId});
+        });
         return await  this.itemModel.insertMany(basicItems);
     }
 

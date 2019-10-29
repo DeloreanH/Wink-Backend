@@ -3,14 +3,21 @@ import * as mongoose from 'mongoose';
 import { itemTypeSchema } from './database/schemas/item-type.schema';
 import { CategorySchema } from './database/schemas/category.schema';
 import { userSchema } from './database/schemas/user.schema';
+import { modelName } from './database/models-name';
+import * as itemsObj from './database/pre-build-data/itemsDefault.json';
+import { IUser } from './common/interfaces/interfaces';
+import { itemSchema } from './database/schemas/item.schema';
+import { sesionSchema } from './database/schemas/sesion.schema';
 
 // establecer nombre de la base de datos, el config del host se encuentra en el env
 mongoose.connect(process.env.MONGO_HOST, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 
 // modelos a sedear
-const Category = mongoose.model('Category', CategorySchema);
-const itemType = mongoose.model('itemType', itemTypeSchema);
-const User     = mongoose.model('User', userSchema);
+const Category = mongoose.model(modelName.CATEGORY, CategorySchema);
+const itemType = mongoose.model(modelName.ITEM_TYPE, itemTypeSchema);
+const User     = mongoose.model(modelName.USER, userSchema);
+const Item     = mongoose.model(modelName.USER, itemSchema);
+const Sesion   = mongoose.model(modelName.SESION, sesionSchema);
 
 // data
 const categoriesArray = [
@@ -374,12 +381,13 @@ async  function up() {
     await Category.insertMany(categoriesArray);
     await itemType.insertMany(itemTypesArray);
     await User.insertMany(usersArray);
+
 }
 
 // limpiar modelos
 async  function down() {
     console.log('CLEANING MODELS');
-    for ( const  model of [Category, itemType] ) {
+    for ( const  model of [Category, itemType, User, Item, Sesion] ) {
         try {
             await model.collection.drop();
         } catch (e) {
@@ -392,11 +400,6 @@ async  function down() {
     }
 }
 
-async function downUsers() {
-    const response = await User.deleteMany({ email: ['john@doe.com', 'maria@lopez.com', 'eric@cartman.com'] });
-    console.log('CLEANING DUMMY USERS: ', response);
-
-}
 
 function close() {
     console.log('CLOSING CONNECTION WITH DB');
@@ -407,7 +410,6 @@ function close() {
 async function execute() {
     try {
         await down();
-        await downUsers();
         await up();
         close();
         console.log('ALL DONE...');

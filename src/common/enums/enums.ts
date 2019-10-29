@@ -10,6 +10,14 @@ export enum Gender {
     FEMALE = 'female',
 }
 
+export enum itemsVisibility {
+    PUBLIC       = 0,
+    GENERAL      = 1,
+    PERSONAL     = 2,
+    PROFESSIONAL = 3,
+    ALL          = 4,
+}
+
 export enum excludeMwRoutes {
     // auth routes
     AUTH_AUTHENTICATE = '/auth/authenticate',
