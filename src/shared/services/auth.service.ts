@@ -9,7 +9,7 @@ import { UserDTO } from '../dtos/users.dto';
 import { ISub, IPayload, ISesion, IAuthResponse, IItem } from '../../common/interfaces/interfaces';
 import * as moment from 'moment';
 import { modelName } from '../../database/models-name';
-import * as items from '../../database/pre-build-data/itemsDefault.json';
+import * as items from '../../seeds/data/itemsDefault.json';
 
 @Injectable()
 export class AuthService {
