@@ -81,7 +81,7 @@ function setUserIdToItems(itemsArray: any[], idsArray: any[]) {
 }
 
 function setUserIdToItems2(data: any[], items: any[]) {
-    /*
+
     const storage = [];
 
     for (const item of items) {
@@ -90,8 +90,11 @@ function setUserIdToItems2(data: any[], items: any[]) {
 
         storage.push(...copy);
     }
-    */
+
+
    const data2 = items.map(id => data.map(d => Object.assign({}, d, {id})));
+
+
      console.log('data', data2);
     return data2;
 }
