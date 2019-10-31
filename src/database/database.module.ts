@@ -3,10 +3,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { modelName } from './models-name';
 import { userSchema } from './schemas/user.schema';
 import { sesionSchema } from './schemas/sesion.schema';
-import { CategorySchema } from './schemas/category.schema';
+import { categorySchema } from './schemas/category.schema';
 import { itemTypeSchema } from './schemas/item-type.schema';
 import { itemSchema } from './schemas/item.schema';
 import { winkSchema } from './schemas/wink.schema';
+import { socialNetworkLinkSchema } from './schemas/social-network-link.schema';
 
 @Global()
 @Module({
@@ -23,10 +24,11 @@ import { winkSchema } from './schemas/wink.schema';
         MongooseModule.forFeature([
             { name: modelName.USER, schema: userSchema },
             { name: modelName.SESION, schema: sesionSchema },
-            { name: modelName.CATEGORY, schema: CategorySchema },
+            { name: modelName.CATEGORY, schema: categorySchema },
             { name: modelName.ITEM, schema: itemSchema },
             { name: modelName.ITEM_TYPE, schema: itemTypeSchema },
             { name: modelName.WINK, schema: winkSchema },
+            { name: modelName.SOCIAL_LINK, schema: socialNetworkLinkSchema },
         ]),
         ],
         exports: [

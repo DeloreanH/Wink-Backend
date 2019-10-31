@@ -19,7 +19,6 @@ export class UserService {
     public async findById(id: string): Promise<IUser> {
         return await this.userModel.findOne({_id: id});
     }
-
     public async findByIdOrFail(id: string): Promise<IUser> {
         const user = await this.userModel.findOne({_id: id});
         if (!user) {

@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { IItemType, IItem, ICategory } from '../../common/interfaces/interfaces';
 import { itemDTO } from '../dtos/item.dto';
 import { ObjectId } from 'bson';
-import { itemsVisibility } from 'src/common/enums/enums';
+import { itemsVisibility } from '../../common/enums/enums';
 
 @Injectable()
 export class ItemService {
@@ -29,8 +29,9 @@ export class ItemService {
     }
     public async getPublicItems(userId: string) {
         return await this.itemModel.aggregate([
-            { $match: {_id: new ObjectId(userId)}},
+            { $match: {user_id: new ObjectId(userId)}},
             { $match: {'section.key': itemsVisibility.PUBLIC}},
+            { $sort : { position: 1}},
         ]);
     }
     public async deleteManyItemsToUser(id: string) {

@@ -1,3 +1,3 @@
 export class showPublicProfileDTO {
-    readonly userToCheckId: string
+    readonly winkUserId: string
  }

@@ -9,7 +9,7 @@ import { UserDTO } from '../dtos/users.dto';
 import { ISub, IPayload, ISesion, IAuthResponse, IItem } from '../../common/interfaces/interfaces';
 import * as moment from 'moment';
 import { modelName } from '../../database/models-name';
-import * as items from '../../seeds/data/itemsDefault.json';
+import { itemsDefault } from '../../auth/itemsDefault';
 
 @Injectable()
 export class AuthService {
@@ -167,7 +167,7 @@ export class AuthService {
         });
     }
     public async setBasicItemsToUser( userId: string ): Promise<any[]> {
-        const basicItems = items.map( item => {
+        const basicItems = itemsDefault.map( item => {
             return Object.assign(item, {user_id: userId});
         });
         return await  this.itemModel.insertMany(basicItems);

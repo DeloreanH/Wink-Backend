@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 import { Tools } from '../../common/tools/tools';
 
-export const CategorySchema = new Schema({
+export const categorySchema = new Schema({
     name: {
         type: String,
         unique: true,
@@ -17,7 +17,7 @@ export const CategorySchema = new Schema({
     },
 },  { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false  });
 
-CategorySchema.virtual('itemtypes', {
+categorySchema.virtual('itemtypes', {
     ref: 'ItemType', // The model to use
     localField: 'name', // is equal to `localField`
     foreignField: 'category', // is equal to `foreignField`

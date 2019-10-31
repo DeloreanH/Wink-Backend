@@ -1,46 +1,50 @@
 import 'dotenv/config';
 import * as mongoose from 'mongoose';
 import { itemTypeSchema } from '../database/schemas/item-type.schema';
-import { CategorySchema } from '../database/schemas/category.schema';
+import { categorySchema } from '../database/schemas/category.schema';
 import { userSchema } from '../database/schemas/user.schema';
 import { modelName } from '../database/models-name';
 import { itemSchema } from '../database/schemas/item.schema';
 import { sesionSchema } from '../database/schemas/sesion.schema';
+import { winkSchema } from '../database/schemas/wink.schema';
+import { socialNetworkLinkSchema} from '../database/schemas/social-network-link.schema';
 import { ObjectId } from 'bson';
 
 // data
-import * as categoriesData from './data/categories.json';
-import * as itemsTypesData from './data/itemTypes.json';
-import * as usersData from './data/users.json';
-import * as itemsDefaultData from './data/itemsDefault.json';
-import { arrayExpression } from '@babel/types';
+import { categoriesSeed } from './data/categories.seed';
+import { itemTypesSeed } from './data/itemTypes.seed';
+import { usersItemsSeed } from './data/usersItems.seed';
+import { usersSeed } from './data/usersSeed';
+import { socialNetworkLinksSeed } from './data/socialNetworkLinks.seed';
 
 // modelos
-const Category = mongoose.model(modelName.CATEGORY, CategorySchema);
-const itemType = mongoose.model(modelName.ITEM_TYPE, itemTypeSchema);
-const User     = mongoose.model(modelName.USER, userSchema);
-const Item     = mongoose.model(modelName.ITEM, itemSchema);
-const Sesion   = mongoose.model(modelName.SESION, sesionSchema);
+const category     = mongoose.model(modelName.CATEGORY, categorySchema);
+const itemType     = mongoose.model(modelName.ITEM_TYPE, itemTypeSchema);
+const user         = mongoose.model(modelName.USER, userSchema);
+const item         = mongoose.model(modelName.ITEM, itemSchema);
+const sesion       = mongoose.model(modelName.SESION, sesionSchema);
+const socialLink   = mongoose.model(modelName.SOCIAL_LINK, socialNetworkLinkSchema);
+const wink         = mongoose.model(modelName.WINK, winkSchema);
 
 // establecer nombre de la base de datos, el config del host se encuentra en el env
 mongoose.connect(process.env.MONGO_HOST, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+
 // creacion de las semillas
 async  function up() {
     console.log('SEEDING THE DATABASE');
-    //await Category.insertMany(categoriesData);
-    //await itemType.insertMany(itemsTypesData);
-    //await User.insertMany(usersData);
-    const data = setIdsToArray(usersData);
-    const data2 = setUserIdToItems(itemsDefaultData, data.ids);
-
-    console.log(data2);
-
+    await category.insertMany(categoriesSeed);
+    await itemType.insertMany(itemTypesSeed);
+    const data = setIdsToArray(usersSeed);
+    const usersItemswithId = setUserIdToItems(usersItemsSeed, data.ids);
+    await user.insertMany(data.dataWithId);
+    await item.insertMany(usersItemswithId);
+    await socialLink.insertMany(socialNetworkLinksSeed);
 }
 
 // limpiar modelos
 async  function down() {
     console.log('CLEANING MODELS');
-    for ( const  model of [Category, itemType, User, Item, Sesion] ) {
+    for ( const  model of [category, itemType, user, item, sesion, socialLink, wink] ) {
         try {
             await model.collection.drop();
         } catch (e) {
@@ -66,45 +70,15 @@ function setIdsToArray(dataArray: any[]) {
     });
     return {ids, dataWithId};
 }
-function setUserIdToItems(itemsArray: any[], idsArray: any[]) {
-    console.log(itemsArray);
-    let data = [];
-    for (const id of idsArray) {
-        for (const item of itemsArray) {
-            const newItem = Object.assign({}, item, {id});
-            data.push(newItem);
-            //console.log('newItem', newItem);
-        }
-    }
-    console.log('data', data);
-    return data;
+
+function setUserIdToItems(items: any[], ids: any[]) {
+    return ids.flatMap(id => items.map( it => Object.assign({}, it, {user_id: id})));
 }
-
-function setUserIdToItems2(data: any[], items: any[]) {
-
-    const storage = [];
-
-    for (const item of items) {
-        const copy = new Array(...data)
-            .map(c => ({...c, id: item}));
-
-        storage.push(...copy);
-    }
-
-
-   const data2 = items.map(id => data.map(d => Object.assign({}, d, {id})));
-
-
-     console.log('data', data2);
-    return data2;
-}
-
-
 
 // ejecutar  los metodos down y up respectivamente
 async function execute() {
     try {
-        //await down();
+        await down();
         await up();
         close();
         console.log('ALL DONE...');

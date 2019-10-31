@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Body, Post, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Body, Post, HttpStatus, Res } from '@nestjs/common';
 import { AuthUser } from '../../common/decorators/auth-decorators.decorator';
 import { IUser, IWink, IItem } from '../../common/interfaces/interfaces';
 import { UserService } from '../../shared/services/user.service';
@@ -8,6 +8,7 @@ import { updateUserVisibilitysDTO } from './dtos/updateUserVisibility.dto';
 import { WinkService } from './wink.service';
 import { showPublicProfileDTO } from './dtos/showPublicProfileDTO';
 import { ItemService } from '../../shared/services/item.service';
+import { sendWinkDTO } from './dtos/sendWinkDTO';
 
 @Controller('wink')
 export class WinkController {
@@ -18,13 +19,13 @@ export class WinkController {
         return this.userServ.findNearbyUsers(user._id, [+data.longitude , +data.latitude], +data.sort);
     }
     @Post('show-public-profile')
-    async show(@AuthUser() user: IUser, @Body() data: showPublicProfileDTO, @Res() res): Promise<IWink>  {
+    async showPublicProfile(@AuthUser() user: IUser, @Body() data: showPublicProfileDTO, @Res() res): Promise<IWink>  {
         const searchParams = [
-            {sender_id: user._id,  receiver_id: data.userToCheckId},
-            {sender_id: data.userToCheckId ,  receiver_id: user._id},
+            {sender_id: user._id,  receiver_id: data.winkUserId},
+            {sender_id: data.winkUserId ,  receiver_id: user._id},
         ];
         const wink      = await this.winkService.findByProperties(searchParams) as IWink;
-        const otherUser = await this.userServ.findByIdOrFail(data.userToCheckId) as IUser;
+        const otherUser = await this.userServ.findByIdOrFail(data.winkUserId) as IUser;
         const item      = await this.itemServ.getPublicItems(otherUser._id) as IItem[];
         if (!wink) {
             return res.status(HttpStatus.OK).json({
@@ -37,6 +38,32 @@ export class WinkController {
                 wink,
                 user: otherUser,
                 userItems: item,
+             });
+        }
+    }
+    @Post('send-wink')
+    async sendWink(@AuthUser() user: IUser, @Body() data: sendWinkDTO, @Res() res): Promise<IWink>  {
+        const searchParams = [
+            {sender_id: user._id,  receiver_id: data.winkUserId},
+            {sender_id: data.winkUserId ,  receiver_id: user._id},
+        ];
+        const response = await this.winkService.findByProperties(searchParams) as IWink;
+        if (response) {
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                status: 'already exist a wink between the users',
+             });
+        } else {
+            const winkUser = await this.userServ.findByIdOrFail(data.winkUserId) as IUser;
+            const dataWink = {
+                sender_id: user._id,
+                senderVisibility: user.visibility,
+                receiver_id: winkUser._id,
+                receiverVisibility: winkUser.visibility,
+                approved: false,
+            };
+            const wink = await this.winkService.createWink(dataWink);
+            return res.status(HttpStatus.OK).json({
+                wink,
              });
         }
     }
