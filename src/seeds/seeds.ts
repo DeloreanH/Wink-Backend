@@ -23,7 +23,7 @@ const itemType     = mongoose.model(modelName.ITEM_TYPE, itemTypeSchema);
 const user         = mongoose.model(modelName.USER, userSchema);
 const item         = mongoose.model(modelName.ITEM, itemSchema);
 const sesion       = mongoose.model(modelName.SESION, sesionSchema);
-const socialLink   = mongoose.model(modelName.SOCIAL_LINK, socialNetworkLinkSchema);
+const socialNetworkLink   = mongoose.model(modelName.SOCIAL_NETWORKS_LINK, socialNetworkLinkSchema);
 const wink         = mongoose.model(modelName.WINK, winkSchema);
 
 // establecer nombre de la base de datos, el config del host se encuentra en el env
@@ -38,13 +38,13 @@ async  function up() {
     const usersItemswithId = setUserIdToItems(usersItemsSeed, data.ids);
     await user.insertMany(data.dataWithId);
     await item.insertMany(usersItemswithId);
-    await socialLink.insertMany(socialNetworkLinksSeed);
+    await socialNetworkLink.insertMany(socialNetworkLinksSeed);
 }
 
 // limpiar modelos
 async  function down() {
     console.log('CLEANING MODELS');
-    for ( const  model of [category, itemType, user, item, sesion, socialLink, wink] ) {
+    for ( const  model of [category, itemType, user, item, sesion, socialNetworkLink, wink] ) {
         try {
             await model.collection.drop();
         } catch (e) {

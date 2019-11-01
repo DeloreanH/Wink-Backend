@@ -5,5 +5,5 @@ export enum  modelName {
     ITEM        = 'Item',
     ITEM_TYPE   = 'ItemType',
     WINK        = 'Wink',
-    SOCIAL_LINK = 'SocialNetworkLink',
+    SOCIAL_NETWORKS_LINK = 'SocialNetworkLink',
 }

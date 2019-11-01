@@ -1,6 +1,6 @@
-import { Controller, Body, Post, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Body, Post, HttpStatus, Res, Get } from '@nestjs/common';
 import { AuthUser } from '../../common/decorators/auth-decorators.decorator';
-import { IUser, IWink, IItem } from '../../common/interfaces/interfaces';
+import { IUser, IWink, IItem, ISocialLink } from '../../common/interfaces/interfaces';
 import { UserService } from '../../shared/services/user.service';
 import { findNearbyUsersDTO } from './dtos/findNearbyUsers.dto';
 import { updateUserStatusDTO } from './dtos/updateUserStatus.dto';
@@ -68,8 +68,12 @@ export class WinkController {
         }
     }
     @Post('user/update/status')
-    updateUserStatus(@AuthUser() user: IUser, @Body() data: updateUserStatusDTO): Promise<IUser>  {
+    updateUserStatus(@AuthUser() user: IUser, @Body() data: updateUserStatusDTO): Promise<IUser> {
         return this.userServ.findByIdAndUpdate(user._id, { status: data.status});
+    }
+    @Get('social-network-links')
+    getSocialNetworkLinks(): Promise<ISocialLink[]>  {
+        return this.winkService.getSocialNetworksLinks();
     }
     @Post('user/update/visibility')
     updateUserVisibility(@AuthUser() user: IUser, @Body() data: updateUserVisibilitysDTO): Promise<IUser>  {

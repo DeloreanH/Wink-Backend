@@ -28,7 +28,7 @@ import { socialNetworkLinkSchema } from './schemas/social-network-link.schema';
             { name: modelName.ITEM, schema: itemSchema },
             { name: modelName.ITEM_TYPE, schema: itemTypeSchema },
             { name: modelName.WINK, schema: winkSchema },
-            { name: modelName.SOCIAL_LINK, schema: socialNetworkLinkSchema },
+            { name: modelName.SOCIAL_NETWORKS_LINK, schema: socialNetworkLinkSchema },
         ]),
         ],
         exports: [

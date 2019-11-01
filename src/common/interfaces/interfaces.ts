@@ -42,7 +42,12 @@ export interface IWink extends Document {
     receiverVisibility: string;
     approved: boolean;
 }
-
+export interface ISocialLink extends Document {
+    _id: string;
+    name: string;
+    url: string;
+    complement: string;
+}
 export interface IUser extends Document {
     _id: string;
     firstName?: string;

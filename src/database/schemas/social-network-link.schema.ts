@@ -7,4 +7,8 @@ export const socialNetworkLinkSchema = new Schema({
     url: {
         type: String,
     },
+    complement: {
+        type: String,
+        default: '',
+    },
 }, {timestamps: true});
