@@ -21,5 +21,10 @@ export class WinkService {
         public async getSocialNetworksLinks(): Promise<ISocialLink[]> {
             return await this.socialNetworkLinkModel.find();
         }
-
+        public async approveWink(id: string, data: {approved: boolean}): Promise<IWink> {
+            return await this.winkModel.findOneAndUpdate({_id: id}, data, {new: true} );
+        }
+        public async deleteWink(id: string): Promise<IWink> {
+            return await this.winkModel.findByIdAndDelete({_id: id});
+        }
 }

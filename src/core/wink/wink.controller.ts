@@ -9,6 +9,7 @@ import { WinkService } from './wink.service';
 import { showPublicProfileDTO } from './dtos/showPublicProfileDTO';
 import { ItemService } from '../../shared/services/item.service';
 import { sendWinkDTO } from './dtos/sendWinkDTO';
+import { winkIdDTO } from './dtos/winkIdDTO';
 
 @Controller('wink')
 export class WinkController {
@@ -66,6 +67,24 @@ export class WinkController {
                 wink,
              });
         }
+    }
+    @Post('approve-wink')
+    async approveWink(@Body() data: winkIdDTO, @Res() res): Promise<IWink>  {
+
+        const dataToUpdate = {
+            approved: true,
+        };
+        await this.winkService.approveWink(data.wink_id, dataToUpdate);
+        return res.status(HttpStatus.BAD_REQUEST).json({
+            status: 'wink approved',
+         });
+    }
+    @Post('delete-wink')
+    async deleteWink(@Body() data: winkIdDTO, @Res() res): Promise<IWink>  {
+        await this.winkService.deleteWink(data.wink_id);
+        return res.status(HttpStatus.BAD_REQUEST).json({
+            status: 'wink deleted',
+         });
     }
     @Post('user/update/status')
     updateUserStatus(@AuthUser() user: IUser, @Body() data: updateUserStatusDTO): Promise<IUser> {
