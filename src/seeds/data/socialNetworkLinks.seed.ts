@@ -2,7 +2,7 @@ export const socialNetworkLinksSeed = [
     {
         name: 'facebook',
         url: 'https://www.facebook.com/',
-        complement: 'posts/?app=fbl',
+        complement: '/posts/?app=fbl',
     },
     {
         name: 'instagram',
@@ -36,5 +36,8 @@ export const socialNetworkLinksSeed = [
         name: 'snatchap',
         url: 'https://www.snapchat.com/add/',
     },
-
+    {
+        name: 'linkedin',
+        url: 'https://www.linkedin.com/in/',
+    },
 ];

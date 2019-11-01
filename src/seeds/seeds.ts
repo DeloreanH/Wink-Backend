@@ -26,8 +26,7 @@ const sesion       = mongoose.model(modelName.SESION, sesionSchema);
 const socialNetworkLink   = mongoose.model(modelName.SOCIAL_NETWORKS_LINK, socialNetworkLinkSchema);
 const wink         = mongoose.model(modelName.WINK, winkSchema);
 
-// establecer nombre de la base de datos, el config del host se encuentra en el env
-mongoose.connect(process.env.MONGO_HOST, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+execute();
 
 // creacion de las semillas
 async  function up() {
@@ -41,8 +40,9 @@ async  function up() {
     await socialNetworkLink.insertMany(socialNetworkLinksSeed);
 }
 
+/*
 // limpiar modelos
-async  function down() {
+async  function down(conn) {
     console.log('CLEANING MODELS');
     for ( const  model of [category, itemType, user, item, sesion, socialNetworkLink, wink] ) {
         try {
@@ -56,10 +56,18 @@ async  function down() {
         }
     }
 }
+*/
 
-function close() {
+async function closeConn() {
     console.log('CLOSING CONNECTION WITH DB');
-    mongoose.connection.close();
+    await mongoose.connection.close();
+}
+
+async function openConn() {
+    console.log('OPENING CONNECTION WITH DB');
+    const conn = await mongoose.connect(process.env.MONGO_HOST, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+    console.log('DROPPING EXISTING DATA');
+    await conn.connection.dropDatabase();
 }
 
 function setIdsToArray(dataArray: any[]) {
@@ -78,15 +86,13 @@ function setUserIdToItems(items: any[], ids: any[]) {
 // ejecutar  los metodos down y up respectivamente
 async function execute() {
     try {
-        await down();
+        await openConn();
         await up();
-        close();
+        await closeConn();
         console.log('ALL DONE...');
 
     } catch (e) {
         console.log(e);
-        close();
+        await closeConn();
     }
 }
-
-execute();

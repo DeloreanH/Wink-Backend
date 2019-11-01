@@ -11,7 +11,7 @@ export const usersSeed = [
         visibility: 'todos',
         avatarUrl: 'https://image.flaticon.com/icons/png/512/206/206853.png',
         email: 'john@doe.com',
-        birthday: null,
+        birthday: new Date('1993-07-26'),
         username: 'johndoe123',
         location: {
             type: 'Point',
@@ -30,7 +30,7 @@ export const usersSeed = [
         visibility: 'todos',
         avatarUrl: 'https://icstravelgroup.com/wp-content/uploads/2017/07/icstravelgroup_clients_icons00002.png',
         email: 'maria@lopez.com',
-        birthday: null,
+        birthday: new Date('1990-12-03'),
         username: 'marialopez5656',
         location: {
             type: 'Point',
@@ -49,7 +49,7 @@ export const usersSeed = [
         visibility: 'todos',
         avatarUrl: 'https://i.pinimg.com/originals/8f/22/d3/8f22d32f54c8d0dd4087b1007af00353.jpg',
         email: 'eric@cartman.com',
-        birthday: null,
+        birthday: new Date('1998-03-16'),
         username: 'eric1414',
         location: {
             type: 'Point',
