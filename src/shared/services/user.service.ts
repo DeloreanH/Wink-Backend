@@ -36,6 +36,11 @@ export class UserService {
         const createdUser = new this.userModel(user);
         return await createdUser.save();
     }
+
+    public async getUserWinks(id: string): Promise<any> {
+        return await this.userModel.findOne({_id: id}).select('_id').populate('sendedWinks').populate('receivedWinks');
+    }
+
     public async findNearbyUsers(userId: string , coordinates: [number, number], sort?: number ): Promise<IUser[]> {
         const sorting = sort ? sort : 1;
         await this.findByIdAndUpdate(userId, {location: { type: 'Point', coordinates}});

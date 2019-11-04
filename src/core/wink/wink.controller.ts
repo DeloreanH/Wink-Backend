@@ -68,21 +68,24 @@ export class WinkController {
              });
         }
     }
+    @Get('get-winks')
+    getUserWinks(@AuthUser() user: IUser): Promise<IWink[]>  {
+        return this.winkService.getUserWinks(user._id);
+    }
     @Post('approve-wink')
     async approveWink(@Body() data: winkIdDTO, @Res() res): Promise<IWink>  {
-
         const dataToUpdate = {
             approved: true,
         };
         await this.winkService.approveWink(data.wink_id, dataToUpdate);
-        return res.status(HttpStatus.BAD_REQUEST).json({
+        return res.status(HttpStatus.OK).json({
             status: 'wink approved',
          });
     }
     @Post('delete-wink')
     async deleteWink(@Body() data: winkIdDTO, @Res() res): Promise<IWink>  {
         await this.winkService.deleteWink(data.wink_id);
-        return res.status(HttpStatus.BAD_REQUEST).json({
+        return res.status(HttpStatus.OK).json({
             status: 'wink deleted',
          });
     }

@@ -4,6 +4,7 @@ import { modelName } from '../../database/models-name';
 import { Model } from 'mongoose';
 import { IWink, ISocialLink} from '../../common/interfaces/interfaces';
 import { winkDTO } from './dtos/WinkDTO';
+import { ObjectId } from 'bson';
 
 @Injectable()
 export class WinkService {
@@ -26,5 +27,17 @@ export class WinkService {
         }
         public async deleteWink(id: string): Promise<IWink> {
             return await this.winkModel.findByIdAndDelete({_id: id});
+        }
+        public async getUserWinks(id: string): Promise<any> {
+            return await this.winkModel.aggregate([
+                {
+                    $match: {
+                        $or: [
+                            {receiver_id: new ObjectId(id)},
+                            {sender_id: new ObjectId(id)},
+                        ],
+                    },
+                },
+            ]);
         }
 }

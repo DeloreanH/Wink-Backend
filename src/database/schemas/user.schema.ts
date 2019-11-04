@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import { Tools } from '../../common/tools/tools';
+import { modelName } from '../models-name';
 
 export const userSchema = new Schema({
     firstName: {
@@ -73,6 +74,25 @@ export const userSchema = new Schema({
         type: { type: String },
         coordinates: [],
     },
-}, {timestamps: true});
+}, { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false, timestamps: true });
 
 userSchema.index({ location: '2dsphere' });
+
+userSchema.virtual('sendedWinks', {
+    ref: modelName.WINK, // The model to use
+    localField: '_id', // is equal to `localField`
+    foreignField: 'sender_id', // is equal to `foreignField`
+    // If `justOne` is true, 'members' will be a single doc as opposed to
+    // an array. `justOne` is false by default.
+    justOne: false,
+    // options: { sort: { name: -1 }, limit: 5 }, // Query options,
+  });
+
+userSchema.virtual('receivedWinks', {
+    ref: modelName.WINK, // The model to use
+    localField: '_id', // is equal to `localField`
+    foreignField: 'receiver_id', // is equal to `foreignField`
+    // If `justOne` is true, 'members' will be a single doc as opposed to
+    // an array. `justOne` is false by default.
+    justOne: false,
+  });

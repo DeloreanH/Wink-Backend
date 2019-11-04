@@ -39,7 +39,7 @@ export const itemSchema = new Schema({
 },  { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false  });
 
 itemSchema.virtual('withtypes', {
-    ref: 'ItemType', // The model to use
+    ref: modelName.ITEM_TYPE, // The model to use
     localField: 'itemtype', // is equal to `localField`
     foreignField: 'name', // is equal to `foreignField`
     // If `justOne` is true, 'members' will be a single doc as opposed to
