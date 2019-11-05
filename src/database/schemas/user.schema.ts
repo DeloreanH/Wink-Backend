@@ -63,8 +63,8 @@ export const userSchema = new Schema({
     },
     visibility: {
         type: String,
-        enum : ['personal', 'profesional', 'general', 'todos'],
-        default: 'todos',
+        enum : ['personal', 'professional', 'general', 'all'],
+        default: 'all',
     },
     autosave: {
         type: Boolean,

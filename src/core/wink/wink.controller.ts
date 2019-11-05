@@ -6,10 +6,10 @@ import { findNearbyUsersDTO } from './dtos/findNearbyUsers.dto';
 import { updateUserStatusDTO } from './dtos/updateUserStatus.dto';
 import { updateUserVisibilitysDTO } from './dtos/updateUserVisibility.dto';
 import { WinkService } from './wink.service';
-import { showPublicProfileDTO } from './dtos/showPublicProfileDTO';
 import { ItemService } from '../../shared/services/item.service';
-import { sendWinkDTO } from './dtos/sendWinkDTO';
 import { winkIdDTO } from './dtos/winkIdDTO';
+import { winkUserIdDTO } from './dtos/winkUserId.dto';
+import { showPrivateProfileDTO } from './dtos/showPrivateProfile.dto';
 
 @Controller('wink')
 export class WinkController {
@@ -20,7 +20,7 @@ export class WinkController {
         return this.userServ.findNearbyUsers(user._id, [+data.longitude , +data.latitude], +data.sort);
     }
     @Post('show-public-profile')
-    async showPublicProfile(@AuthUser() user: IUser, @Body() data: showPublicProfileDTO, @Res() res): Promise<IWink>  {
+    async showPublicProfile(@AuthUser() user: IUser, @Body() data: winkUserIdDTO, @Res() res): Promise<IWink>  {
         const searchParams = [
             {sender_id: user._id,  receiver_id: data.winkUserId},
             {sender_id: data.winkUserId ,  receiver_id: user._id},
@@ -43,10 +43,10 @@ export class WinkController {
         }
     }
     @Post('send-wink')
-    async sendWink(@AuthUser() user: IUser, @Body() data: sendWinkDTO, @Res() res): Promise<IWink>  {
+    async sendWink(@AuthUser('_id') id: string, @Body() data: winkUserIdDTO, @Res() res): Promise<IWink>  {
         const searchParams = [
-            {sender_id: user._id,  receiver_id: data.winkUserId},
-            {sender_id: data.winkUserId ,  receiver_id: user._id},
+            {sender_id: id,  receiver_id: data.winkUserId},
+            {sender_id: data.winkUserId ,  receiver_id: id},
         ];
         const response = await this.winkService.findByProperties(searchParams) as IWink;
         if (response) {
@@ -55,6 +55,7 @@ export class WinkController {
              });
         } else {
             const winkUser = await this.userServ.findByIdOrFail(data.winkUserId) as IUser;
+            const user     = await this.userServ.findByIdOrFail(id) as IUser;
             const dataWink = {
                 sender_id: user._id,
                 senderVisibility: user.visibility,
@@ -82,6 +83,27 @@ export class WinkController {
             status: 'wink approved',
          });
     }
+    /*
+    @Post('show-private-profile')
+   async showPrivateProfile(@Body() data: showPrivateProfileDTO, @Res() res): Promise<IWink>  {
+        const wink = await this.winkService.findByIdOrFail(data.wink_id);
+        if (!wink) {
+            return res.status(HttpStatus.NOT_FOUND).json({
+                status: 'Wink not found',
+             });
+        } else {
+            if (!wink.approved) {
+                return res.status(HttpStatus.NOT_FOUND).json({
+                    status: 'Wink not found',
+                 });
+            } else {
+
+            }
+           const searchVisibility = data.winkUserId === wink.sender_id ? wink.senderVisibility : wink.receiverVisibility;
+
+        }
+    }
+    */
     @Post('delete-wink')
     async deleteWink(@Body() data: winkIdDTO, @Res() res): Promise<IWink>  {
         await this.winkService.deleteWink(data.wink_id);

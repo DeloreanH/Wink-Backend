@@ -8,7 +8,7 @@ export const winkSchema = new Schema({
     },
     senderVisibility: {
         type: String,
-        enum : ['personal', 'profesional', 'todos', 'general'],
+        enum : ['personal', 'professional', 'all', 'general'],
     },
     receiver_id: {
         type: Schema.Types.ObjectId,
@@ -16,7 +16,7 @@ export const winkSchema = new Schema({
     },
     receiverVisibility: {
         type: String,
-        enum : ['personal', 'profesional', 'todos', 'general'],
+        enum : ['personal', 'professional', 'all', 'general'],
     },
     approved: {
         type: Boolean,

@@ -7,7 +7,7 @@ import { UserService } from '../../shared/services/user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { setMulterOptions } from '../../common/tools/multer.config';
 import { unlinkSync, existsSync } from 'fs';
-import { ItemService } from 'src/shared/services/item.service';
+import { ItemService } from '../../shared/services/item.service';
 
 @Controller('user-config')
 export class UserConfigController {
