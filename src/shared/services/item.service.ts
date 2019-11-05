@@ -34,6 +34,13 @@ export class ItemService {
             { $sort : { position: 1}},
         ]);
     }
+    public async getItems(userId: string, params: any[]) {
+        return await this.itemModel.aggregate([
+            { $match: {user_id: new ObjectId(userId)}},
+            { $match: {'section.key': {$in: params}}},
+            { $sort : { position: 1}},
+        ]);
+    }
     public async deleteManyItemsToUser(id: string) {
         return await this.itemModel.deleteMany({user_id: id});
     }

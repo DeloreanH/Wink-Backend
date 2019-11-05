@@ -10,6 +10,7 @@ import { ItemService } from '../../shared/services/item.service';
 import { winkIdDTO } from './dtos/winkIdDTO';
 import { winkUserIdDTO } from './dtos/winkUserId.dto';
 import { showPrivateProfileDTO } from './dtos/showPrivateProfile.dto';
+import { itemsVisibility } from 'src/common/enums/enums';
 
 @Controller('wink')
 export class WinkController {
@@ -83,9 +84,9 @@ export class WinkController {
             status: 'wink approved',
          });
     }
-    /*
+
     @Post('show-private-profile')
-   async showPrivateProfile(@Body() data: showPrivateProfileDTO, @Res() res): Promise<IWink>  {
+   async showPrivateProfile(@Body() data: showPrivateProfileDTO, @Res() res): Promise<IItem[]>  {
         const wink = await this.winkService.findByIdOrFail(data.wink_id);
         if (!wink) {
             return res.status(HttpStatus.NOT_FOUND).json({
@@ -93,17 +94,31 @@ export class WinkController {
              });
         } else {
             if (!wink.approved) {
-                return res.status(HttpStatus.NOT_FOUND).json({
-                    status: 'Wink not found',
-                 });
+                return res.status(HttpStatus.BAD_REQUEST).json({
+                    status: 'Wink is not approved',
+                });
             } else {
-
+                const visibility = data.winkUserId === wink.sender_id ? wink.senderVisibility : wink.receiverVisibility;
+                const toSearch = [];
+                switch (visibility) {
+                    case 'personal':
+                        toSearch.push(itemsVisibility.GENERAL, itemsVisibility.PERSONAL);
+                        break;
+                    case 'professional':
+                        toSearch.push(itemsVisibility.GENERAL, itemsVisibility.PROFESSIONAL);
+                        break;
+                    case 'general':
+                        toSearch.push(itemsVisibility.GENERAL);
+                        break;
+                    default:
+                        toSearch.push(itemsVisibility.GENERAL, itemsVisibility.PROFESSIONAL, itemsVisibility.PERSONAL);
+                        break;
+                  }
+                  console.log(toSearch);
+                return await this.itemServ.getItems(data.winkUserId, toSearch);
             }
-           const searchVisibility = data.winkUserId === wink.sender_id ? wink.senderVisibility : wink.receiverVisibility;
-
         }
     }
-    */
     @Post('delete-wink')
     async deleteWink(@Body() data: winkIdDTO, @Res() res): Promise<IWink>  {
         await this.winkService.deleteWink(data.wink_id);
