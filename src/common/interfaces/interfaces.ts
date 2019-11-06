@@ -1,14 +1,12 @@
-import { Document } from 'mongoose';
+import { Document} from 'mongoose';
 
 export interface ICategory extends Document {
-    _id: string;
     name: number;
     itemType?: IItemType;
     created: Date;
 }
 
 export interface IItemType extends Document {
-    _id: string;
     description: string;
     index: number;
     repeat: boolean;
@@ -18,7 +16,6 @@ export interface IItemType extends Document {
 }
 
 export interface IItem extends Document {
-    _id: string;
     user_id: string;
     itemtype: string;
     value?: string;
@@ -29,19 +26,19 @@ export interface IItem extends Document {
     created: Date;
 }
 export interface ISection extends Document {
-    _id: string;
     name: string;
     key: number;
 }
 
 export interface IWink extends Document {
-    _id: string;
     sender_id: string;
     senderVisibility: string;
     receiver_id: string;
     receiverVisibility: string;
     approved: boolean;
 }
+
+
 export interface ISocialLink extends Document {
     _id: string;
     name: string;
@@ -49,7 +46,6 @@ export interface ISocialLink extends Document {
     complement: string;
 }
 export interface IUser extends Document {
-    _id: string;
     firstName?: string;
     lastName?: string;
     email?: string;
@@ -76,7 +72,6 @@ export interface IPhone {
 }
 
 export interface ISesion extends Document {
-    _id: string;
     user_id: string;
     serverToken: string;
     token: string;

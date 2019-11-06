@@ -27,13 +27,6 @@ export class ItemService {
     public async getItemsByUserId(id: string): Promise<IItem[]> {
         return await this.itemModel.find({user_id: id});
     }
-    public async getPublicItems(userId: string) {
-        return await this.itemModel.aggregate([
-            { $match: {user_id: new ObjectId(userId)}},
-            { $match: {'section.key': itemsVisibility.PUBLIC}},
-            { $sort : { position: 1}},
-        ]);
-    }
     public async getItems(userId: string, params: any[]) {
         return await this.itemModel.aggregate([
             { $match: {user_id: new ObjectId(userId)}},

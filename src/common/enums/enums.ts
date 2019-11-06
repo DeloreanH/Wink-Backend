@@ -11,6 +11,7 @@ export enum Gender {
 }
 
 export enum itemsVisibility {
+    BIO          = -1,
     PUBLIC       = 0,
     GENERAL      = 1,
     PERSONAL     = 2,

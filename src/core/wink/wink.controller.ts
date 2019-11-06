@@ -11,6 +11,8 @@ import { winkIdDTO } from './dtos/winkIdDTO';
 import { winkUserIdDTO } from './dtos/winkUserId.dto';
 import { showPrivateProfileDTO } from './dtos/showPrivateProfile.dto';
 import { itemsVisibility } from 'src/common/enums/enums';
+import { Types } from 'mongoose';
+import { ObjectId } from 'bson';
 
 @Controller('wink')
 export class WinkController {
@@ -28,7 +30,7 @@ export class WinkController {
         ];
         const wink      = await this.winkService.findByProperties(searchParams) as IWink;
         const otherUser = await this.userServ.findByIdOrFail(data.winkUserId) as IUser;
-        const item      = await this.itemServ.getPublicItems(otherUser._id) as IItem[];
+        const item      = await this.itemServ.getItems(otherUser._id, [itemsVisibility.BIO, itemsVisibility.PUBLIC]) as IItem[];
         if (!wink) {
             return res.status(HttpStatus.OK).json({
                 wink: null,
@@ -98,7 +100,7 @@ export class WinkController {
                     status: 'Wink is not approved',
                 });
             } else {
-                const visibility = data.winkUserId === wink.sender_id ? wink.senderVisibility : wink.receiverVisibility;
+                const visibility = new ObjectId(wink.sender_id).equals(data.winkUserId) ? wink.senderVisibility : wink.receiverVisibility;
                 const toSearch = [];
                 switch (visibility) {
                     case 'personal':
@@ -114,8 +116,8 @@ export class WinkController {
                         toSearch.push(itemsVisibility.GENERAL, itemsVisibility.PROFESSIONAL, itemsVisibility.PERSONAL);
                         break;
                   }
-                  console.log(toSearch);
-                return await this.itemServ.getItems(data.winkUserId, toSearch);
+                const items = await this.itemServ.getItems(data.winkUserId, toSearch);
+                return res.status(HttpStatus.OK).json(items);
             }
         }
     }
