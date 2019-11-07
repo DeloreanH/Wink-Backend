@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { SharedModule } from 'src/shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { UserConfigModule } from './user-config/user-config.module';
 import { WinkModule } from './wink/wink.module';
-
+import { CoreGateway } from './core.gateway';
 
 @Module({
     imports: [
@@ -12,5 +12,6 @@ import { WinkModule } from './wink/wink.module';
     ],
     exports: [
     ],
+    providers: [CoreGateway],
 })
 export class CoreModule {}
