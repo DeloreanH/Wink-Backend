@@ -86,6 +86,10 @@ export class WinkController {
             status: 'wink approved',
          });
     }
+    @Post('user')
+    async getWinkUser(@Body() data: winkUserIdDTO): Promise<IUser>  {
+        return await this.userServ.findById(data.winkUserId);
+    }
 
     @Post('show-private-profile')
    async showPrivateProfile(@Body() data: showPrivateProfileDTO, @Res() res): Promise<IItem[]>  {
