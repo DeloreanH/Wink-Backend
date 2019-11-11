@@ -12,7 +12,7 @@ async function bootstrap() {
     app.enableCors();
     app.setGlobalPrefix('api');
     app.use('/public', express.static('public'));
-    await app.listen(process.env.POST || 3000);
+    await app.listen(process.env.PORT || 3000);
     console.log('Http server running on port: ' + `${process.env.POST || 3000}`);
 }
 bootstrap();

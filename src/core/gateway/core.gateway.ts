@@ -1,8 +1,10 @@
 import { SubscribeMessage, WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Socket } from 'socket.io';
+import { CoreGatewayGuard } from './core-gateway.guard';
 
-@WebSocketGateway(3005, { transports: ['websocket'] })
+
+@WebSocketGateway( +process.env.GATEWAY_PORT || 3005, { transports: ['websocket'] })
 export class CoreGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   wss;
@@ -19,6 +21,7 @@ export class CoreGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client.emit('disconect', 'Successfully connected to server');
   }
 
+  @UseGuards(CoreGatewayGuard)
   @SubscribeMessage('add-message')
   setNickname(client: Socket, message: string) {
     console.log('recibe esto', message, client.id);
