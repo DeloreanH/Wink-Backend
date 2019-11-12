@@ -1,30 +1,53 @@
-import { SubscribeMessage, WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
-import { Logger, UseGuards } from '@nestjs/common';
-import { Socket } from 'socket.io';
-import { CoreGatewayGuard } from './core-gateway.guard';
-
+import { SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayConnection, WsException } from '@nestjs/websockets';
+import { OnModuleInit } from '@nestjs/common';
+import { Socket, Server } from 'socket.io';
+import { AuthService } from 'src/shared/services/auth.service';
+import { IPayload } from 'src/common/interfaces/interfaces';
 
 @WebSocketGateway( +process.env.GATEWAY_PORT || 3005, { transports: ['websocket'] })
-export class CoreGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class CoreGateway implements OnModuleInit {
+  public clients = new Map();
   @WebSocketServer()
-  wss;
+  public wss: Server;
 
-  private logger = new Logger ('AppGateway');
+  constructor( private authServ: AuthService) {}
 
-  handleConnection(client) {
-    this.logger.log('New client connected', client.id);
-    client.emit('bla', 'Harry');
+  onModuleInit() {
+    this.authMw();
+    this.onConnect();
+    this.onDisconnect();
+
   }
 
-  handleDisconnect(client) {
-    this.logger.log('Client disconnected', client.id);
-    client.emit('disconect', 'Successfully connected to server');
+  private authMw() {
+    this.wss.use(async (socket: Socket, next) => {
+      const token = socket.handshake.query.auth;
+      if (!token) {
+        return next(new Error('Auth Token not found'));
+      } else {
+        try {
+          const payload = await this.authServ.decode(token) as IPayload;
+          socket.handshake.query.user_id = payload.sub._id;
+          return next();
+        } catch (error) {
+          return next(new Error(error));
+        }
+      }
+    });
   }
-
-  @UseGuards(CoreGatewayGuard)
-  @SubscribeMessage('add-message')
-  setNickname(client: Socket, message: string) {
-    console.log('recibe esto', message, client.id);
+  private onConnect() {
+    this.wss.on('connection', (socket: Socket) => {
+      this.clients.set(socket.handshake.query.user_id, socket.client.id);
+      console.log('connect', socket.handshake.query.user_id);
+      console.log('clientes on connect', this.clients);
+    });
+  }
+  private onDisconnect() {
+    this.wss.on('disconnect', (socket: Socket) => {
+      this.clients.delete(socket.handshake.query.user_id);
+      console.log('disconnect', socket.handshake.query.user_id);
+      console.log('clientes on disconnect', this.clients);
+    });
   }
 
 }
