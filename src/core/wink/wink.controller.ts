@@ -10,13 +10,13 @@ import { ItemService } from '../../shared/services/item.service';
 import { winkIdDTO } from './dtos/winkIdDTO';
 import { winkUserIdDTO } from './dtos/winkUserId.dto';
 import { showPrivateProfileDTO } from './dtos/showPrivateProfile.dto';
-import { itemsVisibility } from 'src/common/enums/enums';
-import { Types } from 'mongoose';
+import { itemsVisibility } from '../../common/enums/enums';
 import { ObjectId } from 'bson';
+import { EventsGateway } from '../../events/events.gateway';
 
 @Controller('wink')
 export class WinkController {
-    constructor(private userServ: UserService, private winkService: WinkService, private itemServ: ItemService) {}
+    constructor(private userServ: UserService, private winkService: WinkService, private itemServ: ItemService, private events: EventsGateway) {}
 
     @Post('nearby-users')
     nearbyUsers(@AuthUser() user: IUser, @Body() data: findNearbyUsersDTO): Promise<IUser[]>  {
@@ -67,6 +67,12 @@ export class WinkController {
                 approved: false,
             };
             const wink = await this.winkService.createWink(dataWink);
+            const clients = this.events.userClients.get(winkUser._id.toString());
+            if (clients) {
+                clients.forEach( clientId => {
+                    this.events.wss.to(clientId).emit('winked', wink);
+                });
+            }
             return res.status(HttpStatus.OK).json({
                 wink,
              });

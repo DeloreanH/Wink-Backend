@@ -2,11 +2,11 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nes
 import { Observable } from 'rxjs';
 import { WsException } from '@nestjs/websockets';
 import { Socket} from 'socket.io';
-import { AuthService } from '../../shared/services/auth.service';
-import { IPayload } from '../../common/interfaces/interfaces';
+import { AuthService } from '../shared/services/auth.service';
+import { IPayload } from '../common/interfaces/interfaces';
 
 @Injectable()
-export class CoreGatewayInterceptor implements NestInterceptor {
+export class EventsGatewayInterceptor implements NestInterceptor {
  constructor( private authServ: AuthService) {}
  async intercept(context: ExecutionContext, next: CallHandler): Promise<any> {
     const socket: Socket = context.switchToWs().getClient();

@@ -1,11 +1,11 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { AuthService } from '../../shared/services/auth.service';
-import { IPayload, IUserClients } from '../../common/interfaces/interfaces';
+import { AuthService } from '../shared/services/auth.service';
+import { IPayload } from '../common/interfaces/interfaces';
 
 @WebSocketGateway( +process.env.GATEWAY_PORT || 3005, { transports: ['websocket'] })
-export class CoreGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
-  public userClients: IUserClients[] = [];
+export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
+  public userClients = new Map();
   @WebSocketServer() public wss: Server;
 
   constructor(private authServ: AuthService) {}
@@ -16,9 +16,11 @@ export class CoreGateway implements OnGatewayConnection, OnGatewayDisconnect, On
 
   handleConnection(client: Socket, ...args: any[]) {
     this.addClient(client, client.handshake.query.userId);
+    client.emit('connection', 'Successfully connected to server');
   }
   handleDisconnect(client: Socket) {
     this.removeClient(client, client.handshake.query.userId);
+    client.emit('disconnect', 'Successfully disconnected from server');
   }
 
   @SubscribeMessage('add-message')
@@ -43,20 +45,20 @@ export class CoreGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   }
 
   private addClient(client: Socket, userId: string): void {
-      const index = this.userClients.findIndex(data => data.user_id === userId);
-      if (index === -1) {
-        this.userClients.push({user_id: userId, clients: [client.id]});
-      } else {
-        this.userClients[index].clients.push(client.id);
-      }
+    const data = this.userClients.get(userId);
+    if (data) {
+      data.push(client.id);
+      this.userClients.set(userId, data);
+    } else {
+      this.userClients.set(userId, [client.id]);
+    }
   }
   private removeClient(client: Socket, userId: string): void {
-    const index = this.userClients.findIndex(data => data.user_id === userId);
-    if (index !== -1) {
-      this.userClients[index].clients = this.userClients[index].clients.filter(clientId => clientId !== client.id);
-      if (this.userClients[index].clients.length === 0) {
-        this.userClients.splice(index, 1);
-      }
+    const filtered = this.userClients.get(userId).filter(clientId => clientId !== client.id);
+    if (filtered.length > 0) {
+      this.userClients.set(userId, filtered);
+    } else {
+      this.userClients.delete(userId);
     }
   }
 }

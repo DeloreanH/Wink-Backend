@@ -96,8 +96,3 @@ export interface IAuthResponse {
     user?: IUser;
     emptyProfile?: boolean;
 }
-
-export interface IUserClients {
-    user_id: string;
-    clients: string[];
-}
