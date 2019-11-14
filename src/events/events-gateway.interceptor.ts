@@ -1,8 +1,7 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { WsException } from '@nestjs/websockets';
 import { Socket} from 'socket.io';
-import { AuthService } from '../shared/services/auth.service';
+import { AuthService } from '../auth/services/auth.service';
 import { IPayload } from '../common/interfaces/interfaces';
 
 @Injectable()

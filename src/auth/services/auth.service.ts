@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { sign, verify } from 'jsonwebtoken';
 import { jwtAlgorithm } from '../../common/enums/enums';
-import { UserService } from './user.service';
+import { UserService } from '../../shared/services/user.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { sesionDTO } from '../dtos/sesion.dto';
-import { UserDTO } from '../dtos/users.dto';
+import { sesionDTO } from '../../shared/dtos/sesion.dto';
+import { UserDTO } from '../../shared/dtos/users.dto';
 import { ISub, IPayload, ISesion, IAuthResponse, IItem } from '../../common/interfaces/interfaces';
 import * as moment from 'moment';
 import { modelName } from '../../database/models-name';
-import { itemsDefault } from '../../auth/itemsDefault';
+import { itemsDefault } from '../itemsDefault';
 
 @Injectable()
 export class AuthService {

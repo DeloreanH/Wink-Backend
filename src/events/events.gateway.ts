@@ -1,6 +1,6 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { AuthService } from '../shared/services/auth.service';
+import { AuthService } from '../auth/services/auth.service';
 import { IPayload } from '../common/interfaces/interfaces';
 
 @WebSocketGateway( +process.env.GATEWAY_PORT || 3005, { transports: ['websocket'] })

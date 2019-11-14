@@ -1,18 +1,18 @@
-import { Module, MiddlewareConsumer, RequestMethod, NestModule } from '@nestjs/common';
-import {AuthController} from './auth.controller';
+import { Module, MiddlewareConsumer, RequestMethod, NestModule, Global } from '@nestjs/common';
+import { AuthController } from './auth.controller';
 import { AuthMiddleware } from './middlewares/auth.middleware';
-import { SharedModule } from '../shared/shared.module';
 import { excludeMwRoutes } from '../common/enums/enums';
+import { AuthService } from './services/auth.service';
+@Global()
 @Module({
-    imports: [
-      SharedModule,
-      ],
     exports: [
+      AuthService,
     ],
     controllers: [
       AuthController,
     ],
     providers: [
+      AuthService,
     ],
 })
 export class AuthModule implements NestModule {

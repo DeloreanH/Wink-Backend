@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware, HttpException, HttpStatus } from '@nestjs/c
 import { UserService } from '../../shared/services/user.service';
 import { verify } from 'jsonwebtoken';
 import { IUser, IPayload } from '../../common/interfaces/interfaces';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {

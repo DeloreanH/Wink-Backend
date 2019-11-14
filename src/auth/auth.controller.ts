@@ -2,7 +2,7 @@ import { Controller, HttpStatus, Post, Res, HttpException, UseInterceptors, Req}
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { servToken } from '../common/decorators/auth-decorators.decorator';
 import { IAuthResponse, IPayload } from '../common/interfaces/interfaces';
-import { AuthService } from '../shared/services/auth.service';
+import { AuthService } from './services/auth.service';
 
 @Controller('auth')
 export class AuthController {
