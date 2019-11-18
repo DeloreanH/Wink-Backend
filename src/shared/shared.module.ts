@@ -8,8 +8,6 @@ import { ItemService } from './services/item.service';
         UserService,
         ItemService,
       ],
-      controllers: [
-      ],
       providers: [
         UserService,
         ItemService,

@@ -13,6 +13,7 @@ import { showPrivateProfileDTO } from './dtos/showPrivateProfile.dto';
 import { itemsVisibility } from '../../common/enums/enums';
 import { ObjectId } from 'bson';
 import { EventsGateway } from '../../events/events.gateway';
+import { Tools } from 'src/common/tools/tools';
 
 @Controller('wink')
 export class WinkController {
@@ -68,9 +69,16 @@ export class WinkController {
             };
             const wink = await this.winkService.createWink(dataWink);
             const clients = this.events.userClients.get(winkUser._id.toString());
+            const distance = Tools.getDistance(
+                user.location.coordinates[1],
+                user.location.coordinates[0],
+                winkUser.location.coordinates[1],
+                winkUser.location.coordinates[0],
+                'm',
+                );
             if (clients) {
                 clients.forEach( clientId => {
-                    this.events.wss.to(clientId).emit('winked', wink);
+                    this.events.wss.to(clientId).emit('winked', {wink, winkUser, distance});
                 });
             }
             return res.status(HttpStatus.OK).json({
@@ -95,6 +103,11 @@ export class WinkController {
     @Post('user')
     async getWinkUser(@Body() data: winkUserIdDTO): Promise<IUser>  {
         return await this.userServ.findById(data.winkUserId);
+    }
+
+    @Post('points')
+    points(@Body() data: { lat1: number, lon1: number, lat2: number, lon2: number }): any  {
+        return Tools.getDistance(data.lat1, data.lon1, data.lat2, data.lon2, 'm');
     }
 
     @Post('show-private-profile')

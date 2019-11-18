@@ -54,15 +54,26 @@ export class Tools {
           return false;
         }
       }
-}
 
-// no funciona
-export const unless = (path, middleware) => {
-    return (req, res, next) => {
-      if (path === req.path) {
-          return next();
+    public static getDistance( lat1: number, lon1: number, lat2: number, lon2: number, unit = 'km' ) {
+      const r = 6378.1; // Equatorial Radius of the earth in km, use Equatorial to match mongodb spatial query distances
+      const dLat = Tools.deg2rad(lat2 - lat1);  // deg2rad below
+      const dLon = Tools.deg2rad(lon2 - lon1);
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(Tools.deg2rad(lat1)) * Math.cos(Tools.deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const d = r * c; // Distance in km
+      if (unit === 'm') {
+        return d * 1000;
       } else {
-        return middleware;
+        return d;
       }
-  };
-};
+    }
+
+    public static deg2rad(deg) {
+      return deg * (Math.PI / 180 );
+    }
+
+}
