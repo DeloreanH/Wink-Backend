@@ -152,15 +152,15 @@ export class WinkController {
          });
     }
     @Post('user/update/status')
-    updateUserStatus(@AuthUser() user: IUser, @Body() data: updateUserStatusDTO): Promise<IUser> {
-        return this.userServ.findByIdAndUpdate(user._id, { status: data.status});
+    async updateUserStatus(@AuthUser() user: IUser, @Body() data: updateUserStatusDTO): Promise<IUser> {
+        return await this.userServ.findByIdAndUpdate(user._id, { status: data.status});
     }
     @Get('social-network-links')
-    getSocialNetworkLinks(): Promise<ISocialLink[]>  {
-        return this.winkService.getSocialNetworksLinks();
+    async getSocialNetworkLinks(): Promise<ISocialLink[]>  {
+        return await this.winkService.getSocialNetworksLinks();
     }
     @Post('user/update/visibility')
-    updateUserVisibility(@AuthUser() user: IUser, @Body() data: updateUserVisibilitysDTO): Promise<IUser>  {
-        return this.userServ.findByIdAndUpdate(user._id, { visibility: data.visibility});
+    async updateUserVisibility(@AuthUser() user: IUser, @Body() data: updateUserVisibilitysDTO): Promise<IUser>  {
+        return await this.userServ.findByIdAndUpdate(user._id, { visibility: data.visibility});
     }
 }

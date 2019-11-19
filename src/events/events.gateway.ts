@@ -10,23 +10,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
 
   constructor(private authServ: AuthService) {}
 
-  afterInit(server: Server) {
-    this.gatewayMiddleware(server);
-  }
-
-  handleConnection(client: Socket, ...args: any[]) {
-    this.addClient(client, client.handshake.query.userId);
-    client.emit('connection', 'Successfully connected to server');
-  }
-  handleDisconnect(client: Socket) {
-    this.removeClient(client, client.handshake.query.userId);
-    client.emit('disconnect', 'Successfully disconnected from server');
-  }
-
-  @SubscribeMessage('add-message')
-  handleEvent(client: Socket, data: string) {
-    console.log('evento dentro del auth', client.id, data);
-  }
+  // clients handlers and auth middlware
   private gatewayMiddleware(server: Server) {
     server.use(async (socket: Socket, next) => {
       const token = socket.handshake.query.auth;
@@ -43,7 +27,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
       }
     });
   }
-
   private addClient(client: Socket, userId: string): void {
     const data = this.userClients.get(userId);
     if (data) {
@@ -60,5 +43,26 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
     } else {
       this.userClients.delete(userId);
     }
+  }
+
+  // life cycles hooks
+  afterInit(server: Server) {
+    this.gatewayMiddleware(server);
+  }
+  handleConnection(client: Socket, ...args: any[]) {
+    client.join('public');
+    this.addClient(client, client.handshake.query.userId);
+    client.emit('connection', 'Successfully connected to server');
+  }
+  handleDisconnect(client: Socket) {
+    client.leave('public');
+    this.removeClient(client, client.handshake.query.userId);
+    client.emit('disconnect', 'Successfully disconnected from server');
+  }
+
+// public room events
+  @SubscribeMessage('update-user')
+  handleUserStatus(socket: Socket, data: any) {
+    socket.to('public').emit('updated-user', data);
   }
 }
