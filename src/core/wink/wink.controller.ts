@@ -68,7 +68,6 @@ export class WinkController {
                 approved: false,
             };
             const wink = await this.winkService.createWink(dataWink);
-            const clients = this.events.userClients.get(winkUser._id.toString());
             const distance = Tools.getDistance(
                 user.location.coordinates[1],
                 user.location.coordinates[0],
@@ -76,13 +75,9 @@ export class WinkController {
                 winkUser.location.coordinates[0],
                 'm',
                 );
-            if (clients) {
-                clients.forEach( clientId => {
-                    this.events.wss.to(clientId).emit('winked', {wink, winkUser, distance});
-                });
-            }
             return res.status(HttpStatus.OK).json({
                 wink,
+                distance,
              });
         }
     }

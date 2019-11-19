@@ -49,7 +49,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
   afterInit(server: Server) {
     this.gatewayMiddleware(server);
   }
-  handleConnection(client: Socket, ...args: any[]) {
+  handleConnection(client: Socket) {
     client.join('public');
     this.addClient(client, client.handshake.query.userId);
     client.emit('connection', 'Successfully connected to server');
@@ -60,9 +60,38 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
     client.emit('disconnect', 'Successfully disconnected from server');
   }
 
-// public room events
+  // public room events
   @SubscribeMessage('update-user')
-  handleUserStatus(socket: Socket, data: any) {
-    socket.to('public').emit('updated-user', data);
+  handleUserStatus(client: Socket, data: any) {
+    client.to('public').emit('updated-user', data);
+  }
+
+  // user to user events
+  @SubscribeMessage('send-wink')
+  handleSendWink(client: Socket, data: any) {
+    const receivers = this.userClients.get(data.winkUser.toString());
+    if (receivers) {
+      receivers.forEach( (clientId: string) => {
+        client.to(clientId).emit('sended-wink', data);
+      });
+    }
+  }
+  @SubscribeMessage('approve-wink')
+  handleApproveWink(client: Socket, data: any) {
+    const receivers = this.userClients.get(data.winkUser.toString());
+    if (receivers) {
+      receivers.forEach( (clientId: string) => {
+        client.to(clientId).emit('approved-wink', data);
+      });
+    }
+  }
+  @SubscribeMessage('delete-wink')
+  handleDeleteWink(client: Socket, data: any) {
+    const receivers = this.userClients.get(data.winkUser.toString());
+    if (receivers) {
+      receivers.forEach( (clientId: string) => {
+        client.to(clientId).emit('deleted-wink', data);
+      });
+    }
   }
 }
