@@ -5,7 +5,6 @@ import { Model } from 'mongoose';
 import { IItemType, IItem, ICategory } from '../../common/interfaces/interfaces';
 import { itemDTO } from '../dtos/item.dto';
 import { ObjectId } from 'bson';
-import { itemsVisibility } from '../../common/enums/enums';
 
 @Injectable()
 export class ItemService {

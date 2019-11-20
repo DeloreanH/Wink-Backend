@@ -1,17 +1,16 @@
-import { Module } from '@nestjs/common';
-import { SharedModule } from '../shared/shared.module';
-import { UserConfigModule } from './user-config/user-config.module';
-import { WinkModule } from './wink/wink.module';
-import { EventsModule } from '../events/events.module';
-import { AuthModule } from '../auth/auth.module';
+import { Module, Global } from '@nestjs/common';
+import { UserService } from './services/user.service';
+import { ItemService } from './services/item.service';
 
+@Global()
 @Module({
-    imports: [
-        SharedModule,
-        AuthModule,
-        UserConfigModule,
-        WinkModule,
-        EventsModule,
-    ],
+      exports: [
+        UserService,
+        ItemService,
+      ],
+      providers: [
+        UserService,
+        ItemService,
+      ],
 })
 export class CoreModule {}

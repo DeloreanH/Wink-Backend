@@ -1,13 +1,13 @@
 import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus, UseInterceptors, UploadedFile, Res} from '@nestjs/common';
 import { ICategory, IItemType, IItem, IUser } from '../../common/interfaces/interfaces';
 import { AuthUser } from '../../common/decorators/auth-decorators.decorator';
-import { itemDTO } from '../../shared/dtos/item.dto';
-import { UserDTO } from '../../shared/dtos/users.dto';
-import { UserService } from '../../shared/services/user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { setMulterOptions } from '../../common/tools/multer.config';
 import { unlinkSync, existsSync } from 'fs';
-import { ItemService } from '../../shared/services/item.service';
+import { UserService } from '../../core/services/user.service';
+import { ItemService } from '../../core/services/item.service';
+import { itemDTO } from '../../core/dtos/item.dto';
+import { UserDTO } from '../../core/dtos/users.dto';
 
 @Controller('user-config')
 export class UserConfigController {

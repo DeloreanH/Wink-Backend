@@ -4,4 +4,5 @@ export class winkDTO {
     readonly receiver_id: string;
     readonly receiverVisibility: string;
     readonly approved: boolean;
+    readonly watched?: boolean;
  }

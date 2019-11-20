@@ -22,4 +22,8 @@ export const winkSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    watched: {
+        type: Boolean,
+        default: false,
+    },
 }, {timestamps: true});

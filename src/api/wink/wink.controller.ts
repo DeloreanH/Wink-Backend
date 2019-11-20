@@ -1,19 +1,19 @@
 import { Controller, Body, Post, HttpStatus, Res, Get } from '@nestjs/common';
 import { AuthUser } from '../../common/decorators/auth-decorators.decorator';
 import { IUser, IWink, IItem, ISocialLink } from '../../common/interfaces/interfaces';
-import { UserService } from '../../shared/services/user.service';
 import { findNearbyUsersDTO } from './dtos/findNearbyUsers.dto';
 import { updateUserStatusDTO } from './dtos/updateUserStatus.dto';
 import { updateUserVisibilitysDTO } from './dtos/updateUserVisibility.dto';
 import { WinkService } from './wink.service';
-import { ItemService } from '../../shared/services/item.service';
 import { winkIdDTO } from './dtos/winkIdDTO';
 import { winkUserIdDTO } from './dtos/winkUserId.dto';
 import { showPrivateProfileDTO } from './dtos/showPrivateProfile.dto';
 import { itemsVisibility } from '../../common/enums/enums';
 import { ObjectId } from 'bson';
 import { EventsGateway } from '../../events/events.gateway';
-import { Tools } from 'src/common/tools/tools';
+import { Tools } from '../../common/tools/tools';
+import { UserService } from '../../core/services/user.service';
+import { ItemService } from '../../core/services/item.service';
 
 @Controller('wink')
 export class WinkController {
@@ -95,18 +95,13 @@ export class WinkController {
             status: 'wink approved',
          });
     }
-    @Post('user')
-    async getWinkUser(@Body() data: winkUserIdDTO): Promise<IUser>  {
-        return await this.userServ.findById(data.winkUserId);
-    }
-
-    @Post('points')
-    points(@Body() data: { lat1: number, lon1: number, lat2: number, lon2: number }): any  {
-        return Tools.getDistance(data.lat1, data.lon1, data.lat2, data.lon2, 'm');
+    @Post('watched-wink')
+    async getWinkUser(@Body() data: winkIdDTO): Promise<IUser>  {
+        return await this.winkService.findByIdAndUpdate(data.wink_id, {watched: true});
     }
 
     @Post('show-private-profile')
-   async showPrivateProfile(@Body() data: showPrivateProfileDTO, @Res() res): Promise<IItem[]>  {
+    async showPrivateProfile(@Body() data: showPrivateProfileDTO, @Res() res): Promise<IItem[]>  {
         const wink = await this.winkService.findByIdOrFail(data.wink_id);
         if (!wink) {
             return res.status(HttpStatus.NOT_FOUND).json({

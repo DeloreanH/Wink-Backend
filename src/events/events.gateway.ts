@@ -10,7 +10,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
 
   constructor(private authServ: AuthService) {}
 
-  // clients handlers and auth middlware
+  // clients handlers and auth middleware
   private gatewayMiddleware(server: Server) {
     server.use(async (socket: Socket, next) => {
       const token = socket.handshake.query.auth;

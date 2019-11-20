@@ -36,8 +36,8 @@ export interface IWink extends Document {
     receiver_id: string;
     receiverVisibility: string;
     approved: boolean;
+    watched: boolean;
 }
-
 
 export interface ISocialLink extends Document {
     _id: string;

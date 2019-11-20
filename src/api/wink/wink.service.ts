@@ -31,6 +31,9 @@ export class WinkService {
         public async findByIdOrFail(id: string): Promise<IWink> {
             return await this.winkModel.findOne({_id: id});
         }
+        public async findByIdAndUpdate(id: string, data: {watched: boolean} ): Promise<IWink> {
+            return await this.winkModel.findOneAndUpdate({_id: id}, data, {new: true} );
+        }
         public async getUserWinks(id: string): Promise<any> {
             return await this.winkModel.aggregate([
                 {
