@@ -70,8 +70,14 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
   @SubscribeMessage('send-wink')
   handleSendWink(client: Socket, data: any) {
     const receivers = this.userClients.get(data.winkUser.toString());
+    const self = this.userClients.get(client.handshake.query.userId).filter( filtered => filtered !== client.id);
     if (receivers) {
       receivers.forEach( (clientId: string) => {
+        client.to(clientId).emit('sended-wink', data);
+      });
+    }
+    if (self) {
+      self.forEach( (clientId: string) => {
         client.to(clientId).emit('sended-wink', data);
       });
     }
@@ -79,8 +85,14 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
   @SubscribeMessage('approve-wink')
   handleApproveWink(client: Socket, data: any) {
     const receivers = this.userClients.get(data.winkUser.toString());
+    const self = this.userClients.get(client.handshake.query.userId).filter( filtered => filtered !== client.id);
     if (receivers) {
       receivers.forEach( (clientId: string) => {
+        client.to(clientId).emit('approved-wink', data);
+      });
+    }
+    if (self) {
+      self.forEach( (clientId: string) => {
         client.to(clientId).emit('approved-wink', data);
       });
     }
@@ -88,8 +100,14 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
   @SubscribeMessage('delete-wink')
   handleDeleteWink(client: Socket, data: any) {
     const receivers = this.userClients.get(data.winkUser.toString());
+    const self = this.userClients.get(client.handshake.query.userId).filter( filtered => filtered !== client.id);
     if (receivers) {
       receivers.forEach( (clientId: string) => {
+        client.to(clientId).emit('deleted-wink', data);
+      });
+    }
+    if (self) {
+      self.forEach( (clientId: string) => {
         client.to(clientId).emit('deleted-wink', data);
       });
     }
