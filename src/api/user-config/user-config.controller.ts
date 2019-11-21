@@ -26,8 +26,8 @@ export class UserConfigController {
     getItemTypes(): Promise<IItemType[]> {
         return this.itemServ.getItemTypes();
     }
-    @Get('items/user/:id')
-    getUserItems(@Param('id') id): Promise<IItem[]>  {
+    @Get('items/user')
+    getUserItems(@AuthUser('_id') id): Promise<IItem[]>  {
         return this.itemServ.getItemsByUserId(id);
     }
 
