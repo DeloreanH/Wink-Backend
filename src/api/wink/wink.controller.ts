@@ -10,14 +10,13 @@ import { winkUserIdDTO } from './dtos/winkUserId.dto';
 import { showPrivateProfileDTO } from './dtos/showPrivateProfile.dto';
 import { itemsVisibility } from '../../common/enums/enums';
 import { ObjectId } from 'bson';
-import { EventsGateway } from '../../events/events.gateway';
 import { Tools } from '../../common/tools/tools';
 import { UserService } from '../../core/services/user.service';
 import { ItemService } from '../../core/services/item.service';
 
 @Controller('wink')
 export class WinkController {
-    constructor(private userServ: UserService, private winkService: WinkService, private itemServ: ItemService, private events: EventsGateway) {}
+    constructor(private userServ: UserService, private winkService: WinkService, private itemServ: ItemService) {}
 
     @Post('nearby-users')
     nearbyUsers(@AuthUser() user: IUser, @Body() data: findNearbyUsersDTO): Promise<IUser[]>  {
@@ -81,6 +80,29 @@ export class WinkController {
              });
         }
     }
+    @Post('get-user')
+    async getWinkUser( @AuthUser('_id') id, @Res() res, @Body() data: winkUserIdDTO): Promise<IUser>  {
+        try {
+            const winkUser = await this.userServ.findByIdOrFail(data.winkUserId) as IUser;
+            const user     = await this.userServ.findByIdOrFail(id) as IUser;
+            const distance = Tools.getDistance(
+                user.location.coordinates[1],
+                user.location.coordinates[0],
+                winkUser.location.coordinates[1],
+                winkUser.location.coordinates[0],
+                'm',
+                );
+            return res.status(HttpStatus.OK).json({
+                winkUser,
+                distance,
+            });
+
+        } catch (error) {
+            return res.status(HttpStatus.BAD_REQUEST).json({
+              error,
+             });
+        }
+    }
     @Get('get-winks')
     getUserWinks(@AuthUser() user: IUser): Promise<IWink[]>  {
         return this.winkService.getUserWinks(user._id);
@@ -96,7 +118,7 @@ export class WinkController {
          });
     }
     @Post('watched-wink')
-    async getWinkUser(@Body() data: winkIdDTO): Promise<IUser>  {
+    async watchedWink(@Body() data: winkIdDTO): Promise<IUser>  {
         return await this.winkService.findByIdAndUpdate(data.wink_id, {watched: true});
     }
 
@@ -153,4 +175,5 @@ export class WinkController {
     async updateUserVisibility(@AuthUser() user: IUser, @Body() data: updateUserVisibilitysDTO): Promise<IUser>  {
         return await this.userServ.findByIdAndUpdate(user._id, { visibility: data.visibility});
     }
+
 }
