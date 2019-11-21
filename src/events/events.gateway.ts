@@ -65,6 +65,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
   handleUserStatus(client: Socket, data: any) {
     client.to('public').emit('updated-user', data);
   }
+  @SubscribeMessage('avatar-upload')
+  handleAvatarUpload(client: Socket, data: any) {
+    client.to('public').emit('avatar-uploaded', data);
+  }
 
   // user to user events
   @SubscribeMessage('send-wink')
@@ -109,6 +113,15 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
     if (self) {
       self.forEach( (clientId: string) => {
         client.to(clientId).emit('deleted-wink', data);
+      });
+    }
+  }
+  @SubscribeMessage('watch-wink')
+  handleWatchWink(client: Socket, data: any) {
+    const self = this.userClients.get(client.handshake.query.userId).filter( filtered => filtered !== client.id);
+    if (self) {
+      self.forEach( (clientId: string) => {
+        client.to(clientId).emit('watched-wink', data);
       });
     }
   }

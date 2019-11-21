@@ -4,9 +4,17 @@ import { UserConfigController } from './user-config.controller';
 import { AuthMiddleware } from '../../auth/middlewares/auth.middleware';
 import { EmptyProfileMiddleware } from '../../common/middlewares/empty-profile.middleware';
 import { excludeMwRoutes } from '../../common/enums/enums';
+import { MulterModule } from '@nestjs/platform-express';
+import { setMulterOptions } from 'src/common/tools/multer.config';
 
 @Module({
   imports: [
+    MulterModule.register(
+      setMulterOptions(
+        10485760,
+        process.env.AVATAR_UPLOAD_PATH,
+        'jpg|jpeg|png|gif'),
+      ),
   ],
   exports: [
   ],

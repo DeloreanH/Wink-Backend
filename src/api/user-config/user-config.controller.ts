@@ -51,7 +51,7 @@ export class UserConfigController {
     }
 
     @Post('user/upload/avatar')
-    @UseInterceptors(FileInterceptor('avatar', setMulterOptions(10485760, process.env.AVATAR_UPLOAD_PATH, 'jpg|jpeg|png|gif')))
+    @UseInterceptors(FileInterceptor('avatar'))
     async avatarUpload(@UploadedFile() file , @Res() res, @AuthUser() authUser: IUser): Promise<any>  {
         try {
             const user = await this.userServ.findById(authUser._id);
@@ -66,7 +66,7 @@ export class UserConfigController {
                         unlinkSync(oldFilePath);
                     }
                 }
-                const link = process.env.APP_URL + ':' + process.env.PORT + '/' + process.env.AVATAR_UPLOAD_PATH + '/' + file.filename;
+                const link = '/' + process.env.AVATAR_UPLOAD_PATH + '/' + file.filename;
                 await user.update({avatarUrl: link});
                 return res.status(HttpStatus.OK).json({
                     status: 'avatar uploaded successfully',
