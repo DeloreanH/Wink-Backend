@@ -111,6 +111,7 @@ export class WinkController {
     async approveWink(@Body() data: winkIdDTO, @Res() res): Promise<IWink>  {
         const dataToUpdate = {
             approved: true,
+            watched: true,
         };
         await this.winkService.approveWink(data.wink_id, dataToUpdate);
         return res.status(HttpStatus.OK).json({
