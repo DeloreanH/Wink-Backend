@@ -8,8 +8,8 @@ import * as moment from 'moment';
 import { modelName } from '../../database/models-name';
 import { itemsDefault } from '../itemsDefault';
 import { UserService } from '../../core/services/user.service';
-import { UserDTO } from '../../core/dtos/users.dto';
-import { sesionDTO } from '../../core/dtos/sesion.dto';
+import { UserDTO } from '../../common/dtos/users.dto';
+import { sesionDTO } from '../../common/dtos/sesion.dto';
 
 @Injectable()
 export class AuthService {

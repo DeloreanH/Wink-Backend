@@ -1,4 +1,4 @@
-import { IPhone } from '../../common/interfaces/interfaces';
+import { IPhone } from '../interfaces/interfaces';
 
 export class UserDTO {
    readonly _id?: string;

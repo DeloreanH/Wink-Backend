@@ -2,12 +2,11 @@ import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus, Use
 import { ICategory, IItemType, IItem, IUser } from '../../common/interfaces/interfaces';
 import { AuthUser } from '../../common/decorators/auth-decorators.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { setMulterOptions } from '../../common/tools/multer.config';
 import { unlinkSync, existsSync } from 'fs';
 import { UserService } from '../../core/services/user.service';
 import { ItemService } from '../../core/services/item.service';
-import { itemDTO } from '../../core/dtos/item.dto';
-import { UserDTO } from '../../core/dtos/users.dto';
+import { UserDTO } from '../../common/dtos/users.dto';
+import { CreateItemsDTO } from '../../common/dtos/createItems.dto';
 
 @Controller('user-config')
 export class UserConfigController {
@@ -17,7 +16,6 @@ export class UserConfigController {
     getCategories(): Promise<ICategory[]> {
         return this.itemServ.getCategories();
     }
-
     @Get('categories-items')
     getCategoriesWithItems(): Promise<ICategory[]> {
         return this.itemServ.getCategoriesWithItems();
@@ -26,17 +24,18 @@ export class UserConfigController {
     getItemTypes(): Promise<IItemType[]> {
         return this.itemServ.getItemTypes();
     }
-    @Get('items/user')
+    @Get('items-user')
     getUserItems(@AuthUser('_id') id): Promise<IItem[]>  {
         return this.itemServ.getItemsByUserId(id);
     }
-
-    @Post('items/user/create')
-    async createItemsForUser(@AuthUser('_id') id, @Body() items: itemDTO[] ): Promise<IItem[]>  {
-        await this.itemServ.deleteManyItemsToUser(id);
-        return await this.itemServ.createManyItemsToUser(items);
+    // trabajando aca, itemdto createitemdto, nombres de rutas fueron cambiados pendiente
+    @Post('items/create')
+    async createItemsToUser(@AuthUser('_id') id, @Body() data: CreateItemsDTO): Promise<any>  {
+        console.log(typeof data.items, data.items);
+        await this.itemServ.deleteItemsToUser(id);
+        return await this.itemServ.createItemsToUser(data.items);
     }
-    @Put('user/update/basic-data')
+    @Put('update/basic-data')
     async update(@AuthUser() authUser: IUser, @Body() userValues: UserDTO, @Res() res) {
         try {
             const toUpdate = Object.assign(userValues, {emptyProfile: false});
@@ -50,7 +49,7 @@ export class UserConfigController {
        }
     }
 
-    @Post('user/upload/avatar')
+    @Post('upload-avatar')
     @UseInterceptors(FileInterceptor('avatar'))
     async avatarUpload(@UploadedFile() file , @Res() res, @AuthUser() authUser: IUser): Promise<any>  {
         try {

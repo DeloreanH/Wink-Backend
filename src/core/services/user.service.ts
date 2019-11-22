@@ -1,7 +1,7 @@
 import { Injectable, HttpService, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserDTO } from '../dtos/users.dto';
+import { UserDTO } from '../../common/dtos/users.dto';
 import { IUser } from '../../common/interfaces/interfaces';
 import { ObjectId } from 'bson';
 import { modelName } from '../../database/models-name';
