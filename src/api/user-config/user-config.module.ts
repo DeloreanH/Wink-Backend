@@ -30,20 +30,5 @@ export class UserConfigModule {
     consumer
     .apply(AuthMiddleware)
     .forRoutes(UserConfigController);
-    consumer
-    .apply(EmptyProfileMiddleware)
-    .exclude(
-      { path: excludeMwRoutes.UCONFIG_CONFIG, method: RequestMethod.ALL },
-      { path: excludeMwRoutes.UCONFIG_CATEGORIES, method: RequestMethod.ALL },
-      { path: excludeMwRoutes.UCONFIG_ITEMTYPES, method: RequestMethod.ALL },
-      { path: excludeMwRoutes.UCONFIG_CATEGORIES_ITEMS, method: RequestMethod.ALL },
-      { path: excludeMwRoutes.UCONFIG_USERITEMS, method: RequestMethod.ALL },
-      { path: excludeMwRoutes.UCONFIG_ADD_MANY_ITEMS_TO_USER, method: RequestMethod.ALL },
-      { path: excludeMwRoutes.UCONFIG_UPDATE_USER_BASIC_DATA, method: RequestMethod.ALL },
-      { path: excludeMwRoutes.UCONFIG_UPLOAD_USER_AVATAR, method: RequestMethod.ALL },
-      { path: excludeMwRoutes.UCONFIG_USER_AVATAR, method: RequestMethod.ALL },
-      { path: excludeMwRoutes.UCONFIG_NEARBY_USERS, method: RequestMethod.ALL },
-    )
-    .forRoutes(UserConfigController);
   }
 }

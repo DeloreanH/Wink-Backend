@@ -32,11 +32,13 @@ export class AuthMiddleware implements NestMiddleware {
         }
         const token   = auth.split(' ')[1];
         const decoded = await verify(token, process.env.SECRET) as IPayload;
+        /*
         await this.authServ.checkBlackList(token);
         const user    = await this.userServ.findById(decoded.sub._id);
         if (!user) {
           throw new HttpException('user not found', HttpStatus.UNAUTHORIZED);
         }
+        */
         return decoded.sub;
     } catch (error) {
         throw new HttpException(error, HttpStatus.UNAUTHORIZED);

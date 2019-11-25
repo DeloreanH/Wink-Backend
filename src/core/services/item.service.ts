@@ -36,7 +36,7 @@ export class ItemService {
     public async deleteItemsToUser(id: string) {
         return await this.itemModel.deleteMany({user_id: id});
     }
-    public async createItemsToUser(items: any) {
-        return await this.itemModel.insertMany(items);
+    public async createItemsToUser(data: CreateItemsDTO): Promise<IItem[]> {
+        return await this.itemModel.insertMany(data.items);
     }
 }

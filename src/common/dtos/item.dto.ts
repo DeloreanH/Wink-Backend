@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber, IsBoolean, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsBoolean, ValidateNested, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class Section {
@@ -34,7 +34,7 @@ export class ItemDTO {
     @IsBoolean()
     readonly basic: boolean;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     readonly custom: string;
 

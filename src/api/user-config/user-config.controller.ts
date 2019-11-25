@@ -28,25 +28,24 @@ export class UserConfigController {
     getUserItems(@AuthUser('_id') id): Promise<IItem[]>  {
         return this.itemServ.getItemsByUserId(id);
     }
-    // trabajando aca, itemdto createitemdto, nombres de rutas fueron cambiados pendiente
-    @Post('items/create')
-    async createItemsToUser(@AuthUser('_id') id, @Body() data: CreateItemsDTO): Promise<any>  {
-        console.log(typeof data.items, data.items);
+    @Post('items-create')
+    async createItemsToUser(@AuthUser('_id') id, @Body() data: CreateItemsDTO): Promise<IItem[]>  {
         await this.itemServ.deleteItemsToUser(id);
-        return await this.itemServ.createItemsToUser(data.items);
+        return await this.itemServ.createItemsToUser(data);
     }
-    @Put('update/basic-data')
-    async update(@AuthUser() authUser: IUser, @Body() userValues: UserDTO, @Res() res) {
-        try {
-            const toUpdate = Object.assign(userValues, {emptyProfile: false});
-            const user = await this.userServ.findByIdAndUpdate(authUser._id, toUpdate);
+    @Put('update-basic-data')
+    async update(@AuthUser('_id') id: string, @Body() userValues, @Res() res) {
+        const toUpdate = Object.assign(userValues, {emptyProfile: false});
+        const user = await this.userServ.findById(id);
+        if (!user) {
+            throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+        } else {
+            user.update(toUpdate);
             return res.status(HttpStatus.OK).json({
                 status: 'user updated successfully',
                 user,
-             });
-       } catch (error) {
-            throw new HttpException(error, HttpStatus.BAD_REQUEST);
-       }
+            });
+        }
     }
 
     @Post('upload-avatar')
