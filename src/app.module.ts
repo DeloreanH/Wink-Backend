@@ -7,6 +7,7 @@ import { ApiModule } from './api/api.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
+import { MongoExceptionFilter } from './common/filters/mongo-exception.filter';
 @Module({
     imports: [
         DatabaseModule,
@@ -21,6 +22,10 @@ import { CoreModule } from './core/core.module';
         {
             provide: APP_FILTER,
             useClass: HttpExceptionFilter,
+        },
+        {
+            provide: APP_FILTER,
+            useClass: MongoExceptionFilter,
         },
         AppService,
     ],

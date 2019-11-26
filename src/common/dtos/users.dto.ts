@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber, IsBoolean, ValidateNested, IsOptional, IsEmail, IsDateString } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsBoolean, ValidateNested, IsOptional, IsEmail, IsDateString, Equals } from 'class-validator';
 import { Type } from 'class-transformer';
 
 import { IPhone } from '../interfaces/interfaces';
@@ -64,13 +64,18 @@ export class UserDTO {
 // tslint:disable-next-line: max-classes-per-file
 class Phone {
    @IsNumber()
-   phoneCode: number;
+   phoneCode?: number;
 
    @IsNumber()
-   phoneNumber: number;
+   phoneNumber?: number;
 }
 // tslint:disable-next-line: max-classes-per-file
 class Location {
-   phoneCode?: number;
-   phoneNumber?: number;
+   @IsString()
+   @Equals('Point')
+   type: string;
+   @IsNumber({}, {
+      each: true,
+   })
+   coordinates: [number, number];
 }

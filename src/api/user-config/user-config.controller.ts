@@ -33,6 +33,8 @@ export class UserConfigController {
         await this.itemServ.deleteItemsToUser(id);
         return await this.itemServ.createItemsToUser(data);
     }
+
+    // dto para datos basicos
     @Put('update-basic-data')
     async update(@AuthUser('_id') id: string, @Body() userValues, @Res() res) {
         const toUpdate = Object.assign(userValues, {emptyProfile: false});

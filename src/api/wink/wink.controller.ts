@@ -1,13 +1,13 @@
 import { Controller, Body, Post, HttpStatus, Res, Get } from '@nestjs/common';
 import { AuthUser } from '../../common/decorators/auth-decorators.decorator';
 import { IUser, IWink, IItem, ISocialLink } from '../../common/interfaces/interfaces';
-import { findNearbyUsersDTO } from './dtos/findNearbyUsers.dto';
-import { updateUserStatusDTO } from './dtos/updateUserStatus.dto';
-import { updateUserVisibilitysDTO } from './dtos/updateUserVisibility.dto';
+import { findNearbyUsersDTO } from '../../common/dtos/findNearbyUsers.dto';
+import { updateUserStatusDTO } from '../../common/dtos/updateUserStatus.dto';
+import { updateUserVisibilitysDTO } from '../../common/dtos/updateUserVisibility.dto';
 import { WinkService } from './wink.service';
-import { winkIdDTO } from './dtos/winkIdDTO';
-import { winkUserIdDTO } from './dtos/winkUserId.dto';
-import { showPrivateProfileDTO } from './dtos/showPrivateProfile.dto';
+import { winkIdDTO } from '../../common/dtos/winkId.dto';
+import { winkUserIdDTO } from '../../common/dtos/winkUserId.dto';
+import { showPrivateProfileDTO } from '../../common/dtos/showPrivateProfile.dto';
 import { itemsVisibility } from '../../common/enums/enums';
 import { ObjectId } from 'bson';
 import { Tools } from '../../common/tools/tools';
@@ -20,7 +20,7 @@ export class WinkController {
 
     @Post('nearby-users')
     nearbyUsers(@AuthUser() user: IUser, @Body() data: findNearbyUsersDTO): Promise<IUser[]>  {
-        return this.userServ.findNearbyUsers(user._id, [+data.longitude , +data.latitude], +data.sort);
+        return this.userServ.findNearbyUsers(user._id, [data.longitude , data.latitude], data.sort);
     }
     @Post('show-public-profile')
     async showPublicProfile(@AuthUser() user: IUser, @Body() data: winkUserIdDTO, @Res() res): Promise<IWink>  {

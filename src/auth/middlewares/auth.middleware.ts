@@ -31,17 +31,15 @@ export class AuthMiddleware implements NestMiddleware {
             throw new HttpException('token must be prefixed with Bearer, malformated', HttpStatus.UNAUTHORIZED);
         }
         const token   = auth.split(' ')[1];
-        const decoded = await verify(token, process.env.SECRET) as IPayload;
-        /*
+        const decoded = verify(token, process.env.SECRET) as IPayload;
         await this.authServ.checkBlackList(token);
         const user    = await this.userServ.findById(decoded.sub._id);
         if (!user) {
           throw new HttpException('user not found', HttpStatus.UNAUTHORIZED);
         }
-        */
         return decoded.sub;
     } catch (error) {
-        throw new HttpException(error, HttpStatus.UNAUTHORIZED);
+        throw new HttpException(error, HttpStatus.FORBIDDEN);
     }
   }
 }

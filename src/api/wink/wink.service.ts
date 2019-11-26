@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { modelName } from '../../database/models-name';
 import { Model } from 'mongoose';
 import { IWink, ISocialLink} from '../../common/interfaces/interfaces';
-import { winkDTO } from './dtos/WinkDTO';
+import { winkDTO } from '../../common/dtos/wink.dto';
 import { ObjectId } from 'bson';
 
 @Injectable()
