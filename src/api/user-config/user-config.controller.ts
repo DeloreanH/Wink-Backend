@@ -5,7 +5,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { unlinkSync, existsSync } from 'fs';
 import { UserService } from '../../core/services/user.service';
 import { ItemService } from '../../core/services/item.service';
-import { UserDTO } from '../../common/dtos/users.dto';
 import { CreateItemsDTO } from '../../common/dtos/createItems.dto';
 
 @Controller('user-config')
@@ -34,7 +33,7 @@ export class UserConfigController {
         return await this.itemServ.createItemsToUser(data);
     }
 
-    // dto para datos basicos
+    // dto para datos basicos no hecho, los inputs de esta ruta no estan validados, cuidado
     @Put('update-basic-data')
     async update(@AuthUser('_id') id: string, @Body() userValues, @Res() res) {
         const toUpdate = Object.assign(userValues, {emptyProfile: false});

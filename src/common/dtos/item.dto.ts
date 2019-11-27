@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber, IsBoolean, ValidateNested, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsBoolean, ValidateNested, IsOptional, IsMongoId } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class Section {
@@ -13,9 +13,9 @@ class Section {
 
 // tslint:disable-next-line: max-classes-per-file
 export class ItemDTO {
-
     @IsNotEmpty()
     @IsString()
+    @IsMongoId()
     readonly user_id: string;
 
     @IsNotEmpty()

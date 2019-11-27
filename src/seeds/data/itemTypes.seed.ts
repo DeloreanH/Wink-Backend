@@ -1,7 +1,7 @@
 export const itemTypesSeed = [
     {
         name: 'celular',
-        description: 'Celular',
+        description: 'WINK.ITEM_TYPES.MOBILE',
         icon: 'fas mobile-alt',
         index: 6,
         category: 'contacto',
@@ -9,7 +9,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'correo',
-        description: 'Correo',
+        description: 'WINK.ITEM_TYPES.MAIL',
         icon: 'fas envelope',
         index: 1,
         category: 'contacto',
@@ -17,7 +17,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'sitioweb',
-        description: 'Sitio Web',
+        description: 'WINK.ITEM_TYPES.WEBSITE',
         icon: 'fas at',
         index: 3,
         category: 'contacto',
@@ -25,7 +25,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'telefono',
-        description: 'Telefono',
+        description: 'WINK.ITEM_TYPES.PHONE',
         icon: 'fas phone',
         index: 6,
         category: 'contacto',
@@ -33,21 +33,21 @@ export const itemTypesSeed = [
     },
     {
         name: 'niveldeinstruccion',
-        description: 'Nivel de instrucción',
+        description: 'WINK.ITEM_TYPES.LEVEL_OF_INSTRUCTION',
         icon: 'fas bookmark',
         index: 4,
         category: 'educacion',
         repeat: true,
         options: [
-            {name: 'Primaria'},
-            {name: 'Secundaria'},
-            {name: 'Media Superior'},
-            {name: 'Superior'},
+            {name: 'WINK.OPTIONS_ITEMS.PRIMARY'},
+            {name: 'WINK.OPTIONS_ITEMS.HIGH_SCHOOL'},
+            {name: 'WINK.OPTIONS_ITEMS.JUNIOR_COLLEGE'},
+            {name: 'WINK.OPTIONS_ITEMS.COLLEGE'},
         ],
     },
     {
         name: 'profesion',
-        description: 'Profesión',
+        description: 'WINK.ITEM_TYPES.PROFESSION',
         icon: 'fas graduation-cap',
         index: 0,
         category: 'educacion',
@@ -55,7 +55,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'universidad',
-        description: 'Universidad',
+        description: 'WINK.ITEM_TYPES.COLLEGE',
         icon: 'fas university',
         index: 0,
         category: 'educacion',
@@ -63,7 +63,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'ocupacion',
-        description: 'Ocupación',
+        description: 'WINK.ITEM_TYPES.OCCUPATION',
         icon: 'fas briefcase',
         index: 0,
         category: 'laboral',
@@ -71,7 +71,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'trabajo',
-        description: 'Trabajo',
+        description: 'WINK.ITEM_TYPES.JOB',
         icon: 'fas city',
         index: 2,
         category: 'laboral',
@@ -79,7 +79,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'apodo',
-        description: 'Apodo',
+        description: 'WINK.ITEM_TYPES.NICKNAME',
         icon: 'fas user',
         index: 0,
         category: 'personal',
@@ -87,7 +87,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'direccion',
-        description: 'Dirección',
+        description: 'WINK.ITEM_TYPES.DIRECTION',
         icon: 'fas map-marker-alt',
         index: 0,
         category: 'personal',
@@ -95,25 +95,24 @@ export const itemTypesSeed = [
     },
     {
         name: 'estadocivil',
-        description: 'Estado civil',
+        description: 'WINK.ITEM_TYPES.MARITAL_STATUS',
         icon: 'fas heart',
         index: 4,
         repeat: false,
         category: 'personal',
         options: [
-            {name: 'Casado/a'},
-            {name: 'Comprometido/a'},
-            {name: 'Divorciado/a'},
-            {name: 'En Relación'},
-            {name: 'Noviazgo'},
-            {name: 'Separado/a'},
-            {name: 'Soltero/a'},
-            {name: 'Viudo/a'},
+            {name: 'WINK.OPTIONS_ITEMS.MARRIED'},
+            {name: 'WINK.OPTIONS_ITEMS.ENGAGED'},
+            {name: 'WINK.OPTIONS_ITEMS.DIVORCED'},
+            {name: 'WINK.OPTIONS_ITEMS.IN_RELATIONSHIP'},
+            {name: 'WINK.OPTIONS_ITEMS.SEPARATED'},
+            {name: 'WINK.OPTIONS_ITEMS.SINGLE'},
+            {name: 'WINK.OPTIONS_ITEMS.WIDOWER'},
         ],
     },
     {
         name: 'fechadenacimiento',
-        description: 'Fecha de nacimiento',
+        description: 'WINK.ITEM_TYPES.BIRTHDAY',
         icon: 'fas calendar-alt',
         index: 5,
         category: 'personal',
@@ -121,7 +120,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'hobbies',
-        description: 'Hobbies',
+        description: 'WINK.ITEM_TYPES.HOBBIES',
         icon: 'fas star',
         index: 8,
         category: 'personal',
@@ -129,7 +128,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'intereses',
-        description: 'Intereses',
+        description: 'WINK.ITEM_TYPES.INTERESTS',
         icon: 'fas thumbs-up',
         index: 8,
         category: 'personal',
@@ -137,7 +136,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'facebook',
-        description: 'Facebook',
+        description: 'WINK.ITEM_TYPES.FACEBOOK',
         icon: 'fab facebook-square',
         index: 0,
         category: 'redessociales',
@@ -145,7 +144,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'linkedin',
-        description: 'LinkedIn',
+        description: 'WINK.ITEM_TYPES.LINKEDIN',
         icon: 'fab linkedin',
         index: 0,
         category: 'redessociales',
@@ -153,7 +152,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'instagram',
-        description: 'Instagram',
+        description: 'WINK.ITEM_TYPES.INSTAGRAM',
         icon: 'fab instagram',
         index: 0,
         category: 'redessociales',
@@ -161,7 +160,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'medium',
-        description: 'Medium',
+        description: 'WINK.ITEM_TYPES.MEDIUM',
         icon: 'fab medium',
         index: 0,
         category: 'redessociales',
@@ -169,7 +168,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'pinterest',
-        description: 'Pinterest',
+        description: 'WINK.ITEM_TYPES.PINTEREST',
         icon: 'fab pinterest',
         index: 0,
         category: 'redessociales',
@@ -177,7 +176,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'reddit',
-        description: 'Reddit',
+        description: 'WINK.ITEM_TYPES.REDDIT',
         icon: 'fab reddit',
         index: 0,
         category: 'redessociales',
@@ -185,7 +184,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'snapchat',
-        description: 'Snapchat',
+        description: 'WINK.ITEM_TYPES.SNAPCHAT',
         icon: 'fab snapchat',
         index: 0,
         category: 'redessociales',
@@ -193,7 +192,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'tumblr',
-        description: 'Tumblr',
+        description: 'WINK.ITEM_TYPES.TUMBLR',
         icon: 'fab tumblr',
         index: 0,
         category: 'redessociales',
@@ -201,14 +200,14 @@ export const itemTypesSeed = [
     },
     {
         name: 'twitter',
-        description: 'Twitter',
+        description: 'WINK.ITEM_TYPES.TWITTER',
         icon: 'fab twitter',
         index: 0,
         category: 'redessociales',
         repeat: true,
     }, {
         name: 'youtube',
-        description: 'YouTube',
+        description: 'WINK.ITEM_TYPES.YOUTUBE',
         icon: 'fab youtube',
         index: 0,
         category: 'redessociales',
@@ -216,7 +215,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'line',
-        description: 'Line',
+        description: 'WINK.ITEM_TYPES.LINE',
         icon: 'fab line',
         index: 0,
         category: 'mensajeria',
@@ -224,7 +223,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'skype',
-        description: 'Skype',
+        description: 'WINK.ITEM_TYPES.SKYPE',
         icon: 'fab skype',
         index: 0,
         category: 'mensajeria',
@@ -232,7 +231,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'telegram',
-        description: 'Telegram',
+        description: 'WINK.ITEM_TYPES.TELEGRAM',
         icon: 'fab telegram',
         index: 6,
         category: 'mensajeria',
@@ -240,7 +239,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'wechat',
-        description: 'Wechat',
+        description: 'WINK.ITEM_TYPES.WECHAT',
         icon: 'fab weixin',
         index: 0,
         category: 'mensajeria',
@@ -248,7 +247,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'whatsapp',
-        description: 'WhatsApp',
+        description: 'WINK.ITEM_TYPES.WHATSAPP',
         icon: 'fab whatsapp',
         index: 6,
         category: 'mensajeria',
@@ -256,7 +255,7 @@ export const itemTypesSeed = [
     },
     {
         name: 'personalizado',
-        description: 'Personalizado',
+        description: 'WINK.ITEM_TYPES.PERSONALIZED',
         icon: 'fas asterisk',
         index: 7,
         category: 'otros',

@@ -1,30 +1,30 @@
 export const categoriesSeed = [
     {
         name: 'contacto',
-        description: 'Contacto',
+        description: 'WINK.CATEGORY.CONTACT',
     },
     {
         name: 'educacion',
-        description: 'Educación',
+        description: 'WINK.CATEGORY.EDUCATION',
     },
     {
         name: 'laboral',
-        description: 'Laboral',
+        description: 'WINK.CATEGORY.LABOR',
     },
     {
         name: 'mensajeria',
-        description: 'Mensajería',
+        description: 'WINK.CATEGORY.MESSENGER_SERVICE',
     },
     {
         name: 'personal',
-        description: 'Personal',
+        description: 'WINK.CATEGORY.PERSONAL',
     },
     {
         name: 'redessociales',
-        description: 'Redes Sociales',
+        description: 'WINK.CATEGORY.SOCIAL_NETWORK',
     },
     {
         name: 'otros',
-        description: 'otros',
+        description: 'WINK.CATEGORY.OTHERS',
     },
 ];
