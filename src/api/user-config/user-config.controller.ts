@@ -37,16 +37,12 @@ export class UserConfigController {
     @Put('update-basic-data')
     async update(@AuthUser('_id') id: string, @Body() userValues, @Res() res) {
         const toUpdate = Object.assign(userValues, {emptyProfile: false});
-        const user = await this.userServ.findById(id);
-        if (!user) {
-            throw new HttpException('user not found', HttpStatus.NOT_FOUND);
-        } else {
-            user.update(toUpdate);
-            return res.status(HttpStatus.OK).json({
-                status: 'user updated successfully',
-                user,
-            });
-        }
+        const user = await this.userServ.findByIdOrFail(id);
+        user.update(toUpdate);
+        return res.status(HttpStatus.OK).json({
+            status: 'user updated successfully',
+            user,
+        });
     }
 
     @Post('upload-avatar')

@@ -59,6 +59,7 @@ export interface IUser extends Document {
     username?: string;
     visibility?: string;
     autosave?: boolean;
+    lastActivity?: Date;
     location?: {
        type: string,
        coordinates: [number, number],

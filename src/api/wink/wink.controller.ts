@@ -13,10 +13,15 @@ import { ObjectId } from 'bson';
 import { Tools } from '../../common/tools/tools';
 import { UserService } from '../../core/services/user.service';
 import { ItemService } from '../../core/services/item.service';
+import { handleWinkDTO } from 'src/common/dtos/handleWink.dto';
 
 @Controller('wink')
 export class WinkController {
-    constructor(private userServ: UserService, private winkService: WinkService, private itemServ: ItemService) {}
+    constructor(
+        private userServ: UserService,
+        private winkService: WinkService,
+        private itemServ: ItemService,
+        ) {}
 
     @Post('nearby-users')
     nearbyUsers(@AuthUser() user: IUser, @Body() data: findNearbyUsersDTO): Promise<IUser[]>  {
@@ -107,74 +112,86 @@ export class WinkController {
     getUserWinks(@AuthUser() user: IUser): Promise<IWink[]>  {
         return this.winkService.getUserWinks(user._id);
     }
-    @Post('approve-wink')
-    async approveWink(@Body() data: winkIdDTO, @Res() res): Promise<IWink>  {
-        const dataToUpdate = {
-            approved: true,
-            watched: true,
-        };
-        await this.winkService.approveWink(data.wink_id, dataToUpdate);
-        return res.status(HttpStatus.OK).json({
-            status: 'wink approved',
-         });
+    @Post('handle-wink')
+    async approveWink(@AuthUser() user: IUser, @Body() data: handleWinkDTO, @Res() res): Promise<IWink>  {
+        const dataToUpdate = data.watch ? { watched: true } : { approved: true , watched: true };
+        const resp = data.watch ? 'watched' : 'approved';
+        const wink = await this.winkService.findByIdOrFail(data.wink_id);
+        if ( user._id.toString() === wink.sender_id.toString() ) {
+            if (wink.approved || wink.watched) {
+                return res.status(HttpStatus.FORBIDDEN).json({
+                    status: 'wink already ' + resp,
+                    });
+            } else {
+                await wink.update(dataToUpdate);
+                return res.status(HttpStatus.OK).json({
+                    status: 'wink ' + resp,
+                    });
+            }
+        } else {
+            return res.status(HttpStatus.FORBIDDEN).json({
+                status: 'only receiver can approve winks or mark as watched',
+                });
+        }
     }
-    @Post('watched-wink')
-    async watchedWink(@Body() data: winkIdDTO): Promise<IUser>  {
-        return await this.winkService.findByIdAndUpdate(data.wink_id, {watched: true});
-    }
-
     @Post('show-private-profile')
     async showPrivateProfile(@Body() data: showPrivateProfileDTO, @Res() res): Promise<IItem[]>  {
         const wink = await this.winkService.findByIdOrFail(data.wink_id);
-        if (!wink) {
-            return res.status(HttpStatus.NOT_FOUND).json({
-                status: 'Wink not found',
-             });
+        if (!wink.approved) {
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                status: 'Wink is not approved',
+            });
         } else {
-            if (!wink.approved) {
-                return res.status(HttpStatus.BAD_REQUEST).json({
-                    status: 'Wink is not approved',
-                });
-            } else {
-                const visibility = new ObjectId(wink.sender_id).equals(data.winkUserId) ? wink.senderVisibility : wink.receiverVisibility;
-                const toSearch = [];
-                switch (visibility) {
-                    case 'personal':
-                        toSearch.push(itemsVisibility.GENERAL, itemsVisibility.PERSONAL);
-                        break;
-                    case 'professional':
-                        toSearch.push(itemsVisibility.GENERAL, itemsVisibility.PROFESSIONAL);
-                        break;
-                    case 'general':
-                        toSearch.push(itemsVisibility.GENERAL);
-                        break;
-                    default:
-                        toSearch.push(itemsVisibility.GENERAL, itemsVisibility.PROFESSIONAL, itemsVisibility.PERSONAL);
-                        break;
-                  }
-                const items = await this.itemServ.getItems(data.winkUserId, toSearch);
-                return res.status(HttpStatus.OK).json(items);
-            }
+            const visibility = new ObjectId(wink.sender_id).equals(data.winkUserId) ? wink.senderVisibility : wink.receiverVisibility;
+            const toSearch = [];
+            switch (visibility) {
+                case 'personal':
+                    toSearch.push(itemsVisibility.GENERAL, itemsVisibility.PERSONAL);
+                    break;
+                case 'professional':
+                    toSearch.push(itemsVisibility.GENERAL, itemsVisibility.PROFESSIONAL);
+                    break;
+                case 'general':
+                    toSearch.push(itemsVisibility.GENERAL);
+                    break;
+                default:
+                    toSearch.push(itemsVisibility.GENERAL, itemsVisibility.PROFESSIONAL, itemsVisibility.PERSONAL);
+                    break;
+                }
+            const items = await this.itemServ.getItems(data.winkUserId, toSearch);
+            return res.status(HttpStatus.OK).json(items);
         }
     }
     @Post('delete-wink')
     async deleteWink(@Body() data: winkIdDTO, @Res() res): Promise<IWink>  {
-        await this.winkService.deleteWink(data.wink_id);
+        const wink = await this.winkService.findByIdOrFail(data.wink_id);
+        await wink.remove();
         return res.status(HttpStatus.OK).json({
             status: 'wink deleted',
-         });
+        });
     }
-    @Post('user/update/status')
-    async updateUserStatus(@AuthUser() user: IUser, @Body() data: updateUserStatusDTO): Promise<IUser> {
-        return await this.userServ.findByIdAndUpdate(user._id, { status: data.status});
+    @Post('user-status')
+    async updateUserStatus(@AuthUser('_id') id: string, @Body() data: updateUserStatusDTO, @Res() res): Promise<IUser> {
+        const user = await this.userServ.findByIdOrFail(id);
+        await user.update({ status: data.status});
+        return res.status(HttpStatus.OK).json({
+            status: 'status updated successfully',
+            user,
+        });
     }
     @Get('social-network-links')
     async getSocialNetworkLinks(): Promise<ISocialLink[]>  {
         return await this.winkService.getSocialNetworksLinks();
     }
-    @Post('user/update/visibility')
-    async updateUserVisibility(@AuthUser() user: IUser, @Body() data: updateUserVisibilitysDTO): Promise<IUser>  {
-        return await this.userServ.findByIdAndUpdate(user._id, { visibility: data.visibility});
-    }
 
+    // update visibility y user-status deberian ser una misma funcion, acomodar
+    @Post('update-visibility')
+    async updateUserVisibility(@AuthUser('_id') id: string, @Body() data: updateUserVisibilitysDTO, @Res() res): Promise<IUser> {
+        const user = await this.userServ.findByIdOrFail(id);
+        await user.update({ visibility: data.visibility});
+        return res.status(HttpStatus.OK).json({
+            status: 'visibility updated successfully',
+            user,
+        });
+    }
 }

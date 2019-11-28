@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { modelName } from '../../database/models-name';
 import { Model } from 'mongoose';
@@ -22,14 +22,16 @@ export class WinkService {
         public async getSocialNetworksLinks(): Promise<ISocialLink[]> {
             return await this.socialNetworkLinkModel.find();
         }
-        public async approveWink(id: string, data: {approved: boolean}): Promise<IWink> {
-            return await this.winkModel.findOneAndUpdate({_id: id}, data, {new: true} );
-        }
-        public async deleteWink(id: string): Promise<IWink> {
-            return await this.winkModel.findByIdAndDelete({_id: id});
+        public async findById(id: string): Promise<IWink> {
+            return await this.winkModel.findById(id);
         }
         public async findByIdOrFail(id: string): Promise<IWink> {
-            return await this.winkModel.findOne({_id: id});
+            const wink = await this.winkModel.findById(id);
+            if (!wink) {
+                throw new HttpException('Wink not found', HttpStatus.NOT_FOUND);
+            } else {
+                return wink;
+            }
         }
         public async findByIdAndUpdate(id: string, data: {watched: boolean} ): Promise<IWink> {
             return await this.winkModel.findOneAndUpdate({_id: id}, data, {new: true} );

@@ -25,7 +25,7 @@ export const sesionSchema = new Schema({
     expireAt: {
         type: Date,
         default: undefined,
-         },
+    },
 });
 
 sesionSchema.index( { expireAt: 1 }, { expireAfterSeconds: 0 } );

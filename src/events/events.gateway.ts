@@ -86,18 +86,18 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
       });
     }
   }
-  @SubscribeMessage('approve-wink')
+  @SubscribeMessage('handle-wink')
   handleApproveWink(client: Socket, data: any) {
     const receivers = this.userClients.get(data.winkUser.toString());
     const self = this.userClients.get(client.handshake.query.userId).filter( filtered => filtered !== client.id);
     if (receivers) {
       receivers.forEach( (clientId: string) => {
-        client.to(clientId).emit('approved-wink', data);
+        client.to(clientId).emit('handled-wink', data);
       });
     }
     if (self) {
       self.forEach( (clientId: string) => {
-        client.to(clientId).emit('approved-wink', data);
+        client.to(clientId).emit('handled-wink', data);
       });
     }
   }
@@ -113,15 +113,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
     if (self) {
       self.forEach( (clientId: string) => {
         client.to(clientId).emit('deleted-wink', data);
-      });
-    }
-  }
-  @SubscribeMessage('watch-wink')
-  handleWatchWink(client: Socket, data: any) {
-    const self = this.userClients.get(client.handshake.query.userId).filter( filtered => filtered !== client.id);
-    if (self) {
-      self.forEach( (clientId: string) => {
-        client.to(clientId).emit('watched-wink', data);
       });
     }
   }

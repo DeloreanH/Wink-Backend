@@ -1,10 +1,10 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserDTO } from '../../common/dtos/users.dto';
 import { IUser } from '../../common/interfaces/interfaces';
 import { ObjectId } from 'bson';
 import { modelName } from '../../database/models-name';
+import moment = require('moment');
 
 @Injectable()
 export class UserService {
@@ -27,12 +27,12 @@ export class UserService {
             return user;
         }
     }
-
-    public async findByIdAndUpdate(id: string, data: UserDTO): Promise<IUser> {
+    // la data debe tener userDTO, por hacer
+    public async findByIdAndUpdate(id: string, data: any): Promise<IUser> {
         return await this.userModel.findOneAndUpdate({_id: id}, data, {new: true} );
     }
-
-    public async createUSer(user: UserDTO ): Promise<IUser> {
+    // la data debe tener userDTO, por hacer
+    public async createUSer(user: any ): Promise<IUser> {
         const createdUser = new this.userModel(user);
         return await createdUser.save();
     }
@@ -43,7 +43,8 @@ export class UserService {
 
     public async findNearbyUsers(userId: string , coordinates: [number, number], sort?: number ): Promise<IUser[]> {
         const sorting = sort ? sort : 1;
-        await this.findByIdAndUpdate(userId, {location: { type: 'Point', coordinates}});
+        await this.findByIdAndUpdate(userId, {location: { type: 'Point', coordinates}, lastActivity: moment() });
+        const date = moment().subtract({ days: 4 }).toDate();
         return await this.userModel.aggregate([
             {
                 $geoNear: {
@@ -56,7 +57,12 @@ export class UserService {
                 },
             },
             {
-                $match: { _id: { $ne: new ObjectId(userId) } },
+                $match: {
+                     _id: { $ne: new ObjectId(userId) },
+                     lastActivity: {
+                        $gte: date,
+                    },
+                },
             },
             {
                 $sort : { distance: sorting },

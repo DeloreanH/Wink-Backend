@@ -70,6 +70,11 @@ export const userSchema = new Schema({
         type: Boolean,
         default: true,
     },
+    lastActivity: {
+        type: Date,
+        default: Date(),
+        sparse: true,
+    },
     location: {
         type: { type: String },
         coordinates: [],

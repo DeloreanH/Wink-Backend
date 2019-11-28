@@ -131,6 +131,7 @@ export class AuthService {
                     token = await this.sign();
                     this.setBasicItemsToUser(newUser._id);
                  } else {
+                    await user.update({lastActivity: moment()});
                     this.setPayload({sub: user, iat: sPayload.iat, exp: sPayload.exp});
                     token = await this.sign();
                  }
