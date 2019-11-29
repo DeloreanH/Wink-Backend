@@ -1,7 +1,6 @@
 import { IsNotEmpty, IsString, IsNumber, IsBoolean, ValidateNested, IsOptional, IsEmail, IsDateString, Equals } from 'class-validator';
 import { Type } from 'class-transformer';
-
-import { IPhone } from '../interfaces/interfaces';
+import { LocationDTO, PhoneDTO } from '@app/common/dtos';
 
 export class UserDTO {
    @IsOptional()
@@ -17,8 +16,8 @@ export class UserDTO {
    readonly email?: string;
 
    @ValidateNested()
-    @Type(() => Phone)
-   readonly phone?: Phone;
+    @Type(() => PhoneDTO)
+   readonly phone?: PhoneDTO;
 
    @IsOptional()
    @IsDateString()
@@ -57,25 +56,6 @@ export class UserDTO {
    readonly autosave?: boolean;
 
    @ValidateNested()
-   @Type(() => Location)
-   readonly location?: Location;
-}
-
-// tslint:disable-next-line: max-classes-per-file
-class Phone {
-   @IsNumber()
-   phoneCode?: number;
-
-   @IsNumber()
-   phoneNumber?: number;
-}
-// tslint:disable-next-line: max-classes-per-file
-class Location {
-   @IsString()
-   @Equals('Point')
-   type: string;
-   @IsNumber({}, {
-      each: true,
-   })
-   coordinates: [number, number];
+   @Type(() => LocationDTO)
+   readonly location?: LocationDTO;
 }

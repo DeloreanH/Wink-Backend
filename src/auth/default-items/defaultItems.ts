@@ -1,4 +1,4 @@
-export const itemsDefault = [
+export const defaultItems = [
     {
         itemtype: 'fechadenacimiento',
         position: 1,

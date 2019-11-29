@@ -1,19 +1,20 @@
 import { Controller, Body, Post, HttpStatus, Res, Get } from '@nestjs/common';
-import { AuthUser } from '../../common/decorators/auth-decorators.decorator';
-import { IUser, IWink, IItem, ISocialLink } from '../../common/interfaces/interfaces';
-import { findNearbyUsersDTO } from '../../common/dtos/findNearbyUsers.dto';
-import { updateUserStatusDTO } from '../../common/dtos/updateUserStatus.dto';
-import { updateUserVisibilitysDTO } from '../../common/dtos/updateUserVisibility.dto';
+import { AuthUser } from '@app/common/decorators';
+import { IUser, IWink, IItem, ISocialLink } from '@app/common/interfaces';
+import { itemsVisibility } from '@app/common/enums';
+import { Tools } from '@app/common/tools';
+import { UserService, ItemService } from '@app/core/services';
+import {
+    handleWinkDTO,
+    showPrivateProfileDTO,
+    winkIdDTO,
+    winkUserIdDTO,
+    findNearbyUsersDTO,
+    updateUserVisibilitysDTO,
+    updateUserStatusDTO,
+ } from '@app/common/dtos';
 import { WinkService } from './wink.service';
-import { winkIdDTO } from '../../common/dtos/winkId.dto';
-import { winkUserIdDTO } from '../../common/dtos/winkUserId.dto';
-import { showPrivateProfileDTO } from '../../common/dtos/showPrivateProfile.dto';
-import { itemsVisibility } from '../../common/enums/enums';
 import { ObjectId } from 'bson';
-import { Tools } from '../../common/tools/tools';
-import { UserService } from '../../core/services/user.service';
-import { ItemService } from '../../core/services/item.service';
-import { handleWinkDTO } from 'src/common/dtos/handleWink.dto';
 
 @Controller('wink')
 export class WinkController {

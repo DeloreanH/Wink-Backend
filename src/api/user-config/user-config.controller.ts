@@ -1,11 +1,25 @@
-import { Controller, Get, Param, Post, Body, Put, HttpException, HttpStatus, UseInterceptors, UploadedFile, Res} from '@nestjs/common';
-import { ICategory, IItemType, IItem, IUser } from '../../common/interfaces/interfaces';
-import { AuthUser } from '../../common/decorators/auth-decorators.decorator';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Put,
+    HttpException,
+    HttpStatus,
+    UseInterceptors,
+    UploadedFile,
+    Res,
+} from '@nestjs/common';
+import {
+    ICategory,
+    IItemType,
+    IItem,
+} from '@app/common/interfaces';
+import { AuthUser } from '@app/common/decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UserService, ItemService } from '@app/core/services';
+import { CreateItemsDTO } from '@app/common/dtos';
 import { unlinkSync, existsSync } from 'fs';
-import { UserService } from '../../core/services/user.service';
-import { ItemService } from '../../core/services/item.service';
-import { CreateItemsDTO } from '../../common/dtos/createItems.dto';
 
 @Controller('user-config')
 export class UserConfigController {
@@ -23,7 +37,7 @@ export class UserConfigController {
     getItemTypes(): Promise<IItemType[]> {
         return this.itemServ.getItemTypes();
     }
-    @Get('items-user')
+    @Get('items')
     getUserItems(@AuthUser('_id') id): Promise<IItem[]>  {
         return this.itemServ.getItemsByUserId(id);
     }
@@ -47,9 +61,9 @@ export class UserConfigController {
 
     @Post('upload-avatar')
     @UseInterceptors(FileInterceptor('avatar'))
-    async avatarUpload(@UploadedFile() file , @Res() res, @AuthUser() authUser: IUser): Promise<any>  {
+    async avatarUpload(@UploadedFile() file , @Res() res, @AuthUser('_id') id: string): Promise<any>  {
         try {
-            const user = await this.userServ.findById(authUser._id);
+            const user = await this.userServ.findById(id);
             if (!user) {
                 unlinkSync(file.path);
                 const error = 'no user was found, new file was deleted';
@@ -71,18 +85,5 @@ export class UserConfigController {
         } catch (error) {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @Get('user/avatar/:imagepath')
-    seeUploadedFile(@Param('imagepath') image, @Res() res) {
-        return res.sendFile(image, { root: './uploads/avatar/'},
-             (error) => {
-                if (error) {
-                    res.status(error.status).json({
-                        status: 'resource not found',
-                     });
-                }
-            },
-        );
     }
 }

@@ -1,14 +1,16 @@
 import 'dotenv/config';
 import * as mongoose from 'mongoose';
-import { itemTypeSchema } from '../database/schemas/item-type.schema';
-import { categorySchema } from '../database/schemas/category.schema';
-import { userSchema } from '../database/schemas/user.schema';
-import { modelName } from '../database/models-name';
-import { itemSchema } from '../database/schemas/item.schema';
-import { sesionSchema } from '../database/schemas/sesion.schema';
-import { winkSchema } from '../database/schemas/wink.schema';
-import { socialNetworkLinkSchema} from '../database/schemas/social-network-link.schema';
 import { ObjectId } from 'bson';
+import { modelName } from '@app/database/enums';
+import {
+    userSchema,
+    sesionSchema,
+    categorySchema,
+    itemSchema,
+    itemTypeSchema,
+    winkSchema,
+    socialNetworkLinkSchema,
+} from '@app/database/schemas';
 
 // data
 import { categoriesSeed } from './data/categories.seed';

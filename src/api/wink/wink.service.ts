@@ -1,10 +1,10 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { modelName } from '../../database/models-name';
-import { Model } from 'mongoose';
-import { IWink, ISocialLink} from '../../common/interfaces/interfaces';
-import { winkDTO } from '../../common/dtos/wink.dto';
+import { modelName } from '@app/database/enums';
+import { IWink, ISocialLink} from '@app/common/interfaces';
+import { winkDTO } from '@app/common/dtos';
 import { ObjectId } from 'bson';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class WinkService {

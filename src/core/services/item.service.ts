@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { modelName } from '../../database/models-name';
+import { modelName } from '@app/database/enums';
+import { IItemType, IItem, ICategory } from '@app/common/interfaces';
+import { CreateItemsDTO } from '@app/common/dtos';
 import { Model } from 'mongoose';
-import { IItemType, IItem, ICategory } from '../../common/interfaces/interfaces';
 import { ObjectId } from 'bson';
-import { CreateItemsDTO } from 'src/common/dtos/createItems.dto';
 
 @Injectable()
 export class ItemService {

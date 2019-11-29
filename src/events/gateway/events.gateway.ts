@@ -1,7 +1,14 @@
-import { SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect } from '@nestjs/websockets';
+import {
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+  OnGatewayConnection,
+  OnGatewayInit,
+  OnGatewayDisconnect,
+} from '@nestjs/websockets';
+import { AuthService } from '@auth/services';
+import { IPayload } from '@app/common/interfaces';
 import { Socket, Server } from 'socket.io';
-import { AuthService } from '../auth/services/auth.service';
-import { IPayload } from '../common/interfaces/interfaces';
 
 @WebSocketGateway( +process.env.GATEWAY_PORT || 3005, { transports: ['websocket'] })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {

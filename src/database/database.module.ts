@@ -1,13 +1,15 @@
 import { Module, Global } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { modelName } from './models-name';
-import { userSchema } from './schemas/user.schema';
-import { sesionSchema } from './schemas/sesion.schema';
-import { categorySchema } from './schemas/category.schema';
-import { itemTypeSchema } from './schemas/item-type.schema';
-import { itemSchema } from './schemas/item.schema';
-import { winkSchema } from './schemas/wink.schema';
-import { socialNetworkLinkSchema } from './schemas/social-network-link.schema';
+import { modelName } from '@app/database/enums';
+import {
+    userSchema,
+    sesionSchema,
+    categorySchema,
+    itemSchema,
+    itemTypeSchema,
+    winkSchema,
+    socialNetworkLinkSchema,
+} from '@app/database/schemas';
 
 @Global()
 @Module({

@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { modelName } from '../models-name';
+import { modelName } from '@app/database/enums';
 
 export const sesionSchema = new Schema({
     user_id: {

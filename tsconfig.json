@@ -9,6 +9,38 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@app/core": ["./src/core/"],
+      "@app/core/services": ["./src/core/services"],
+
+      "@auth": ["./src/auth/"],
+      "@auth/interceptors": ["./src/auth/interceptors"],
+      "@auth/middlewares": ["./src/auth/middlewares"],
+      "@auth/services": ["./src/auth/services"],
+      "@auth/controllers": ["./src/auth/controllers"],
+      "@auth/default-items": ["./src/auth/default-items"],
+
+
+      "@app/database": ["./src/database"],
+      "@app/database/schemas": ["./src/database/schemas"],
+      "@app/database/enums": ["./src/database/enums"],
+
+      "@app/events": ["./src/events"],
+      "@app/events/gateway": ["./src/events/gateway"],
+      "@app/events/interceptors": ["./src/events/interceptors"],
+
+      "@app/common/decorators": ["./src/common/decorators"],
+      "@app/common/dtos": ["./src/common/dtos"],
+      "@app/common/enums": ["./src/common/enums"],
+      "@app/common/filters": ["./src/common/filters"],
+      "@app/common/interfaces": ["./src/common/interfaces"],
+      "@app/common/middlewares": ["./src/common/middlewares"],
+      "@app/common/pipes": ["./src/common/pipes"],
+      "@app/common/tools": ["./src/common/tools"],
+
+
+      "@app/api": ["./src/api"],
+    },
     "incremental": true,
     "resolveJsonModule": true
   },

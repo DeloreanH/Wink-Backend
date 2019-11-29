@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor, HttpException, HttpStatus } from '@nestjs/common';
-import { IPayload } from '../../common/interfaces/interfaces';
-import { AuthService } from '../services/auth.service';
+import { IPayload } from '@app/common/interfaces';
+import { AuthService } from '@auth/services';
 
 @Injectable()
 export class AuthInterceptor implements NestInterceptor {

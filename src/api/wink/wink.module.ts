@@ -1,8 +1,8 @@
 import { Module, MiddlewareConsumer } from '@nestjs/common';
+import { AuthMiddleware } from '@auth/middlewares';
+import { EmptyProfileMiddleware } from '@app/common/middlewares';
 import { WinkService } from './wink.service';
 import { WinkController } from './wink.controller';
-import { AuthMiddleware } from '../../auth/middlewares/auth.middleware';
-import { EmptyProfileMiddleware } from '../../common/middlewares/empty-profile.middleware';
 
 @Module({
   providers: [WinkService],

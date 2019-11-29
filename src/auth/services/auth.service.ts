@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { sign, verify } from 'jsonwebtoken';
-import { jwtAlgorithm } from '../../common/enums/enums';
+import { jwtAlgorithm } from '@app/common/enums';
 import { InjectModel } from '@nestjs/mongoose';
+import { ISub, IPayload, ISesion, IAuthResponse, IItem } from '@app/common/interfaces';
+import { modelName } from '@app/database/enums';
+import { defaultItems } from '@auth/default-items';
+import { UserService } from '@app/core/services';
+import { sesionDTO } from '@app/common/dtos';
 import { Model } from 'mongoose';
-import { ISub, IPayload, ISesion, IAuthResponse, IItem, IUser } from '../../common/interfaces/interfaces';
+import { sign, verify } from 'jsonwebtoken';
 import * as moment from 'moment';
-import { modelName } from '../../database/models-name';
-import { itemsDefault } from '../itemsDefault';
-import { UserService } from '../../core/services/user.service';
-import { UserDTO } from '../../common/dtos/users.dto';
-import { sesionDTO } from '../../common/dtos/sesion.dto';
 
 @Injectable()
 export class AuthService {
@@ -126,7 +125,7 @@ export class AuthService {
                 let token;
                 // de no existir el usuario, se crea
                 if (!user) {
-                    const newUser = await this.userServ.createUSer(sPayload.sub);
+                    const newUser = await this.userServ.createUser(sPayload.sub);
                     this.setPayload({sub: newUser, iat: sPayload.iat, exp: sPayload.exp});
                     token = await this.sign();
                     this.setBasicItemsToUser(newUser._id);
@@ -168,7 +167,7 @@ export class AuthService {
         });
     }
     public async setBasicItemsToUser( userId: string ): Promise<any[]> {
-        const basicItems = itemsDefault.map( item => {
+        const basicItems = defaultItems.map( item => {
             return Object.assign(item, {user_id: userId});
         });
         return await  this.itemModel.insertMany(basicItems);

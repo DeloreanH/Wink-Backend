@@ -1,8 +1,8 @@
 import { Module, MiddlewareConsumer, RequestMethod, NestModule, Global } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { AuthMiddleware } from './middlewares/auth.middleware';
-import { excludeMwRoutes } from '../common/enums/enums';
-import { AuthService } from './services/auth.service';
+import { AuthController } from '@auth/controllers';
+import { AuthMiddleware } from '@auth/middlewares';
+import { excludeMwRoutes } from '@app/common/enums';
+import { AuthService } from '@auth/services';
 @Global()
 @Module({
     exports: [

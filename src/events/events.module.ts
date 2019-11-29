@@ -1,5 +1,5 @@
 import { Module, Global } from '@nestjs/common';
-import { EventsGateway } from './events.gateway';
+import { EventsGateway } from '@app/events/gateway';
 
 @Global()
 @Module({

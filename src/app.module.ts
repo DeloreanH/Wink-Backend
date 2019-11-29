@@ -2,12 +2,15 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { APP_FILTER } from '@nestjs/core';
-import { HttpExceptionFilter } from './common/filters/http-exception.filter';
-import { ApiModule } from './api/api.module';
-import { DatabaseModule } from './database/database.module';
-import { AuthModule } from './auth/auth.module';
-import { CoreModule } from './core/core.module';
-import { MongoExceptionFilter } from './common/filters/mongo-exception.filter';
+import { DatabaseModule } from '@app/database';
+import { AuthModule } from '@auth';
+import { CoreModule } from '@app/core';
+import { ApiModule } from '@app/api';
+import {
+    MongoExceptionFilter,
+    HttpExceptionFilter,
+} from '@app/common/filters';
+
 @Module({
     imports: [
         DatabaseModule,
@@ -19,7 +22,14 @@ import { MongoExceptionFilter } from './common/filters/mongo-exception.filter';
         AppController,
     ],
     providers: [
-
+        {
+            provide: APP_FILTER,
+            useClass: HttpExceptionFilter,
+        },
+        {
+            provide: APP_FILTER,
+            useClass: MongoExceptionFilter,
+        },
         AppService,
     ],
 })

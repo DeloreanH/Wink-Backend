@@ -1,8 +1,8 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { WsException } from '@nestjs/websockets';
 import { Socket} from 'socket.io';
-import { AuthService } from '../auth/services/auth.service';
-import { IPayload } from '../common/interfaces/interfaces';
+import { AuthService } from '@auth/services';
+import { IPayload } from '@app/common/interfaces';
 
 @Injectable()
 export class EventsGatewayInterceptor implements NestInterceptor {

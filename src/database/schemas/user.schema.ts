@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
-import { Tools } from '../../common/tools/tools';
-import { modelName } from '../models-name';
+import { Tools } from '@app/common/tools';
+import { modelName } from '@app/database/enums';
 
 export const userSchema = new Schema({
     firstName: {

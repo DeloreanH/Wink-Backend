@@ -24,15 +24,24 @@ export enum excludeMwRoutes {
     AUTH_AUTHENTICATE = '/auth/authenticate',
 
     // user-config routes
-    UCONFIG_CONFIG                 = '/user-config/config',
     UCONFIG_CATEGORIES             = '/user-config/categories',
     UCONFIG_CATEGORIES_ITEMS       = '/user-config/categories-items',
     UCONFIG_ITEMTYPES              = '/user-config/itemtypes',
-    UCONFIG_USERITEMS              = '/user-config/items/user/:id',
-    UCONFIG_ADD_MANY_ITEMS_TO_USER = '/user-config/items/user/create',
-    UCONFIG_UPDATE_USER_BASIC_DATA = '/user-config/user/update/basic-data',
-    UCONFIG_UPLOAD_USER_AVATAR     = '/user-config/user/upload/avatar',
-    UCONFIG_USER_AVATAR            = '/user-config/user/avatar/:imagepath',
+    UCONFIG_USERITEMS              = '/user-config/items',
+    UCONFIG_ADD_MANY_ITEMS_TO_USER = '/user-config/items-create',
+    UCONFIG_UPDATE_USER_BASIC_DATA = '/user-config/update-basic-data',
+    UCONFIG_UPLOAD_USER_AVATAR     = '/user-config/upload-avatar',
 
-    UCONFIG_NEARBY_USERS           = '/user-config/nearby-users',
+    // wink routes
+    WINK_NEARBY_USERS              = '/wink/nearby-users',
+    WINK_SHOW_PUBLIC_PROFILE       = '/wink/show-public-profile',
+    WINK_SEND_WINK                 = '/wink/send-wink',
+    WINK_GET_USER                  = '/wink/get-user',
+    WINK_GET_WINKS                 = '/wink/get-winks',
+    WINK_HANDLE_WINK               = '/wink/handle-wink',
+    WINK_SHOW_PRIVATE_PROFILE      = '/wink/show-private-profile',
+    WINK_DELETE_WINK               = '/wink/delete-wink',
+    WINK_SOCIAL_NETWORK_LINKS      = '/wink/social-network-links',
+    WINK_UPDATE_USER_VISIBILITY    = '/wink/update-visibility',
+    WINK_UPDATE_USER_STATUS        = '/wink/user-status',
 }

@@ -1,10 +1,10 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { IUser } from '../../common/interfaces/interfaces';
+import { IUser } from '@app/common/interfaces';
+import { modelName } from '@app/database/enums';
+import * as moment from 'moment';
 import { ObjectId } from 'bson';
-import { modelName } from '../../database/models-name';
-import moment = require('moment');
+import { Model } from 'mongoose';
 
 @Injectable()
 export class UserService {
@@ -32,18 +32,19 @@ export class UserService {
         return await this.userModel.findOneAndUpdate({_id: id}, data, {new: true} );
     }
     // la data debe tener userDTO, por hacer
-    public async createUSer(user: any ): Promise<IUser> {
+    public async createUser(user: any ): Promise<IUser> {
         const createdUser = new this.userModel(user);
         return await createdUser.save();
     }
 
     public async getUserWinks(id: string): Promise<any> {
-        return await this.userModel.findOne({_id: id}).select('_id').populate('sendedWinks').populate('receivedWinks');
+        return await this.userModel.findById(id).select('_id').populate('sendedWinks').populate('receivedWinks');
     }
 
     public async findNearbyUsers(userId: string , coordinates: [number, number], sort?: number ): Promise<IUser[]> {
         const sorting = sort ? sort : 1;
-        await this.findByIdAndUpdate(userId, {location: { type: 'Point', coordinates}, lastActivity: moment() });
+        const user = await this.findByIdOrFail(userId);
+        await user.update({location: { type: 'Point', coordinates}, lastActivity: moment() });
         const date = moment().subtract({ days: 4 }).toDate();
         return await this.userModel.aggregate([
             {
