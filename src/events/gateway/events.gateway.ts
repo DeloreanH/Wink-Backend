@@ -94,7 +94,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
     }
   }
   @SubscribeMessage('handle-wink')
-  handleApproveWink(client: Socket, data: any) {
+  handleWink(client: Socket, data: any) {
     const receivers = this.userClients.get(data.winkUser.toString());
     const self = this.userClients.get(client.handshake.query.userId).filter( filtered => filtered !== client.id);
     if (receivers) {

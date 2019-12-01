@@ -22,14 +22,7 @@ import {
         AppController,
     ],
     providers: [
-        {
-            provide: APP_FILTER,
-            useClass: HttpExceptionFilter,
-        },
-        {
-            provide: APP_FILTER,
-            useClass: MongoExceptionFilter,
-        },
+
         AppService,
     ],
 })
