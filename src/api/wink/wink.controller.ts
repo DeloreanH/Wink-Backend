@@ -118,7 +118,7 @@ export class WinkController {
         const dataToUpdate = data.watch ? { watched: true } : { approved: true , watched: true };
         const resp = data.watch ? 'watched' : 'approved';
         const wink = await this.winkService.findByIdOrFail(data.wink_id);
-        if ( user._id.toString() === wink.sender_id.toString() ) {
+        if ( user._id.toString() === wink.receiver_id.toString() ) {
             if (wink.approved || wink.watched) {
                 return res.status(HttpStatus.FORBIDDEN).json({
                     status: 'wink already ' + resp,
