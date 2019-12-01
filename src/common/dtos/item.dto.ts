@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber, IsBoolean, ValidateNested, IsOptional, IsMongoId } from 'class-validator';
+import {IsNotEmpty, IsString, IsNumber, IsBoolean, ValidateNested, IsOptional, IsMongoId} from 'class-validator';
 import { Type } from 'class-transformer';
 
 class Section {

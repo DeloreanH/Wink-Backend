@@ -261,4 +261,12 @@ export const itemTypesSeed = [
         category: 'otros',
         repeat: true,
     },
+    {
+        name: 'biografia',
+        description: 'WINK.ITEM_TYPES.BIO',
+        icon: 'fas book-open',
+        index: 0,
+        category: 'biografia',
+        repeat: false,
+    },
 ];

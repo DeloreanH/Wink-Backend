@@ -27,4 +27,8 @@ export const categoriesSeed = [
         name: 'otros',
         description: 'WINK.CATEGORY.OTHERS',
     },
+    {
+        name: 'biografia',
+        description: 'WINK.CATEGORY.BIO',
+    },
 ];
