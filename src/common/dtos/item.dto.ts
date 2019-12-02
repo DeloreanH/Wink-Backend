@@ -22,7 +22,7 @@ export class ItemDTO {
     @IsString()
     readonly itemtype: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     readonly value?: string;
 
