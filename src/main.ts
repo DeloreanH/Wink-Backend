@@ -5,6 +5,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as express from 'express';
 import { ValidationPipe, Logger } from '@nestjs/common';
 
+declare const module: any;
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(
         AppModule,
@@ -18,6 +19,10 @@ async function bootstrap() {
     }));
     app.use('/public', express.static('public'));
     await app.listen(process.env.PORT || 3000);
-    logger.log('Http server running on port: ' + `${process.env.POST || 3000}`);
+    if (module.hot) {
+      module.hot.accept();
+      module.hot.dispose(() => app.close());
+    }
+    logger.log('Http server running on port: ' + `${ process.env.POST || 3000}`);
 }
 bootstrap();
