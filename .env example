@@ -1,10 +1,11 @@
-APP_URL=http://192.168.1.140
-
 AVATAR_UPLOAD_PATH= 'public/uploads/avatar'
 
-MONGO_HOST=mongodb://localhost/winkdb
+MONGO_HOST=localhost
+MONGO_PORT=27017
+MONGO_DB_NAME=winkdb
 
 PORT=3000
+GATEWAY_PORT=3005
 
 SECRET=12345678
 SERVER_SECRET=e7alcfc08i5id6776dlc5km8

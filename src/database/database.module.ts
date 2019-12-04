@@ -15,7 +15,7 @@ import {
 @Module({
     imports: [
         MongooseModule.forRoot(
-            process.env.MONGO_HOST,
+            `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB_NAME}`,
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,

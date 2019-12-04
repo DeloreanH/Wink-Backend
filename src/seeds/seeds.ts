@@ -67,7 +67,12 @@ async function closeConn() {
 
 async function openConn() {
     console.log('OPENING CONNECTION WITH DB');
-    const conn = await mongoose.connect(process.env.MONGO_HOST, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+    const conn = await mongoose.connect(
+        `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB_NAME}`,
+            { useNewUrlParser: true,
+              useUnifiedTopology: true,
+              useCreateIndex: true },
+            );
     console.log('DROPPING EXISTING DATA');
     await conn.connection.dropDatabase();
 }
