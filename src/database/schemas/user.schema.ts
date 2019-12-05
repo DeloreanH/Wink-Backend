@@ -45,6 +45,7 @@ export const userSchema = new Schema({
     },
     status: {
         type: String,
+        default: 'WINK.STATUS.AVAILABLE',
     },
     description: {
         type: String ,
