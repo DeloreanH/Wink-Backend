@@ -4,7 +4,7 @@ export const usersItemsSeed = [
         position: 1,
         basic: true,
         custom: null,
-        value: 'correr',
+        value: 'arte,ciencia,teatro',
         section: {
             name: 'Publico',
             key: 0,
