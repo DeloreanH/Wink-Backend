@@ -53,7 +53,7 @@ export class UserService {
                     type: 'Point',
                     coordinates,
                 },
-                maxDistance: 3000,
+                maxDistance: 7000000, // probando, el valor debe ser 3000 m
                 distanceField: 'distance',
                 },
             },
