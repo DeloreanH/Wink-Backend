@@ -1,18 +1,7 @@
 export const usersItemsSeed = [
     {
-        itemtype: 'fechadenacimiento',
-        position: 1,
-        basic: true,
-        custom: null,
-        value: '1993-07-26',
-        section: {
-            name: 'Publico',
-            key: 0,
-        },
-    },
-    {
         itemtype: 'intereses',
-        position: 2,
+        position: 1,
         basic: true,
         custom: null,
         value: 'correr',
@@ -37,7 +26,7 @@ export const usersItemsSeed = [
         position: 2,
         basic: true,
         custom: null,
-        value: 'https://www.facebook.com/justaw4y',
+        value: 'justaw4y',
         section: {
             name: 'General',
             key: 1,
@@ -59,7 +48,7 @@ export const usersItemsSeed = [
         position: 4,
         basic: true,
         custom: null,
-        value: 'https://www.instagram.com/harryy1242/',
+        value: 'harryy1242',
         section: {
             name: 'General',
             key: 1,
@@ -114,7 +103,7 @@ export const usersItemsSeed = [
         position: 1,
         basic: true,
         custom: null,
-        value: 'ingeniero',
+        value: 'WINK.OPTIONS_ITEMS.COLLEGE',
         section: {
             name: 'Profesional',
             key: 3,

@@ -52,7 +52,7 @@ export class UserConfigController {
     async update(@AuthUser('_id') id: string, @Body() userValues, @Res() res) {
         const toUpdate = Object.assign(userValues, {emptyProfile: false});
         const user = await this.userServ.findByIdOrFail(id);
-        user.update(toUpdate);
+        await user.updateOne(toUpdate);
         return res.status(HttpStatus.OK).json({
             status: 'user updated successfully',
             user,
@@ -76,7 +76,7 @@ export class UserConfigController {
                     }
                 }
                 const link = '/' + process.env.AVATAR_UPLOAD_PATH + '/' + file.filename;
-                await user.update({avatarUrl: link});
+                await user.updateOne({avatarUrl: link});
                 return res.status(HttpStatus.OK).json({
                     status: 'avatar uploaded successfully',
                     link,
