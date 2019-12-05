@@ -44,7 +44,7 @@ export class UserService {
     public async findNearbyUsers(userId: string , coordinates: [number, number], sort?: number ): Promise<IUser[]> {
         const sorting = sort ? sort : 1;
         const user = await this.findByIdOrFail(userId);
-        await user.update({location: { type: 'Point', coordinates}, lastActivity: moment() });
+        await user.updateOne({location: { type: 'Point', coordinates}, lastActivity: moment() });
         const date = moment().subtract({ days: 4 }).toDate();
         return await this.userModel.aggregate([
             {
@@ -53,7 +53,7 @@ export class UserService {
                     type: 'Point',
                     coordinates,
                 },
-                maxDistance: 7000000, // probando, el valor debe ser 3000 m
+                maxDistance: user.searchRange, // probando, el valor debe ser 3000 m
                 distanceField: 'distance',
                 },
             },

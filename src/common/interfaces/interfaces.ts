@@ -60,6 +60,7 @@ export interface IUser extends Document {
     visibility?: string;
     autosave?: boolean;
     lastActivity?: Date;
+    searchRange?: number;
     location?: {
        type: string,
        coordinates: [number, number],

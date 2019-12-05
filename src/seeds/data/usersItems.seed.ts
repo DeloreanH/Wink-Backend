@@ -99,17 +99,6 @@ export const usersItemsSeed = [
         },
     },
     {
-        itemtype: 'niveldeinstruccion',
-        position: 1,
-        basic: true,
-        custom: null,
-        value: 'WINK.OPTIONS_ITEMS.COLLEGE',
-        section: {
-            name: 'Profesional',
-            key: 3,
-        },
-    },
-    {
         itemtype: 'ocupacion',
         position: 2,
         basic: true,

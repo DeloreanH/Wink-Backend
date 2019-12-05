@@ -15,6 +15,7 @@ import {
  } from '@app/common/dtos';
 import { WinkService } from './wink.service';
 import { ObjectId } from 'bson';
+import { setSearchRangDTO } from 'src/common/dtos/setSearchRange.dto';
 
 @Controller('wink')
 export class WinkController {
@@ -109,6 +110,14 @@ export class WinkController {
              });
         }
     }
+    @Post('set-search-range')
+    async setSearchRange( @AuthUser('_id') id, @Res() res, @Body() data: setSearchRangDTO): Promise<any>  {
+        const user = await this.userServ.findByIdOrFail(id) as IUser;
+        await user.updateOne({ searchRange: data.range});
+        return res.status(HttpStatus.OK).json({
+            status: 'search range updated successfully',
+        });
+    }
     @Get('get-winks')
     getUserWinks(@AuthUser() user: IUser): Promise<IWink[]>  {
         return this.winkService.getUserWinks(user._id);
@@ -179,7 +188,7 @@ export class WinkController {
     @Post('user-status')
     async updateUserStatus(@AuthUser('_id') id: string, @Body() data: updateUserStatusDTO, @Res() res): Promise<IUser> {
         const user = await this.userServ.findByIdOrFail(id);
-        await user.update({ status: data.status});
+        await user.updateOne({ status: data.status});
         return res.status(HttpStatus.OK).json({
             status: 'status updated successfully',
             user,
@@ -194,7 +203,7 @@ export class WinkController {
     @Post('update-visibility')
     async updateUserVisibility(@AuthUser('_id') id: string, @Body() data: updateUserVisibilitysDTO, @Res() res): Promise<IUser> {
         const user = await this.userServ.findByIdOrFail(id);
-        await user.update({ visibility: data.visibility});
+        await user.updateOne({ visibility: data.visibility});
         return res.status(HttpStatus.OK).json({
             status: 'visibility updated successfully',
             user,

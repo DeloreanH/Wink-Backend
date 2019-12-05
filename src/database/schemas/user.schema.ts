@@ -76,6 +76,10 @@ export const userSchema = new Schema({
         default: Date(),
         sparse: true,
     },
+    searchRange: {
+        type: Number,
+        default: 3000,
+    },
     location: {
         type: { type: String },
         coordinates: [],
