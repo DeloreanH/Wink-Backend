@@ -191,7 +191,6 @@ export class WinkController {
         await user.updateOne({ status: data.status});
         return res.status(HttpStatus.OK).json({
             status: 'status updated successfully',
-            user,
         });
     }
     @Get('social-network-links')
@@ -206,7 +205,6 @@ export class WinkController {
         await user.updateOne({ visibility: data.visibility});
         return res.status(HttpStatus.OK).json({
             status: 'visibility updated successfully',
-            user,
         });
     }
 }

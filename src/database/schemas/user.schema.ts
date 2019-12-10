@@ -29,9 +29,9 @@ export const userSchema = new Schema({
                 sparse: true,
             },
     },
+    sparse: true,
     unique: true,
     default: null,
-    sparse: true,
     },
     birthday: {
         type: Date,
