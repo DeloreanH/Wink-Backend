@@ -2,107 +2,111 @@ import { Schema } from 'mongoose';
 import { Tools } from '@app/common/tools';
 import { modelName } from '@app/database/enums';
 
-export const userSchema = new Schema({
+export const userSchema = new Schema(
+  {
     firstName: {
-        type: String,
-        default: '',
+      type: String,
+      default: '',
     },
     lastName: {
-        type: String,
-        default: '',
+      type: String,
+      default: '',
     },
     email: {
-        type: String,
-        unique: true,
-        set: Tools.removeSpaces,
-        lowercase: true,
-        sparse: true,
-        },
-    phone: {
-        type: {
-            phoneNumber: {
-                type: Number,
-                sparse: true,
-            },
-            phoneCode: {
-                type: Number,
-                sparse: true,
-            },
+      type: String,
+      unique: true,
+      set: Tools.removeSpaces,
+      lowercase: true,
+      sparse: true,
     },
-    sparse: true,
-    unique: true,
-    default: null,
+    phone: {
+      type: {
+        phoneNumber: {
+          type: Number,
+        },
+        phoneCode: {
+          type: Number,
+        },
+      },
+      default: null,
     },
     birthday: {
-        type: Date,
+      type: Date,
     },
     gender: {
-        type: String,
-        default: null,
+      type: String,
+      default: null,
     },
     avatarUrl: {
-            type: String,
+      type: String,
     },
     status: {
-        type: String,
-        default: 'WINK.STATUS.AVAILABLE',
+      type: String,
+      default: 'WINK.STATUS.AVAILABLE',
     },
     description: {
-        type: String ,
+      type: String,
     },
     emptyProfile: {
-        type: Boolean,
-        default: true,
+      type: Boolean,
+      default: true,
     },
     username: {
-        type: String,
-        minlength: 8,
-        unique: true,
-        set: Tools.removeSpaces,
-        lowercase: true,
-        sparse: true,
+      type: String,
+      minlength: 8,
+      unique: true,
+      set: Tools.removeSpaces,
+      lowercase: true,
+      sparse: true,
     },
     visibility: {
-        type: String,
-        enum : ['personal', 'professional', 'general', 'all'],
-        default: 'all',
+      type: String,
+      enum: ['personal', 'professional', 'general', 'all'],
+      default: 'all',
     },
     autosave: {
-        type: Boolean,
-        default: true,
+      type: Boolean,
+      default: true,
     },
     lastActivity: {
-        type: Date,
-        default: Date(),
-        sparse: true,
+      type: Date,
+      default: Date(),
+      sparse: true,
     },
     searchRange: {
-        type: Number,
-        default: 3000,
+      type: Number,
+      default: 3000,
     },
     location: {
-        type: { type: String },
-        coordinates: [],
+      type: { type: String },
+      coordinates: [],
     },
-}, { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false, timestamps: true });
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+    id: false,
+    timestamps: true,
+  },
+);
 
 userSchema.index({ location: '2dsphere' });
 
 userSchema.virtual('sendedWinks', {
-    ref: modelName.WINK, // The model to use
-    localField: '_id', // is equal to `localField`
-    foreignField: 'sender_id', // is equal to `foreignField`
-    // If `justOne` is true, 'members' will be a single doc as opposed to
-    // an array. `justOne` is false by default.
-    justOne: false,
-    // options: { sort: { name: -1 }, limit: 5 }, // Query options,
-  });
+  ref: modelName.WINK, // The model to use
+  localField: '_id', // is equal to `localField`
+  foreignField: 'sender_id', // is equal to `foreignField`
+  // If `justOne` is true, 'members' will be a single doc as opposed to
+  // an array. `justOne` is false by default.
+  justOne: false,
+  // options: { sort: { name: -1 }, limit: 5 }, // Query options,
+});
 
 userSchema.virtual('receivedWinks', {
-    ref: modelName.WINK, // The model to use
-    localField: '_id', // is equal to `localField`
-    foreignField: 'receiver_id', // is equal to `foreignField`
-    // If `justOne` is true, 'members' will be a single doc as opposed to
-    // an array. `justOne` is false by default.
-    justOne: false,
-  });
+  ref: modelName.WINK, // The model to use
+  localField: '_id', // is equal to `localField`
+  foreignField: 'receiver_id', // is equal to `foreignField`
+  // If `justOne` is true, 'members' will be a single doc as opposed to
+  // an array. `justOne` is false by default.
+  justOne: false,
+});
