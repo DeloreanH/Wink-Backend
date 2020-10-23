@@ -10,6 +10,7 @@ import {
     MongoExceptionFilter,
     HttpExceptionFilter,
 } from '@app/common/filters';
+import { NotificationsModule } from '@app/notifications';
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import {
         AuthModule,
         CoreModule,
         ApiModule,
+        NotificationsModule.forRoot(),
     ],
     controllers: [
         AppController,
