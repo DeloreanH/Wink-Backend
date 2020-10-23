@@ -11,16 +11,9 @@ import {
     HttpExceptionFilter,
 } from '@app/common/filters';
 import { NotificationsModule } from './notifications';
-import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
-        ConfigModule.forRoot({
-            isGlobal: true,
-            envFilePath: [
-                '.env',
-              ],
-          }),
         DatabaseModule,
         AuthModule,
         CoreModule,
