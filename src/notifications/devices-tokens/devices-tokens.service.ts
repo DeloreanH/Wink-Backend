@@ -11,7 +11,7 @@ export class DevicesTokensService {
         @InjectModel(modelNameDevicesTokens.DEVICES_TOKENS) private devicesTokensModel: Model<IDevicesTokens>,
       ) {}
 
-      updateDeviceToken(userId: string, token: string) {
-          this.devicesTokensModel.findOneAndUpdate({ userId }, { $addToSet: { token } });
+      async updateDeviceToken(userId: string, token: string) {
+        return await this.devicesTokensModel.update({ userId }, {userId, token}, {upsert: true});
       }
 }
