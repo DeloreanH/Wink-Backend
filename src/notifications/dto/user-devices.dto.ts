@@ -1,9 +1,11 @@
-import { IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class UserDeviceDTO {
+  @IsNotEmpty()
   @IsString()
-  readonly userdId: string;
+  readonly userId: string;
 
+  @IsNotEmpty()
   @IsString()
   readonly token: string;
 }

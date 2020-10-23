@@ -17,8 +17,7 @@ export class NotificationsController {
   @Post('device-token')
   public async saveDeviceToken(@Body() loginUserDto: UserDeviceDTO) {
     try {
-      console.log(loginUserDto);
-      return await this.devicesTokensService.updateDeviceToken(loginUserDto.userdId, loginUserDto.token);
+      return await this.devicesTokensService.updateDeviceToken(loginUserDto.userId, loginUserDto.token);
     } catch (error) {
       this.logger.error(error);
     }
