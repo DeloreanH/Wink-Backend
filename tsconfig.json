@@ -10,7 +10,6 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "@app/*": ["src/*"],
       "@app/core": ["./src/core/"],
       "@app/core/services": ["./src/core/services"],
 

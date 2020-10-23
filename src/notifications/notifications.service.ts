@@ -1,6 +1,5 @@
 import { Injectable, OnModuleInit, Inject, Optional } from '@nestjs/common';
 import * as admin from 'firebase-admin';
-import { ConfigService } from '@nestjs/config';
 
 export interface NotificationsConfig {
   databaseURL: string;
@@ -11,18 +10,15 @@ export type AppNotificationMessage = Partial<admin.messaging.Message>;
 @Injectable()
 export class NotificationsService implements OnModuleInit {
   constructor(
-    private readonly config: ConfigService,
     @Optional()
     @Inject('NotificationsConfig')
     private notificationConfig?: NotificationsConfig,
-  ) {
-    config.get('FIREBASE_DATABASE_NAME');
-  }
+  ) {}
 
   public initializeNotificationService() {
     const databaseURL =
       (this.notificationConfig && this.notificationConfig.databaseURL) ||
-      this.config.get('FIREBASE_DATABASE_NAME');
+      process.env.FIREBASE_DATABASE_NAME;
     console.log(databaseURL);
     admin.initializeApp({
       credential: admin.credential.applicationDefault(),
@@ -71,7 +67,7 @@ export class NotificationsService implements OnModuleInit {
   ) {
     // M&aacute;xima cantidad de notificaciones enviadas simultaneamente
     const maxPerInteraction = +(
-      this.config.get('FIREBASE_MAX_MULTICAST_TOKENS') || 500
+      process.env.FIREBASE_MAX_MULTICAST_TOKENS || 500
     );
     // Pagina el envio de notificaciones, firebase permite maximo 500 tokens simultaneos
     const nIterations = Math.ceil(deviceTokens.length / maxPerInteraction);
