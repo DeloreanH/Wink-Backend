@@ -32,7 +32,6 @@ import { DevicesTokens, modelNameDevicesTokens } from '../notifications/database
             { name: modelName.ITEM_TYPE, schema: itemTypeSchema },
             { name: modelName.WINK, schema: winkSchema },
             { name: modelName.SOCIAL_NETWORKS_LINK, schema: socialNetworkLinkSchema },
-            { name: modelName.SOCIAL_NETWORKS_LINK, schema: socialNetworkLinkSchema },
             { name: modelNameDevicesTokens.DEVICES_TOKENS, schema: DevicesTokens },
         ]),
         ],
