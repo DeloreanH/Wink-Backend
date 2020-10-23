@@ -3,7 +3,7 @@
 /node_modules
 
 #eviroment
-# .env
+.env
 
 # Logs
 logs
