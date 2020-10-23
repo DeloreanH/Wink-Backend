@@ -11,6 +11,7 @@ import {
     HttpExceptionFilter,
 } from '@app/common/filters';
 import { NotificationsModule } from '@app/notifications';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
@@ -18,6 +19,9 @@ import { NotificationsModule } from '@app/notifications';
         AuthModule,
         CoreModule,
         ApiModule,
+        ConfigModule.forRoot({
+            isGlobal: true,
+          }),
         NotificationsModule.forRoot(),
     ],
     controllers: [
