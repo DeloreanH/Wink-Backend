@@ -23,6 +23,6 @@ async function bootstrap() {
       module.hot.accept();
       module.hot.dispose(() => app.close());
     }
-    logger.log('Http server running on port: ' + `${ process.env.POST || 3000}`);
+    logger.log('Http server running on port: ' + `${ process.env.PORT || 3000}`);
 }
 bootstrap();
