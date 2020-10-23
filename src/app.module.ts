@@ -15,13 +15,13 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+          }),
         DatabaseModule,
         AuthModule,
         CoreModule,
         ApiModule,
-        ConfigModule.forRoot({
-            isGlobal: true,
-          }),
         NotificationsModule.forRoot(),
     ],
     controllers: [

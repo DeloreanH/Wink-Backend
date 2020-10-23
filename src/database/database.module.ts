@@ -10,6 +10,7 @@ import {
     winkSchema,
     socialNetworkLinkSchema,
 } from '@app/database/schemas';
+import { DevicesTokens as DevicesTokensSchema, modelNameDevicesTokens } from '@app/notifications/database';
 
 @Global()
 @Module({
@@ -31,6 +32,8 @@ import {
             { name: modelName.ITEM_TYPE, schema: itemTypeSchema },
             { name: modelName.WINK, schema: winkSchema },
             { name: modelName.SOCIAL_NETWORKS_LINK, schema: socialNetworkLinkSchema },
+            { name: modelName.SOCIAL_NETWORKS_LINK, schema: socialNetworkLinkSchema },
+            { name: modelNameDevicesTokens.DEVICES_TOKENS, schema: DevicesTokensSchema },
         ]),
         ],
         exports: [

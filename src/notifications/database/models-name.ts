@@ -1,3 +1,3 @@
-export enum  modelName {
+export enum  modelNameDevicesTokens {
     DEVICES_TOKENS = 'DevicesTokens',
 }

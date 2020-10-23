@@ -1,4 +1,4 @@
-import { 
+import {
   DynamicModule,
   Module,
   Global,
@@ -11,12 +11,11 @@ import {
 import { NotificationsController } from './notifications.controller';
 import { DevicesTokensService } from './devices-tokens/devices-tokens.service';
 
-
 @Global()
 @Module({
   providers: [NotificationsService, DevicesTokensService],
   controllers: [NotificationsController],
-  exports: [ NotificationsService ]
+  exports: [ NotificationsService, DevicesTokensService ],
 })
 export class NotificationsModule {
 
@@ -29,7 +28,7 @@ export class NotificationsModule {
           useValue: config,
         },
         NotificationsService,
-      ]
+      ],
     };
   }
 
